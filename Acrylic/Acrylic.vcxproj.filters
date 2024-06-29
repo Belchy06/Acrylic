@@ -15,12 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Test.h">
+    <ClInclude Include="src\Acrylic\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Entrypoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Test.cpp">
+    <ClCompile Include="src\Acrylic\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
