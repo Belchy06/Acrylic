@@ -15,7 +15,10 @@ namespace Acrylic
 
 		void Run();
 
+		void OnEvent(Event& e);
 	private:
+		bool OnWindowClosed(WindowCloseEvent& e);
+
 		std::unique_ptr<IWindow> Window;
 		bool					 bRunning = true;
 	};

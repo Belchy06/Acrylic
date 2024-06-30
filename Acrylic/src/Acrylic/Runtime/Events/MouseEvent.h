@@ -7,14 +7,14 @@ namespace Acrylic
 	class ACRYLIC_API MouseMovedEvent : public Event
 	{
 	public:
-		MouseMovedEvent(float X, float Y)
+		MouseMovedEvent(double X, double Y)
 			: DeltaX(X)
 			, DeltaY(Y)
 		{
 		}
 
-		FORCEINLINE float GetDeltaX() { return DeltaX; }
-		FORCEINLINE float GetDeltaY() { return DeltaY; }
+		FORCEINLINE double GetDeltaX() { return DeltaX; }
+		FORCEINLINE double GetDeltaY() { return DeltaY; }
 
 		virtual std::string ToString() const override
 		{
@@ -27,21 +27,21 @@ namespace Acrylic
 		EVENT_CLASS_CATEGORY(EEventCategory::Mouse | EEventCategory::Input)
 
 	private:
-		float DeltaX;
-		float DeltaY;
+		double DeltaX;
+		double DeltaY;
 	};
 
 	class ACRYLIC_API MouseScrolledEvent : public Event
 	{
 	public:
-		MouseScrolledEvent(float X, float Y)
+		MouseScrolledEvent(double X, double Y)
 			: X(X)
 			, Y(Y)
 		{
 		}
 
-		FORCEINLINE float GetX() { return X; }
-		FORCEINLINE float GetY() { return Y; }
+		FORCEINLINE double GetX() { return X; }
+		FORCEINLINE double GetY() { return Y; }
 
 		virtual std::string ToString() const override
 		{
@@ -54,8 +54,8 @@ namespace Acrylic
 		EVENT_CLASS_CATEGORY(EEventCategory::Mouse | EEventCategory::Input)
 
 	private:
-		float X;
-		float Y;
+		double X;
+		double Y;
 	};
 
 	class ACRYLIC_API MouseButtonEvent : public Event
