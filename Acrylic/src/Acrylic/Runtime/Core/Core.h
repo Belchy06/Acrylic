@@ -1,5 +1,5 @@
 #pragma once
 
 #include "PreprocessorHelpers.h"
-#include "Private/CoreDefines.h"
+#include "Defines.h"
 #include "acpch.h"

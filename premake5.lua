@@ -10,6 +10,11 @@ workspace "Acrylic"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Acrylic/src/Acrylic/ThirdParty/glfw/include"
+
+include "Acrylic/src/Acrylic/ThirdParty/glfw"
+
 project "Acrylic"
 	location "Acrylic"
 	kind "SharedLib"
@@ -33,7 +38,14 @@ project "Acrylic"
 		"%{prj.name}/src",
 		"%{prj.name}/src/%{prj.name}/Editor",
 		"%{prj.name}/src/%{prj.name}/Runtime",
-		"%{prj.name}/src/%{prj.name}/ThirdParty"
+		"%{prj.name}/src/%{prj.name}/ThirdParty",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -53,7 +65,11 @@ project "Acrylic"
 		}
 
 	filter "configurations:Debug"
-		defines "AC_DEBUG"
+		defines 
+		{
+			"AC_DEBUG",
+			"AC_ENABLE_ASSERTS"
+		}
 		symbols "On"
 
 	filter "configurations:Release"

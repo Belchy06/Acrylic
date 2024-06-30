@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Logging/Logging.h"
+#include "Core/Logging/Logging.h"
+#include "ApplicationCore/Window.h"
 
 namespace Acrylic
 {
@@ -10,10 +10,14 @@ namespace Acrylic
 	class ACRYLIC_API Application
 	{
 	public:
-		Application() = default;
-		virtual ~Application() = default;
+		Application();
+		virtual ~Application();
 
 		void Run();
+
+	private:
+		std::unique_ptr<IWindow> Window;
+		bool					 bRunning = true;
 	};
 
 	Application* CreateApplication();

@@ -285,14 +285,14 @@ namespace Acrylic
 			if constexpr ((Verbosity & ELogVerbosity::VerbosityMask) == ELogVerbosity::Fatal)
 			{
 
-				/*if constexpr (sizeof...(FieldArgTypes) == 0)
+				if constexpr (sizeof...(FieldArgTypes) == 0)
 				{
 					FatalLogWithNoFields(Category, Log);
 				}
 				else
 				{
 					FatalLogWithFields<FieldArgTypes...>(Category, Log, (FieldArgTypes&&)FieldArgs...);
-				}*/
+				}
 			}
 			else if constexpr ((Verbosity & ELogVerbosity::VerbosityMask) <= ELogVerbosity::VeryVerbose)
 			{

@@ -17,49 +17,49 @@ namespace Acrylic
 
 			int32_t		FormatFieldCount = 0;
 			int32_t		BracketSearchOffset = 0;
-			std::string FormatString = Format;
-			for (std::string::iterator it = FormatString.begin();;)
+			size_t		FormatLength = std::string(Format).length();
+			for (const char* TextStart = Format;;)
 			{
 				std::string Brackets = "{}";
-				size_t		TextEnd = std::string(it + BracketSearchOffset, FormatString.end()).find_first_of(Brackets);
-				TextEnd = TextEnd == std::string::npos ? FormatString.length() : TextEnd;
+				size_t		End = std::string(TextStart + BracketSearchOffset).find_first_of(Brackets);
+				const char* const TextEnd = End == std::string::npos ? &Format[FormatLength] : TextStart + End;
 				BracketSearchOffset = 0;
 
-				if (Format[TextEnd] == '{' && Format[TextEnd + 1] == '{' || Format[TextEnd] == '}' && Format[TextEnd + 1] == '}')
+				if (TextEnd[0] == '{' && TextEnd[1] == '{' || TextEnd[0] == '}' && TextEnd[1] == '}')
 				{
 					// Only "{{" or "}}"
-					if (std::string(it, it + 1)[0] == Format[TextEnd])
+					if (TextStart == TextEnd)
 					{
 						Ops.push_back({ LogTemplateOp::OpSkip, 1 });
-						it += TextEnd + 1;
+						TextStart = TextEnd + 1;
 						BracketSearchOffset = 1;
 					}
 					// Text and "{{" or "}}"
 					else
 					{
-						Ops.push_back({ LogTemplateOp::OpText, PTRDIFF_TO_INT32(1 + &Format[TextEnd] - &Format[std::distance(FormatString.begin(), it)]) });
+						Ops.push_back({ LogTemplateOp::OpText, PTRDIFF_TO_INT32(1 + TextEnd - TextStart) });
 						Ops.push_back({ LogTemplateOp::OpSkip, 1 });
-						it += TextEnd + 2;
+						TextStart = TextEnd + 2;
 					}
 					continue;
 				}
 
 				// Text
-				if (Format[std::distance(FormatString.begin(), it)] != Format[TextEnd])
+				if (TextStart != TextEnd)
 				{
-					Ops.push_back({ LogTemplateOp::OpText, PTRDIFF_TO_INT32(&Format[std::distance(FormatString.begin(), it) + TextEnd] - &Format[std::distance(FormatString.begin(), it)]) });
-					it += TextEnd;
+					Ops.push_back({ LogTemplateOp::OpText, PTRDIFF_TO_INT32(TextEnd - TextStart) });
+					TextStart = TextEnd;
 				}
 
 				// End
-				if (it == FormatString.end())
+				if (!*TextEnd)
 				{
 					Ops.push_back({ LogTemplateOp::OpEnd });
 					break;
 				}
 
 				// Field
-				const char* const FieldStart = &Format[std::distance(FormatString.begin(), it)];
+				const char* const FieldStart = TextStart;
 
 				std::string ValidLogFieldName = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
 				size_t		EndIndex = 1;
@@ -67,7 +67,7 @@ namespace Acrylic
 				{
 					EndIndex++;
 				}
-				const char* const FieldNameEnd = &Format[std::distance(FormatString.begin(), it) + EndIndex];
+				const char* const FieldNameEnd = &FieldStart[EndIndex];
 				/*checkf(*FieldNameEnd, TEXT("Log format has an unterminated field reference. Use '{{' to escape '{' if needed. [[%s]]"), Format);
 				checkf(*FieldNameEnd == TEXT('}'), TEXT("Log format has invalid character '%c' in field name. "
 														"Use '{{' to escape '{' if needed. Names must match \"[A-Za-z0-9][A-Za-z0-9_]*\". [[%s]]"),
@@ -100,7 +100,7 @@ namespace Acrylic
 				Ops.push_back({ LogTemplateOp::OpName, FieldLen });
 				++FormatFieldCount;
 
-				it += EndIndex + 1;
+				TextStart = FieldEnd;
 			}
 
 			/*checkf(!bFindFields || !bPositional || FormatFieldCount == FieldCount, TEXT("Log format requires %d fields and %d were provided. [[%s]]"), FormatFieldCount, FieldCount, Format);*/
@@ -300,12 +300,16 @@ namespace Acrylic
 
 		void FatalLogWithNoFields(const LogCategoryBase& Category, const StaticLogRecord& Log)
 		{
-			// TODO
+			// A non-null field pointer enables field validation in FLogTemplate::Create.
+			static constexpr LogField EmptyField{};
+			FatalLogWithFieldArray(Category, Log, &EmptyField, 0);
 		}
 
 		void FatalLogWithFieldArray(const LogCategoryBase& Category, const StaticLogRecord& Log, const LogField* Fields, int32_t FieldCount)
 		{
-			// TODO
+			DispatchLogRecord(Log, CreateLogRecord(Category, Log, Fields, FieldCount));
+			// TODO: crash nicer
+			exit(1);
 		}
 
 		LogTemplateFieldIterator& LogTemplateFieldIterator::operator++()
