@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Application.h"
+#include "Core/Application.h"
 
 #ifdef AC_PLATFORM_WINDOWS
 	extern Acrylic::Application* Acrylic::CreateApplication();

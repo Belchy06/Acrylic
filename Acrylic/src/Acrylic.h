@@ -1,4 +1,4 @@
 #pragma once
 
-#include "Acrylic/Application.h"
-#include "Acrylic/Entrypoint.h"
+#include "Acrylic/Runtime/Core/Application.h"
+#include "Acrylic/Runtime/Entrypoint.h"

@@ -15,21 +15,60 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Acrylic\Core.h">
+    <ClInclude Include="src\Acrylic\Runtime\Core\Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Acrylic\Application.h">
+    <ClInclude Include="src\Acrylic\Runtime\Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Acrylic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Acrylic\Entrypoint.h">
+    <ClInclude Include="src\Acrylic\Runtime\Entrypoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\StructuredLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\PreprocessorHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\LogCategory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\LogVerbosity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Private\CoreDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Private\CoreIncludes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Misc\EnumClassFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\LogMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Misc\ScopeExit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Acrylic\Runtime\Core\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Acrylic\Application.cpp">
+    <ClCompile Include="src\Acrylic\Runtime\Core\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Acrylic\Runtime\Core\Logging\Private\LogCategory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Acrylic\Runtime\Core\Logging\Private\StructuredLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

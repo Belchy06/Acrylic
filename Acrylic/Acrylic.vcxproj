@@ -12,12 +12,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Acrylic.h" />
-    <ClInclude Include="src\Acrylic\Application.h" />
-    <ClInclude Include="src\Acrylic\Core.h" />
-    <ClInclude Include="src\Acrylic\Entrypoint.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Application.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Core.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Globals.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Logging.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\LogCategory.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\LogMacros.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\LogVerbosity.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Misc\EnumClassFlags.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Misc\ScopeExit.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\PreprocessorHelpers.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Private\CoreDefines.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Private\CoreIncludes.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Entrypoint.h" />
+    <ClInclude Include="src\Acrylic\Runtime\Core\Logging\Private\StructuredLog.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Acrylic\Application.cpp" />
+    <ClCompile Include="src\Acrylic\Runtime\Core\Application.cpp" />
+    <ClCompile Include="src\Acrylic\Runtime\Core\Logging\Private\LogCategory.cpp" />
+    <ClCompile Include="src\Acrylic\Runtime\Core\Logging\Private\StructuredLog.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -67,6 +80,7 @@
       <PreprocessorDefinitions>AC_PLATFORM_WINDOWS;AC_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Acrylic\src\Acrylic\Editor;$(SolutionDir)\Acrylic\src\Acrylic\Runtime;$(SolutionDir)\Acrylic\src\Acrylic\ThirdParty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,6 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AC_PLATFORM_WINDOWS;AC_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Acrylic\src\Acrylic\Editor;$(SolutionDir)\Acrylic\src\Acrylic\Runtime;$(SolutionDir)\Acrylic\src\Acrylic\ThirdParty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

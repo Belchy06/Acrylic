@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>AC_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Acrylic\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Acrylic\src;$(SolutionDir)\Acrylic\src\Acrylic\Editor;$(SolutionDir)\Acrylic\src\Acrylic\Runtime;$(SolutionDir)\Acrylic\src\Acrylic\ThirdParty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,7 +74,7 @@
       <PreprocessorDefinitions>AC_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Acrylic\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Acrylic\src;$(SolutionDir)\Acrylic\src\Acrylic\Editor;$(SolutionDir)\Acrylic\src\Acrylic\Runtime;$(SolutionDir)\Acrylic\src\Acrylic\ThirdParty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
