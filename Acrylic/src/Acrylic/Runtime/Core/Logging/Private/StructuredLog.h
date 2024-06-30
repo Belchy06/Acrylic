@@ -39,7 +39,7 @@ namespace Acrylic
 
 			const char* Name = nullptr;
 			const void* Value = nullptr;
-			WriteFn*	WriteValue;
+			WriteFn*	WriteValue = nullptr;
 
 			template <typename ValueType>
 			static void Write(std::ostream& Writer, const void* Value)

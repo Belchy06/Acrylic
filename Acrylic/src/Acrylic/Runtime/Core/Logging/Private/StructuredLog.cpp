@@ -1,5 +1,6 @@
+#include "acpch.h"
+
 #include "StructuredLog.h"
-#include "Core/Misc/ScopeExit.h"
 #include "Core/Globals.h"
 
 namespace Acrylic

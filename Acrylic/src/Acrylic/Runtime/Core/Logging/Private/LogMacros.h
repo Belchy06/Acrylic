@@ -3,8 +3,6 @@
 #include "LogCategory.h"
 #include "LogVerbosity.h"
 
-#include <iostream>
-
 namespace Acrylic
 {
 	/**

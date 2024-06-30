@@ -18,6 +18,9 @@ project "Acrylic"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("intermediates/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "acpch.h"
+	pchsource "Acrylic/src/acpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -27,6 +30,7 @@ project "Acrylic"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"%{prj.name}/src/%{prj.name}/Editor",
 		"%{prj.name}/src/%{prj.name}/Runtime",
 		"%{prj.name}/src/%{prj.name}/ThirdParty"

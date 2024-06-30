@@ -1,3 +1,5 @@
+#include "acpch.h"
+
 #include "LogCategory.h"
 
 namespace Acrylic
