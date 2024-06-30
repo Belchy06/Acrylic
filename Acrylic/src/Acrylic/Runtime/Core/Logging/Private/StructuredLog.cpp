@@ -182,6 +182,10 @@ namespace Acrylic
 
 		static void FormatRecordMessageTo(std::ostream& Out, const LogRecord& Record)
 		{
+			struct std::tm LocalTime;
+			localtime_s(&LocalTime, &Record.GetTime());
+			Out << "[" << std::put_time(&LocalTime, "%Y.%m.%d-%H.%M.%S") << "]" << Record.GetCategory() << ": ";
+
 			const LogTemplate* Template = Record.GetTemplate();
 			if (LIKELY(Template))
 			{
