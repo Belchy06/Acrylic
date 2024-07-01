@@ -14,7 +14,11 @@
 
 #define BREAK() (__debugbreak())
 
-#ifdef AC_ENABLE_ASSERTS
+#ifdef AC_DEBUG
+	#define AC_ENABLE_ASSERTS
+#endif
+
+#if AC_ENABLE_ASSERTS
 	#define AC_ASSERT(x, ...)                                   \
 		{                                                       \
 			if (!(x))                                           \

@@ -1,6 +1,8 @@
 workspace "Acrylic"
 	architecture "x64"
 
+	startproject "Sandbox"
+
 	configurations
 	{
 		"Debug",
@@ -23,6 +25,7 @@ project "Acrylic"
 	location "Acrylic"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("intermediates/" .. outputdir .. "/%{prj.name}")
@@ -65,8 +68,7 @@ project "Acrylic"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
-		systemversion "10.0.22621.0"
+		systemversion "latest"
 
 		defines
 		{
@@ -83,23 +85,26 @@ project "Acrylic"
 	filter "configurations:Debug"
 		defines 
 		{
-			"AC_DEBUG",
-			"AC_ENABLE_ASSERTS"
+			"AC_DEBUG"
 		}
 		symbols "On"
+		runtime "Debug"
 
 	filter "configurations:Release"
 		defines "AC_RELEASE"
 		optimize "On"
+		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "AC_DIST"
 		optimize "On"
+		runtime "Release"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("intermediates/" .. outputdir .. "/%{prj.name}")
@@ -126,8 +131,7 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
-		systemversion "10.0.22621.0"
+		systemversion "latest"
 
 		defines
 		{
@@ -137,11 +141,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "AC_DEBUG"
 		symbols "On"
+		runtime "Debug"
 
 	filter "configurations:Release"
 		defines "AC_RELEASE"
 		optimize "On"
+		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "AC_DIST"
 		optimize "On"
+		runtime "Release"
