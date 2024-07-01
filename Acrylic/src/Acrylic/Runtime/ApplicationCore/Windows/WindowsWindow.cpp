@@ -5,6 +5,8 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
+#include <glad/glad.h>
+
 namespace Acrylic
 {
 	DEFINE_LOG_CATEGORY(LogWindowsWindow);
@@ -50,6 +52,10 @@ namespace Acrylic
 
 		Window = glfwCreateWindow(static_cast<int>(Data.Width), static_cast<int>(Data.Height), Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(Window);
+
+		int Status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		AC_ASSERT(Status);
+
 		glfwSetWindowUserPointer(Window, &Data);
 		SetVSync(true);
 
@@ -94,6 +100,13 @@ namespace Acrylic
 					break;
 				}
 			}
+		});
+
+		glfwSetCharCallback(Window, [](GLFWwindow* Window, unsigned int Key) {
+			WindowData* Data = static_cast<WindowData*>(glfwGetWindowUserPointer(Window));
+
+			KeyCharEvent Event(Key);
+			Data->EventCallback(Event);
 		});
 
 		glfwSetMouseButtonCallback(Window, [](GLFWwindow* Window, int Button, int Action, int Mods) {

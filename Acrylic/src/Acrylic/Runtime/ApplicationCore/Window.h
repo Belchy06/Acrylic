@@ -3,7 +3,9 @@
 #include "acpch.h"
 
 #include "Core/Core.h"
-#include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
 
 namespace Acrylic
 {

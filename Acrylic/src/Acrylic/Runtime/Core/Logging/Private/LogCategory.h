@@ -8,7 +8,7 @@ using LogCategoryName = std::string;
 namespace Acrylic
 {
 	/** Base class for all log categories. */
-	struct LogCategoryBase
+	struct ACRYLIC_API LogCategoryBase
 	{
 		/**
 		* Constructor, registers with the log suppression system and sets up the default values.
@@ -49,7 +49,7 @@ namespace Acrylic
 
 	/** Template for log categories that transfers the compile-time constant default and compile time verbosity to the LogCategoryBase constructor. */
 	template <ELogVerbosity TDefaultVerbosity>
-	struct LogCategory : public LogCategoryBase
+	struct ACRYLIC_API LogCategory : public LogCategoryBase
 	{
 		static_assert((TDefaultVerbosity & ELogVerbosity::VerbosityMask) < ELogVerbosity::NumVerbosity, "Invalid default verbosity.");
 

@@ -12,8 +12,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Acrylic/src/Acrylic/ThirdParty/glfw/include"
+IncludeDir["GLAD"] = "Acrylic/src/Acrylic/ThirdParty/glad/include"
+IncludeDir["IMGUI"] = "Acrylic/src/Acrylic/ThirdParty/imgui"
 
 include "Acrylic/src/Acrylic/ThirdParty/glfw"
+include "Acrylic/src/Acrylic/ThirdParty/glad"
+include "Acrylic/src/Acrylic/ThirdParty/imgui"
 
 project "Acrylic"
 	location "Acrylic"
@@ -33,18 +37,29 @@ project "Acrylic"
 		"%{prj.name}/src/**.cpp"
 	}
 
+	removefiles
+	{
+		"%{prj.name}/src/Acrylic/ThirdParty/**.h",
+		"%{prj.name}/src/Acrylic/ThirdParty/**.hpp",
+		"%{prj.name}/src/Acrylic/ThirdParty/**.cpp",
+	}
+
 	includedirs
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/src/%{prj.name}/Editor",
 		"%{prj.name}/src/%{prj.name}/Runtime",
 		"%{prj.name}/src/%{prj.name}/ThirdParty",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLAD}",
+		"%{IncludeDir.IMGUI}"
 	}
 
 	links
 	{
 		"GLFW",
+		"GLAD",
+		"ImGui",
 		"opengl32.lib"
 	}
 
@@ -56,7 +71,8 @@ project "Acrylic"
 		defines
 		{
 			"AC_PLATFORM_WINDOWS",
-			"AC_BUILD_DLL"
+			"AC_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

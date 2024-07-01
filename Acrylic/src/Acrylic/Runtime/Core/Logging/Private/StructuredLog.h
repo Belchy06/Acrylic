@@ -12,7 +12,7 @@ namespace Acrylic
 
 	namespace Logging
 	{
-		struct LogTemplateOp
+		struct ACRYLIC_API LogTemplateOp
 		{
 			enum EOpCode : int32_t
 			{
@@ -33,7 +33,7 @@ namespace Acrylic
 			inline int32_t GetSkipSize() const { return Code == OpIndex ? 0 : Value; }
 		};
 
-		struct LogField
+		struct ACRYLIC_API LogField
 		{
 			using WriteFn = void(std::ostream& Writer, const void* Value);
 
@@ -48,16 +48,16 @@ namespace Acrylic
 			}
 		};
 
-		class LogTemplate;
+		class ACRYLIC_API LogTemplate;
 
 		/** Data about a static log that is created on-demand. */
-		struct StaticLogDynamicData
+		struct ACRYLIC_API StaticLogDynamicData
 		{
 			std::atomic<LogTemplate*> Template;
 		};
 
 		/** Data about a static log that is constant for every occurrence. */
-		struct StaticLogRecord
+		struct ACRYLIC_API StaticLogRecord
 		{
 			const char*			  Format = nullptr;
 			const char*			  File = nullptr;
@@ -81,7 +81,7 @@ namespace Acrylic
 			}
 		};
 
-		class LogTemplate
+		class ACRYLIC_API LogTemplate
 		{
 		public:
 			static LogTemplate* CreateStatic(const StaticLogRecord& Log, const LogField* Fields, int32_t FieldCount)
@@ -118,7 +118,7 @@ namespace Acrylic
 			std::vector<LogTemplateOp> OpData;
 		};
 
-		class LogTemplateFieldIterator
+		class ACRYLIC_API LogTemplateFieldIterator
 		{
 		public:
 			inline explicit LogTemplateFieldIterator(const LogTemplate& Template)
@@ -141,7 +141,7 @@ namespace Acrylic
 		/**
 		 * Record of a log event.
 		 */
-		class LogRecord
+		class ACRYLIC_API LogRecord
 		{
 		public:
 			/** The optional name of the category for the log record. None when omitted. */
@@ -212,21 +212,21 @@ namespace Acrylic
 			const char*			  TextKey = nullptr;
 		};
 
-		void LogWithNoFields(const LogCategoryBase& Category, const StaticLogRecord& Log);
-		void LogWithFieldArray(const LogCategoryBase& Category, const StaticLogRecord& Log, const LogField* Fields, int32_t FieldCount);
+		void ACRYLIC_API LogWithNoFields(const LogCategoryBase& Category, const StaticLogRecord& Log);
+		void			 ACRYLIC_API LogWithFieldArray(const LogCategoryBase& Category, const StaticLogRecord& Log, const LogField* Fields, int32_t FieldCount);
 
-		void FatalLogWithNoFields(const LogCategoryBase& Category, const StaticLogRecord& Log);
-		void FatalLogWithFieldArray(const LogCategoryBase& Category, const StaticLogRecord& Log, const LogField* Fields, int32_t FieldCount);
+		void ACRYLIC_API FatalLogWithNoFields(const LogCategoryBase& Category, const StaticLogRecord& Log);
+		void			 ACRYLIC_API FatalLogWithFieldArray(const LogCategoryBase& Category, const StaticLogRecord& Log, const LogField* Fields, int32_t FieldCount);
 
 		/** Wrapper to identify field names interleaved with field values. */
 		template <typename NameType>
-		struct TLogFieldName
+		struct ACRYLIC_API TLogFieldName
 		{
 			NameType Name;
 		};
 
 		/** Create log fields from values optionally preceded by names. */
-		struct LogFieldCreator
+		struct ACRYLIC_API LogFieldCreator
 		{
 			template <typename T>
 			inline constexpr static int32_t ValueCount = 1;
@@ -250,7 +250,7 @@ namespace Acrylic
 		};
 
 		template <typename T>
-		struct TFieldArgType
+		struct ACRYLIC_API TFieldArgType
 		{
 			using Type = T;
 		};
@@ -311,13 +311,13 @@ namespace Acrylic
 		}
 	} // namespace Logging
 
-#define AC_PRIVATE_LOG(CategoryName, Verbosity, Format, ...)                                                                                                              \
-	do                                                                                                                                                                    \
-	{                                                                                                                                                                     \
-		static Logging::StaticLogDynamicData				 LOG_Dynamic;                                                                                                 \
-		static constexpr Logging::StaticLogRecord LOG_Static AC_PRIVATE_LOG_AGGREGATE(Format, __builtin_FILE(), __builtin_LINE(), ELogVerbosity::Verbosity, LOG_Dynamic); \
-		Logging::LogIfActive<LogCategory##CategoryName, ELogVerbosity::Verbosity>(CategoryName, LOG_Static, ##__VA_ARGS__);                                               \
-	}                                                                                                                                                                     \
+#define AC_PRIVATE_LOG(CategoryName, Verbosity, Format, ...)                                                                                                                                \
+	do                                                                                                                                                                                      \
+	{                                                                                                                                                                                       \
+		static Acrylic::Logging::StaticLogDynamicData				  LOG_Dynamic;                                                                                                          \
+		static constexpr Acrylic::Logging::StaticLogRecord LOG_Static AC_PRIVATE_LOG_AGGREGATE(Format, __builtin_FILE(), __builtin_LINE(), Acrylic::ELogVerbosity::Verbosity, LOG_Dynamic); \
+		Acrylic::Logging::LogIfActive<LogCategory##CategoryName, Acrylic::ELogVerbosity::Verbosity>(CategoryName, LOG_Static, ##__VA_ARGS__);                                               \
+	}                                                                                                                                                                                       \
 	while (false)
 
 // This macro avoids having non-parenthesized commas in the log macros.

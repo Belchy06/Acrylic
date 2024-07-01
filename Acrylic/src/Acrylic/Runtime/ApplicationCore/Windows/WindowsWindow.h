@@ -3,7 +3,7 @@
 #include "ApplicationCore/Window.h"
 #include "Core/Logging/Logging.h"
 
-#include <GLFW/glfw3.h>
+#include <glfw/glfw3.h>
 
 namespace Acrylic
 {

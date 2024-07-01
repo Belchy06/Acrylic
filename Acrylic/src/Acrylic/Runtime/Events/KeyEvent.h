@@ -59,4 +59,22 @@ namespace Acrylic
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
+	class ACRYLIC_API KeyCharEvent : public KeyEvent
+	{
+	public:
+		KeyCharEvent(int KeyCode)
+			: KeyEvent(KeyCode)
+		{
+		}
+
+		virtual std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyCharEvent: " << KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyReleased)
+	};
 } // namespace Acrylic

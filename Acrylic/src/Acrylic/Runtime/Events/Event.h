@@ -72,6 +72,16 @@ namespace Acrylic
 			return static_cast<uint8_t>(GetCategoryFlags() & Category) != 0;
 		}
 
+		FORCEINLINE bool IsHandled() 
+		{
+			return bHandled;
+		}
+
+		FORCEINLINE void SetHandled()
+		{
+			bHandled = true;
+		}
+
 	protected:
 		bool bHandled = false;
 	};

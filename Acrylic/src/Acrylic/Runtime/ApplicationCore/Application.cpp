@@ -8,12 +8,13 @@ namespace Acrylic
 {
 	DEFINE_LOG_CATEGORY(LogApplication);
 
-	#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+	Application* Application::Singleton = nullptr;
 
 	Application::Application()
 	{
+		Singleton = this; 
 		Window = std::unique_ptr<IWindow>(IWindow::Create());
-		Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
 	}
 
 	Application::~Application()
@@ -23,9 +24,18 @@ namespace Acrylic
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher Dispatcher(e);
-		Dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+		Dispatcher.Dispatch<WindowCloseEvent>(AC_BIND_EVENT_FN(Application::OnWindowClosed));
 
 		AC_LOG(LogApplication, VeryVerbose, "{0}", e.ToString());
+
+		for (std::vector<Layer*>::iterator It = Stack.end(); It != Stack.begin();)
+		{
+			(*--It)->OnEvent(e);
+			if (e.IsHandled())
+			{
+				break;
+			}
+		}
 	}
 	
 	bool Application::OnWindowClosed(WindowCloseEvent& e)
@@ -34,10 +44,25 @@ namespace Acrylic
 		return true;
 	}
 
+	void Application::PushLayer(Layer* InLayer)
+	{
+		Stack.PushLayer(InLayer);
+	}
+
+	void Application::PushOverlay(Layer* InOverlay)
+	{
+		Stack.PushOverlay(InOverlay);
+	}
+
 	void Application::Run()
 	{
 		while (bRunning)
 		{
+			for (Layer* l : Stack)
+			{
+				l->OnUpdate();
+			}
+
 			Window->OnUpdate();
 		}
 	}

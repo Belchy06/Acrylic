@@ -1,5 +1,7 @@
 #pragma once
 
+#include "acpch.h"
+
 #ifdef AC_PLATFORM_WINDOWS
 	#ifdef AC_BUILD_DLL
 		#define ACRYLIC_API __declspec(dllexport)
@@ -23,3 +25,5 @@
 #else
 	#define AC_ASSERT(x, ...)
 #endif
+
+#define AC_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
