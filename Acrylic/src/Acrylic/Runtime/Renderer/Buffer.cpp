@@ -8,11 +8,11 @@ namespace Acrylic
 {
 	IVertexBuffer* IVertexBuffer::Create(float* Vertices, uint32_t Count)
 	{
-		switch (Renderer::GetAPI())
+		switch (Renderer::GetRenderInterface())
 		{
-			case ERenderAPI::None:
+			case ERenderInterface::None:
 				return nullptr;
-			case ERenderAPI::OpenGL:
+			case ERenderInterface::OpenGL:
 				return new OpenGLVertexBuffer(Vertices, Count);
 			default:
 				return nullptr;
@@ -21,11 +21,11 @@ namespace Acrylic
 
 	IIndexBuffer* IIndexBuffer::Create(uint32_t* Indices, uint32_t Count)
 	{
-		switch (Renderer::GetAPI())
+		switch (Renderer::GetRenderInterface())
 		{
-			case ERenderAPI::None:
+			case ERenderInterface::None:
 				return nullptr;
-			case ERenderAPI::OpenGL:
+			case ERenderInterface::OpenGL:
 				return new OpenGLIndexBuffer(Indices, Count);
 			default:
 				return nullptr;

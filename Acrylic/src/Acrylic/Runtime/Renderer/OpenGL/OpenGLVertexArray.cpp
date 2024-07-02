@@ -63,7 +63,8 @@ namespace Acrylic
 		for (const BufferElement& Element : VertexBuffer->GetLayout())
 		{
 			glEnableVertexAttribArray(Index);
-			glVertexAttribPointer(Index,
+			glVertexAttribPointer(
+				Index,
 				Element.GetComponentCount(),
 				ToOpenGLType(Element.Type),
 				Element.bNormalized ? GL_TRUE : GL_FALSE,

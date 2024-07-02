@@ -17,7 +17,7 @@ namespace Acrylic
 		virtual void SetIndexBuffer(const std::shared_ptr<IIndexBuffer>& IndexBuffer) override;
 
 		virtual const std::vector<std::shared_ptr<IVertexBuffer>>& GetVertexBuffers() const override { return VertexBuffers; }
-		virtual const std::shared_ptr<IIndexBuffer>&			   GetIndexBuffers() const override { return IndexBuffer;  }
+		virtual const std::shared_ptr<IIndexBuffer>&			   GetIndexBuffer() const override { return IndexBuffer;  }
 
 	private:
 		uint32_t RendererId;

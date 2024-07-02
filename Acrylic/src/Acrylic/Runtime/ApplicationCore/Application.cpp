@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
 
-#include <glad/glad.h>
+#include "Renderer/Renderer.h"
 
 namespace Acrylic
 {
@@ -13,11 +13,64 @@ namespace Acrylic
 
 	Application::Application()
 	{
-		Singleton = this; 
+		Singleton = this;
 		Window = std::unique_ptr<IWindow>(IWindow::Create());
 		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
 
 		Stack.PushOverlay(new ImGuiLayer());
+
+		// clang-format off
+		float Vertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,   0.75f, 0.0f,
+			-0.75f,   0.75f, 0.0f
+		};
+		// clang-format on
+
+		std::shared_ptr<IVertexBuffer> ExampleVertexBuffer = std::shared_ptr<IVertexBuffer>(IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float)));
+		ExampleVertexBuffer->SetLayout({ { EDataType::Float3, "a_Position" } });
+
+		// clang-format off
+		uint32_t Indices[6] = {
+			0, 1, 2,
+			2, 3, 0
+		};
+		// clang-format on
+		std::shared_ptr<IIndexBuffer> ExampleIndexBuffer = std::shared_ptr<IIndexBuffer>(IIndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
+
+		std::shared_ptr<IVertexArray> ExampleVertexArray = std::shared_ptr<IVertexArray>(IVertexArray::Create());
+		ExampleVertexArray->AddVertexBuffer(ExampleVertexBuffer);
+		ExampleVertexArray->SetIndexBuffer(ExampleIndexBuffer);
+
+		std::string VertexSrc = R"(
+			#version 330 core
+
+			layout (location = 0) in vec3 a_Position;
+  
+			out vec3 v_Position;
+
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			})";
+
+		std::string FragmentSrc = R"(
+			#version 330 core
+
+			layout (location = 0) out vec4 color;
+	  
+			in vec3 v_Position;
+
+			void main()
+			{
+				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+			})";
+
+		std::shared_ptr<Shader> ExampleShader = std::shared_ptr<Shader>(new Shader(VertexSrc, FragmentSrc));
+
+		Shaders.push_back({ ExampleShader, ExampleVertexArray });
 	}
 
 	Application::~Application()
@@ -40,7 +93,7 @@ namespace Acrylic
 			}
 		}
 	}
-	
+
 	bool Application::OnWindowClosed(WindowCloseEvent& e)
 	{
 		bRunning = false;
@@ -61,8 +114,18 @@ namespace Acrylic
 	{
 		while (bRunning)
 		{
-			glClearColor(0, 0, 0, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			CommandList::SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
+			CommandList::Clear();
+
+			Renderer::BeginScene();
+
+			for (const auto& pair : Shaders)
+			{
+				pair.first->Bind();
+				Renderer::Submit(pair.second);
+			}
+
+			Renderer::EndScene();
 
 			for (Layer* l : Stack)
 			{
@@ -79,4 +142,4 @@ namespace Acrylic
 			Window->OnUpdate();
 		}
 	}
-}
+} // namespace Acrylic

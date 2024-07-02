@@ -5,6 +5,10 @@
 #include "Layers/LayerStack.h"
 #include "Layers/ImGui/ImGuiLayer.h"
 
+// TEMP
+#include "Renderer/Shader.h"
+#include "Renderer/VertexArray.h"
+
 namespace Acrylic
 {
 	DECLARE_LOG_CATEGORY_EXTERN(LogApplication, Log)
@@ -34,6 +38,8 @@ namespace Acrylic
 		LayerStack					Stack;
 
 		static Application* Singleton;
+
+		std::vector<std::pair<std::shared_ptr<Shader>, std::shared_ptr<IVertexArray>>> Shaders;
 	};
 
 	Application* CreateApplication();

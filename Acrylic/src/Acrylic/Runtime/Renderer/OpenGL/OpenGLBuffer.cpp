@@ -35,8 +35,8 @@ namespace Acrylic
 		, Count(Count)
 	{
 		glCreateBuffers(1, &RendererId);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, RendererId);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(uint32_t), Indices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, RendererId);
+		glBufferData(GL_ARRAY_BUFFER, Count * sizeof(uint32_t), Indices, GL_STATIC_DRAW);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
@@ -52,10 +52,5 @@ namespace Acrylic
 	void OpenGLIndexBuffer::Unbind() const
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
-
-	uint32_t OpenGLIndexBuffer::GetCount() const
-	{
-		return Count;
 	}
 } // namespace Acrylic

@@ -33,7 +33,7 @@ namespace Acrylic
 	private:
 		GLFWwindow* Window;
 
-		IGraphicsContext* GraphicsContext;
+		ICommandContext* GraphicsContext;
 
 		struct WindowData
 		{

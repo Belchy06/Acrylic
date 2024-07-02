@@ -3,22 +3,30 @@
 #include "Core/Core.h"
 #include "Core/Misc/EnumClassFlags.h"
 
+#include "Renderer/CommandList.h"
+#include "Renderer/VertexArray.h"
+
 namespace Acrylic
 {
-	enum class ERenderAPI : uint8_t
+	enum class ERenderInterface : uint8_t
 	{
 		None = 0,
 		OpenGL
 	};
 
-	ENUM_CLASS_FLAGS(ERenderAPI)
+	ENUM_CLASS_FLAGS(ERenderInterface)
 
-	class Renderer
+	class ACRYLIC_API Renderer
 	{
 	public:
-		static FORCEINLINE ERenderAPI GetAPI() { return RenderAPI; }
+		static void Init(); 
+		static void BeginScene();
+		static void EndScene();
+		static void Submit(const std::shared_ptr<IVertexArray>& VertexArray);
+
+		static FORCEINLINE ERenderInterface GetRenderInterface() { return API; }
 
 	private:
-		static ERenderAPI RenderAPI;
+		inline static ERenderInterface API = ERenderInterface::OpenGL;
 	};
 } // namespace Acrylic

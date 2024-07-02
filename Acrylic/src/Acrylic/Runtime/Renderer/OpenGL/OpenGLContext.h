@@ -9,7 +9,7 @@ namespace Acrylic
 {
 	DECLARE_LOG_CATEGORY_EXTERN(LogOpenGLContext, Log)
 
-	class OpenGLContext : public IGraphicsContext
+	class OpenGLContext : public ICommandContext
 	{
 	public:
 		OpenGLContext(GLFWwindow* WindowHandle);

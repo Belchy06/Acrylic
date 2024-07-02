@@ -8,11 +8,11 @@ namespace Acrylic
 {
 	IVertexArray* IVertexArray::Create()
 	{
-		switch (Renderer::GetAPI())
+		switch (Renderer::GetRenderInterface())
 		{
-			case ERenderAPI::None:
+			case ERenderInterface::None:
 				return nullptr;
-			case ERenderAPI::OpenGL:
+			case ERenderInterface::OpenGL:
 				return new OpenGLVertexArray();
 			default:
 				return nullptr;

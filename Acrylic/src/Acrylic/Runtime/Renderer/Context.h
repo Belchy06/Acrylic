@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Renderer/VertexArray.h"
+
+#include <glm/glm.hpp>
 
 namespace Acrylic
 {
-	class ACRYLIC_API IGraphicsContext
+	class ACRYLIC_API ICommandContext
 	{
 	public:
 		virtual void Init() = 0;
