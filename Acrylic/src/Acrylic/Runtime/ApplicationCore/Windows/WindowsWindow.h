@@ -2,8 +2,7 @@
 
 #include "ApplicationCore/Window.h"
 #include "Core/Logging/Logging.h"
-
-#include <glfw/glfw3.h>
+#include "Renderer/OpenGL/OpenGLContext.h"
 
 namespace Acrylic
 {
@@ -33,6 +32,8 @@ namespace Acrylic
 
 	private:
 		GLFWwindow* Window;
+
+		IGraphicsContext* GraphicsContext;
 
 		struct WindowData
 		{

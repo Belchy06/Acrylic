@@ -6,6 +6,7 @@
 #include "Events/MouseEvent.h"
 
 #include <glad/glad.h>
+#include <glfw/glfw3.h>
 
 namespace Acrylic
 {
@@ -51,10 +52,10 @@ namespace Acrylic
 		}
 
 		Window = glfwCreateWindow(static_cast<int>(Data.Width), static_cast<int>(Data.Height), Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(Window);
 
-		int Status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		AC_ASSERT(Status);
+		GraphicsContext = new OpenGLContext(Window);
+		GraphicsContext->Init();
+
 
 		glfwSetWindowUserPointer(Window, &Data);
 		SetVSync(true);
@@ -152,7 +153,7 @@ namespace Acrylic
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(Window);
+		GraphicsContext->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool bEnabled)
