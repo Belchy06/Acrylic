@@ -40,6 +40,8 @@ namespace Acrylic
 		virtual void SetVSync(bool bEnabled) = 0;
 		virtual bool IsVSync() = 0;
 
+		virtual void* GetNativeWindow() const = 0;
+
 		static IWindow* Create(const WindowProperties& Properties = WindowProperties());
 	};
 }

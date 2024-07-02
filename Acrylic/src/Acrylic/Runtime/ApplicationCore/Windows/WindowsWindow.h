@@ -25,6 +25,8 @@ namespace Acrylic
 		virtual void SetVSync(bool bEnabled) override;
 		virtual bool IsVSync() override;
 
+		virtual void* GetNativeWindow() const override { return Window; }
+
 	private:
 		virtual void Init(const WindowProperties& Properties);
 		virtual void Shutdown();

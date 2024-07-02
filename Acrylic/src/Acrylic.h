@@ -10,3 +10,5 @@
 #include "Acrylic/Runtime/Layers/LayerStack.h"
 #include "Acrylic/Runtime/Layers/ImGui/ImGuiLayer.h"
 #include "Acrylic/Runtime/Entrypoint.h"
+#include "Acrylic/Runtime/Input/KeyCodes.h"
+#include "Acrylic/Runtime/Input/MouseButtonCodes.h"
