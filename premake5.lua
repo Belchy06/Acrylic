@@ -26,9 +26,10 @@ group ""
 
 project "Acrylic"
 	location "Acrylic"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "Off"
+	cppdialect "C++20"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("intermediates/" .. outputdir .. "/%{prj.name}")
@@ -72,7 +73,6 @@ project "Acrylic"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines
@@ -82,34 +82,27 @@ project "Acrylic"
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-		}
-
 	filter "configurations:Debug"
-		defines 
-		{
-			"AC_DEBUG"
-		}
-		symbols "On"
+		defines "AC_DEBUG"
+		symbols "on"
 		runtime "Debug"
 
 	filter "configurations:Release"
 		defines "AC_RELEASE"
-		optimize "On"
+		optimize "on"
 		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "AC_DIST"
-		optimize "On"
+		optimize "on"
 		runtime "Release"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "Off"
+	cppdialect "C++20"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("intermediates/" .. outputdir .. "/%{prj.name}")
@@ -135,11 +128,14 @@ project "Sandbox"
 
 	links
 	{
-		"Acrylic"
+		"Acrylic",
+		"GLFW",
+		"GLAD",
+		"opengl32.lib",
+		"ImGui"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines
@@ -149,15 +145,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "AC_DEBUG"
-		symbols "On"
+		symbols "on"
 		runtime "Debug"
 
 	filter "configurations:Release"
 		defines "AC_RELEASE"
-		optimize "On"
+		optimize "on"
 		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "AC_DIST"
-		optimize "On"
+		optimize "on"
 		runtime "Release"
