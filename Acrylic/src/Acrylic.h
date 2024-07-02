@@ -10,5 +10,16 @@
 #include "Acrylic/Runtime/Layers/LayerStack.h"
 #include "Acrylic/Runtime/Layers/ImGui/ImGuiLayer.h"
 #include "Acrylic/Runtime/Entrypoint.h"
+#include "Acrylic/Runtime/Input/Input.h"
 #include "Acrylic/Runtime/Input/KeyCodes.h"
 #include "Acrylic/Runtime/Input/MouseButtonCodes.h"
+
+#include "Acrylic/Runtime/Renderer/Buffer.h"
+#include "Acrylic/Runtime/Renderer/CommandList.h"
+#include "Acrylic/Runtime/Renderer/Context.h"
+#include "Acrylic/Runtime/Renderer/IRenderer.h"
+#include "Acrylic/Runtime/Renderer/Renderer.h"
+#include "Acrylic/Runtime/Renderer/Shader.h"
+#include "Acrylic/Runtime/Renderer/VertexArray.h"
+
+#include "Acrylic/Runtime/Camera/OrthographicCamera.h"
