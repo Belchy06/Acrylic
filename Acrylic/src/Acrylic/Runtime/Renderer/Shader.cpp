@@ -6,6 +6,7 @@
 namespace Acrylic
 {
 	Shader::Shader(const std::string& VertexSrc, const std::string& FragmentSrc)
+		: RendererId(0)
 	{
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
