@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Acrylic/src/Acrylic/ThirdParty/glfw/include"
 IncludeDir["GLAD"] = "Acrylic/src/Acrylic/ThirdParty/glad/include"
 IncludeDir["IMGUI"] = "Acrylic/src/Acrylic/ThirdParty/imgui"
+IncludeDir["GLM"] = "Acrylic/src/Acrylic/ThirdParty/GLM"
 
 group "Dependencies"
 	include "Acrylic/src/Acrylic/ThirdParty/glfw"
@@ -57,7 +58,8 @@ project "Acrylic"
 		"%{prj.name}/src/%{prj.name}/ThirdParty",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.IMGUI}"
+		"%{IncludeDir.IMGUI}",
+		"%{IncludeDir.GLM}"
 	}
 
 	links
@@ -123,7 +125,11 @@ project "Sandbox"
 		"Acrylic/src",
 		"Acrylic/src/Acrylic/Editor",
 		"Acrylic/src/Acrylic/Runtime",
-		"Acrylic/src/Acrylic/ThirdParty"
+		"Acrylic/src/Acrylic/ThirdParty",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLAD}",
+		"%{IncludeDir.IMGUI}",
+		"%{IncludeDir.GLM}"
 	}
 
 	links
