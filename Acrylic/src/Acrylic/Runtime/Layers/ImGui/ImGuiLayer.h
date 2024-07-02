@@ -16,18 +16,12 @@ namespace Acrylic
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate() override;
-		virtual void OnEvent(Event& e) override;
+		virtual void OnImGuiRender() override;
+
+		void Begin();
+		void End();
 
 	private:
-		bool OnKeyPressedEvent(KeyPressedEvent& e);
-		bool OnKeyReleasedEvent(KeyReleasedEvent& e);
-		bool OnKeyCharEvent(KeyCharEvent& e);
-		bool OnMouseMovedEvent(MouseMovedEvent& e);
-		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-		bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
-		bool OnWindowResizeEvent(WindowResizeEvent& e);
-
 		float DeltaTime = 0.f;
 	};
 } // namespace Acrylic

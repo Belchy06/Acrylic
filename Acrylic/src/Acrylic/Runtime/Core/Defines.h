@@ -15,7 +15,7 @@
 #define BREAK() (__debugbreak())
 
 #ifdef AC_DEBUG
-	#define AC_ENABLE_ASSERTS
+	#define AC_ENABLE_ASSERTS 1
 #endif
 
 #if AC_ENABLE_ASSERTS

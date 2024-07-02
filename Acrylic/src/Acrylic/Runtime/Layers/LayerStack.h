@@ -20,7 +20,7 @@ namespace Acrylic
 		std::vector<Layer*>::iterator end() { return Layers.end(); }
 
 	private:
-		std::vector<Layer*>			  Layers;
-		std::vector<Layer*>::iterator LayerInsert;
+		std::vector<Layer*> Layers;
+		uint32_t			LayerInsertIndex = 0;
 	};
 } // namespace Acrylic

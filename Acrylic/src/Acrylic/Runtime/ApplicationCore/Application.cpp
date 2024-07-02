@@ -16,6 +16,8 @@ namespace Acrylic
 		Singleton = this; 
 		Window = std::unique_ptr<IWindow>(IWindow::Create());
 		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
+
+		Stack.PushOverlay(new ImGuiLayer());
 	}
 
 	Application::~Application()
@@ -66,6 +68,13 @@ namespace Acrylic
 			{
 				l->OnUpdate();
 			}
+
+			GUILayer->Begin();
+			for (Layer* l : Stack)
+			{
+				l->OnImGuiRender();
+			}
+			GUILayer->End();
 
 			Window->OnUpdate();
 		}

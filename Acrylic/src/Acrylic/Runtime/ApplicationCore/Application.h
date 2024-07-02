@@ -3,6 +3,7 @@
 #include "ApplicationCore/Window.h"
 #include "Core/Logging/Logging.h"
 #include "Layers/LayerStack.h"
+#include "Layers/ImGui/ImGuiLayer.h"
 
 namespace Acrylic
 {
@@ -23,12 +24,14 @@ namespace Acrylic
 
 		static FORCEINLINE Application& GetApplication() { return *Singleton; }
 		static FORCEINLINE IWindow&		GetWindow() { return *Singleton->Window; }
+
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
-		std::unique_ptr<IWindow> Window;
-		bool					 bRunning = true;
-		LayerStack				 Stack;
+		std::unique_ptr<IWindow>	Window;
+		std::unique_ptr<ImGuiLayer> GUILayer;
+		bool						bRunning = true;
+		LayerStack					Stack;
 
 		static Application* Singleton;
 	};

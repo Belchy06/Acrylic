@@ -48,6 +48,7 @@ project "Acrylic"
 		"%{prj.name}/src/Acrylic/ThirdParty/**.h",
 		"%{prj.name}/src/Acrylic/ThirdParty/**.hpp",
 		"%{prj.name}/src/Acrylic/ThirdParty/**.cpp",
+		"%{prj.name}/src/Acrylic/ThirdParty/**.cppm",
 	}
 
 	includedirs
@@ -66,8 +67,8 @@ project "Acrylic"
 	{
 		"GLFW",
 		"GLAD",
-		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"ImGui"
 	}
 
 	filter "system:windows"

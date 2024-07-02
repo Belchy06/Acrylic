@@ -5,7 +5,6 @@ namespace Acrylic
 {
 	LayerStack::LayerStack()
 	{
-		LayerInsert = Layers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -18,7 +17,8 @@ namespace Acrylic
 
 	void LayerStack::PushLayer(Layer* InLayer)
 	{
-		LayerInsert = Layers.emplace(LayerInsert, InLayer);
+		Layers.emplace(Layers.begin() + LayerInsertIndex, InLayer);
+		LayerInsertIndex++;
 		InLayer->OnAttach();
 	}
 
@@ -34,7 +34,7 @@ namespace Acrylic
 		if (It != Layers.end())
 		{
 			Layers.erase(It);
-			LayerInsert--;
+			LayerInsertIndex--;
 		}
 	}
 
