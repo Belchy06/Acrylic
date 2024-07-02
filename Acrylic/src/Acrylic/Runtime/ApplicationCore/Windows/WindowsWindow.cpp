@@ -5,7 +5,6 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
-#include <glad/glad.h>
 #include <glfw/glfw3.h>
 
 namespace Acrylic
