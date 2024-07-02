@@ -18,8 +18,10 @@ namespace Acrylic
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<IVertexArray>& VertexArray)
+	void Renderer::Submit(const std::shared_ptr<IShader> Shader, const std::shared_ptr<IVertexArray>& VertexArray)
 	{
+		Shader->Bind();
+		VertexArray->Bind();
 		CommandList::DrawIndexed(VertexArray);
 	}
 }

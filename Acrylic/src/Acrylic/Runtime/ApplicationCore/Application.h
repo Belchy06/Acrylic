@@ -39,7 +39,7 @@ namespace Acrylic
 
 		static Application* Singleton;
 
-		std::vector<std::pair<std::shared_ptr<Shader>, std::shared_ptr<IVertexArray>>> Shaders;
+		std::vector<std::pair<std::shared_ptr<IShader>, std::shared_ptr<IVertexArray>>> Shaders;
 	};
 
 	Application* CreateApplication();

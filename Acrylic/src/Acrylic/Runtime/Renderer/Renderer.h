@@ -22,7 +22,7 @@ namespace Acrylic
 		static void Init(); 
 		static void BeginScene();
 		static void EndScene();
-		static void Submit(const std::shared_ptr<IVertexArray>& VertexArray);
+		static void Submit(const std::shared_ptr<IShader> Shader, const std::shared_ptr<IVertexArray>& VertexArray);
 
 		static FORCEINLINE ERenderInterface GetRenderInterface() { return API; }
 

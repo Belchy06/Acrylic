@@ -2,18 +2,20 @@
 
 #include "acpch.h"
 
+#include <glm/glm.hpp>
+
 namespace Acrylic
 {
-	class Shader
+	class IShader
 	{
 	public:
-		Shader(const std::string& VertexSrc, const std::string& FragmentSrc);
-		~Shader();
+		virtual ~IShader() = default;
 
-		void Bind() const;
-		void Unbind() const;
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 
-	private:
-		uint32_t RendererId;
+		virtual void UploadUniformMat4(const std::string& Name, const glm::mat4& Matrix) = 0;
+
+		static IShader* Create(const std::string& VertexSrc, const std::string& FragmentSrc);
 	};
 }

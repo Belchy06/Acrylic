@@ -17,7 +17,6 @@ namespace Acrylic
 
 	void OpenGLRenderer::DrawIndexed(const std::shared_ptr<IVertexArray>& VertexArray)
 	{
-		VertexArray->Bind();
 		glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }

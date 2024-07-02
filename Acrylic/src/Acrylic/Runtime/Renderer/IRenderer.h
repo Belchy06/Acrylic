@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Renderer/Shader.h"
 #include "Renderer/VertexArray.h"
 
 #include <glm/glm.hpp>

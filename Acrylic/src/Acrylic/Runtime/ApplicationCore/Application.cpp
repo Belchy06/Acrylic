@@ -29,7 +29,11 @@ namespace Acrylic
 		// clang-format on
 
 		std::shared_ptr<IVertexBuffer> ExampleVertexBuffer = std::shared_ptr<IVertexBuffer>(IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float)));
-		ExampleVertexBuffer->SetLayout({ { EDataType::Float3, "a_Position" } });
+		ExampleVertexBuffer->SetLayout({ 
+			{ EDataType::Float3, "a_Position" }, 
+			{ EDataType::Float4, "a_Color" }, 
+			{ EDataType::Mat4, "u_ViewProjection" } 
+		});
 
 		// clang-format off
 		uint32_t Indices[6] = {
@@ -47,13 +51,18 @@ namespace Acrylic
 			#version 330 core
 
 			layout (location = 0) in vec3 a_Position;
+			layout (location = 1) in vec4 a_Color;
+
+			uniform mat4 u_ViewProjection;
   
 			out vec3 v_Position;
+			out vec4 v_Color;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				v_Color = a_Color;
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			})";
 
 		std::string FragmentSrc = R"(
@@ -62,13 +71,15 @@ namespace Acrylic
 			layout (location = 0) out vec4 color;
 	  
 			in vec3 v_Position;
+			in vec4 v_Color;
 
 			void main()
 			{
 				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				color = v_Color;
 			})";
 
-		std::shared_ptr<Shader> ExampleShader = std::shared_ptr<Shader>(new Shader(VertexSrc, FragmentSrc));
+		std::shared_ptr<IShader> ExampleShader = std::shared_ptr<IShader>(IShader::Create(VertexSrc, FragmentSrc));
 
 		Shaders.push_back({ ExampleShader, ExampleVertexArray });
 	}
@@ -121,8 +132,7 @@ namespace Acrylic
 
 			for (const auto& pair : Shaders)
 			{
-				pair.first->Bind();
-				Renderer::Submit(pair.second);
+				Renderer::Submit(pair.first, pair.second);
 			}
 
 			Renderer::EndScene();
