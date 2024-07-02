@@ -11,7 +11,7 @@ public:
 	{
 		Camera = std::unique_ptr<Acrylic::OrthographicCamera>(new Acrylic::OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f));
 		CameraPosition = Camera->GetPosition();
-		CameraRotation = static_cast<int>(Camera->GetRotation());
+		CameraRotation = Camera->GetRotation();
 
 		// clang-format off
 		float Vertices[4 * 7] = {
@@ -23,8 +23,12 @@ public:
 		// clang-format on
 
 		std::shared_ptr<Acrylic::IVertexBuffer> ExampleVertexBuffer = std::shared_ptr<Acrylic::IVertexBuffer>(Acrylic::IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float)));
-		ExampleVertexBuffer->SetLayout({ { Acrylic::EDataType::Float3, "a_Position" },
-			{ Acrylic::EDataType::Float4, "a_Color" } });
+		// clang-format off
+		ExampleVertexBuffer->SetLayout({ 
+			{ Acrylic::EDataType::Float3, "a_Position" },
+			{ Acrylic::EDataType::Float4, "a_Color" } 
+		});
+		// clang-format on
 
 		// clang-format off
 		uint32_t Indices[6] = {
@@ -45,6 +49,7 @@ public:
 			layout (location = 1) in vec4 a_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
   
 			out vec3 v_Position;
 			out vec4 v_Color;
@@ -53,7 +58,7 @@ public:
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			})";
 
 		std::string FragmentSrc = R"(
@@ -77,6 +82,8 @@ public:
 
 	virtual void OnUpdate(Acrylic::Timestep ts) override
 	{
+		AC_LOG(LogSandbox, Log, "Delta time: {0}s ({1}ms)", ts, ts.GetMilliseconds());
+
 		if (Acrylic::IInput::IsKeyPressed(AC_KEY_W))
 		{
 			CameraPosition.y += 5.f * ts;
@@ -97,20 +104,20 @@ public:
 
 		if (Acrylic::IInput::IsKeyPressed(AC_KEY_Q))
 		{
-			CameraRotation = (CameraRotation + 180) * ts;
+			CameraRotation += 180 * ts;
 		}
 		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_E))
 		{
-			CameraRotation = (CameraRotation - 180) * ts;
+			CameraRotation -= 180 * ts;
 		}
 
 		Acrylic::CommandList::SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
 		Acrylic::CommandList::Clear();
 
 		Camera->SetPosition(CameraPosition);
-		Camera->SetRotation(static_cast<float>(CameraRotation));
+		Camera->SetRotation(CameraRotation);
 
-		Acrylic::Renderer::BeginScene();
+		Acrylic::Renderer::BeginScene(Camera);
 
 		for (const auto& ShaderVertexArrayPair : ShaderVertexArrayPairs)
 		{
@@ -129,7 +136,7 @@ private:
 
 	std::shared_ptr<Acrylic::OrthographicCamera> Camera;
 	glm::vec3									 CameraPosition;
-	int											 CameraRotation;
+	float										 CameraRotation;
 };
 
 class Sandbox : public Acrylic::Application

@@ -23,4 +23,5 @@
 #include "Acrylic/Runtime/Renderer/Shader.h"
 #include "Acrylic/Runtime/Renderer/VertexArray.h"
 
-#include "Acrylic/Runtime/Camera/OrthographicCamera.h"
+#include "Acrylic/Runtime/Camera/Camera.h"
+#include "Acrylic/Runtime/Camera/OrthographicCamera/OrthographicCamera.h"

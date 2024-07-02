@@ -18,6 +18,6 @@ namespace Acrylic
 		{
 			AC_ASSERT(false);
 		}
-		return double(Ticks.QuadPart * 1000 / Frequency.QuadPart);
+		return double(Ticks.QuadPart) / double(Frequency.QuadPart / 1000);
 	}
 }

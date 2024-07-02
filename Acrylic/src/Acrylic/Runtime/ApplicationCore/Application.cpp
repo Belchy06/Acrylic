@@ -65,8 +65,9 @@ namespace Acrylic
 	{
 		while (bRunning)
 		{
-			float Time = static_cast<float>(IPlatform::GetTime());
+			float Time = static_cast<float>(IPlatform::GetTime() / 1000.f);
 			Timestep Step = Time - LastFrameTime;
+			LastFrameTime = Time;
 
 			for (Layer* l : Stack)
 			{
@@ -81,8 +82,6 @@ namespace Acrylic
 			GUILayer->End();
 
 			Window->OnUpdate();
-
-			LastFrameTime = static_cast<float>(IPlatform::GetTime());
 		}
 	}
 } // namespace Acrylic
