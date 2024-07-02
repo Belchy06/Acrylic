@@ -2,6 +2,7 @@
 
 #include "ApplicationCore/Window.h"
 #include "Core/Logging/Logging.h"
+#include "Core/Timestep.h"
 #include "Layers/LayerStack.h"
 #include "Layers/ImGui/ImGuiLayer.h"
 
@@ -28,10 +29,13 @@ namespace Acrylic
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<IWindow>	Window;
 		std::unique_ptr<ImGuiLayer> GUILayer;
 		bool						bRunning = true;
 		LayerStack					Stack;
+
+		float LastFrameTime = 0.f;
 
 		static Application* Singleton;
 	};

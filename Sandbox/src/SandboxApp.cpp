@@ -75,33 +75,33 @@ public:
 		ShaderVertexArrayPairs.push_back({ ExampleShader, ExampleVertexArray });
 	}
 
-	virtual void OnUpdate() override
+	virtual void OnUpdate(Acrylic::Timestep ts) override
 	{
 		if (Acrylic::IInput::IsKeyPressed(AC_KEY_W))
 		{
-			CameraPosition.y += 0.1f;
+			CameraPosition.y += 5.f * ts;
 		}
 		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_S))
 		{
-			CameraPosition.y -= 0.1f;
+			CameraPosition.y -= 5.f * ts;
 		}
 
 		if (Acrylic::IInput::IsKeyPressed(AC_KEY_A))
 		{
-			CameraPosition.x -= 0.1f;
+			CameraPosition.x -= 5.f * ts;
 		}
 		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_D))
 		{
-			CameraPosition.x += 0.1f;
+			CameraPosition.x += 5.f * ts;
 		}
 
 		if (Acrylic::IInput::IsKeyPressed(AC_KEY_Q))
 		{
-			CameraRotation = (CameraRotation + 1) % 360;
+			CameraRotation = (CameraRotation + 180) * ts;
 		}
 		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_E))
 		{
-			CameraRotation = (CameraRotation - 1) % 360;
+			CameraRotation = (CameraRotation - 180) * ts;
 		}
 
 		Acrylic::CommandList::SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });

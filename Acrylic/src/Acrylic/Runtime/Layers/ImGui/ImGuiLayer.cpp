@@ -53,13 +53,10 @@ namespace Acrylic
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate()
+	void ImGuiLayer::OnUpdate(Timestep ts)
 	{
 		ImGuiIO& IO = ImGui::GetIO();
-		
-		float Time = (float)glfwGetTime();
-		IO.DeltaTime = DeltaTime > 0.f ? (Time - DeltaTime) : 1.f / 60.0f;
-		DeltaTime = Time;
+		IO.DeltaTime = ts.GetSeconds();
 	}
 
 	void ImGuiLayer::OnImGuiRender()

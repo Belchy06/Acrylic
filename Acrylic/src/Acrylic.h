@@ -3,6 +3,7 @@
 #include "Acrylic/Runtime/ApplicationCore/Application.h"
 #include "Acrylic/Runtime/Core/Logging/Logging.h"
 #include "Acrylic/Runtime/Core/Core.h"
+#include "Acrylic/Runtime/Core/Timestep.h"
 #include "Acrylic/Runtime/Events/ApplicationEvent.h"
 #include "Acrylic/Runtime/Events/KeyEvent.h"
 #include "Acrylic/Runtime/Events/MouseEvent.h"

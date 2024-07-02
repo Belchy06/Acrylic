@@ -2,8 +2,10 @@
 
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
-
 #include "Renderer/Renderer.h"
+#include "Platform.h"
+
+#include <glfw/glfw3.h>
 
 namespace Acrylic
 {
@@ -18,6 +20,8 @@ namespace Acrylic
 		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
 
 		Stack.PushOverlay(new ImGuiLayer());
+
+		LastFrameTime = static_cast<float>(IPlatform::GetTime());
 	}
 
 	Application::~Application()
@@ -61,9 +65,12 @@ namespace Acrylic
 	{
 		while (bRunning)
 		{
+			float Time = static_cast<float>(IPlatform::GetTime());
+			Timestep Step = Time - LastFrameTime;
+
 			for (Layer* l : Stack)
 			{
-				l->OnUpdate();
+				l->OnUpdate(Step);
 			}
 
 			GUILayer->Begin();
@@ -74,6 +81,8 @@ namespace Acrylic
 			GUILayer->End();
 
 			Window->OnUpdate();
+
+			LastFrameTime = static_cast<float>(IPlatform::GetTime());
 		}
 	}
 } // namespace Acrylic
