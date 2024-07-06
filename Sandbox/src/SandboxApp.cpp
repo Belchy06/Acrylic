@@ -15,11 +15,11 @@ public:
 		CameraRotation = Camera->GetRotation();
 
 		// clang-format off
-		float Vertices[4 * 7] = {
-			-0.75f, -0.75f, 0.0f, 0.8f, 0.2f, 0.8f, 1.f,
-			 0.75f, -0.75f, 0.0f, 0.2f, 0.3f, 0.8f, 1.f,
-			 0.75f,   0.75f, 0.0f, 0.8f, 0.8f, 0.2f, 1.f,
-			-0.75f,   0.75f, 0.0f, 0.2f, 0.8f, 0.8f, 1.f
+		float Vertices[4 * 5] = {
+			-0.75f, -0.75f, 0.0f, 0.0f, 0.0f, 
+			 0.75f, -0.75f, 0.0f, 1.0f, 0.0f, 
+			 0.75f,  0.75f, 0.0f, 1.0f, 1.0f,
+			-0.75f,  0.75f, 0.0f, 0.0f, 1.0f,
 		};
 		// clang-format on
 
@@ -27,7 +27,7 @@ public:
 		// clang-format off
 		ExampleVertexBuffer->SetLayout({ 
 			{ Acrylic::EDataType::Float3, "a_Position" },
-			{ Acrylic::EDataType::Float4, "a_Color" } 
+			{ Acrylic::EDataType::Float2, "a_TexCoord" } 
 		});
 		// clang-format on
 
@@ -47,18 +47,16 @@ public:
 			#version 330 core
 
 			layout (location = 0) in vec3 a_Position;
-			layout (location = 1) in vec4 a_Color;
+			layout (location = 1) in vec2 a_TexCoord;
 
 			uniform mat4 u_ViewProjection;
 			uniform mat4 u_Transform;
   
-			out vec3 v_Position;
-			out vec4 v_Color;
+			out vec2 v_TexCoord;
 
 			void main()
 			{
-				v_Position = a_Position;
-				v_Color = a_Color;
+				v_TexCoord = a_TexCoord;
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			})";
 
@@ -67,18 +65,23 @@ public:
 
 			layout (location = 0) out vec4 color;
 	  
-			in vec3 v_Position;
-			in vec4 v_Color;
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
 
 			void main()
 			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				color = v_Color;
+				color = texture2D(u_Texture, v_TexCoord);
 			})";
 
 		Acrylic::TSharedPtr<Acrylic::IShader> ExampleShader = Acrylic::TSharedPtr<Acrylic::IShader>(Acrylic::IShader::Create(VertexSrc, FragmentSrc));
 
 		ShaderVertexArrayPairs.push_back({ ExampleShader, ExampleVertexArray });
+
+		Texture = Acrylic::Texture2D::Create("assets/texture.png");
+
+		ExampleShader->Bind();
+		ExampleShader->UploadUniformInt("u_Texture", 0);
 	}
 
 	virtual void OnUpdate(Acrylic::Timestep ts) override
@@ -120,6 +123,8 @@ public:
 
 		Acrylic::Renderer::BeginScene(Camera);
 
+		Texture->Bind(0);
+
 		for (const auto& ShaderVertexArrayPair : ShaderVertexArrayPairs)
 		{
 			Acrylic::Renderer::Submit(ShaderVertexArrayPair.first, ShaderVertexArrayPair.second);
@@ -132,18 +137,14 @@ public:
 	{
 	}
 
-	virtual void OnImGuiRender() override
-	{
-		ImGui::Begin("Settings");
-
-	}
-
 private:
 	Acrylic::TArray<std::pair<Acrylic::TSharedPtr<Acrylic::IShader>, Acrylic::TSharedPtr<Acrylic::IVertexArray>>> ShaderVertexArrayPairs;
 
+	Acrylic::TSharedPtr<Acrylic::Texture2D> Texture;
+
 	Acrylic::TSharedPtr<Acrylic::OrthographicCamera> Camera;
-	glm::vec3									 CameraPosition;
-	float										 CameraRotation;
+	glm::vec3										 CameraPosition;
+	float											 CameraRotation;
 };
 
 class Sandbox : public Acrylic::Application

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Containers/Array.h"
 #include "Core/Core.h"
 #include "Layers/Layer.h"
 

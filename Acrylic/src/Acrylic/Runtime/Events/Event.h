@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Core/Containers/String.h"
 #include "Core/Misc/EnumClassFlags.h"
 
 namespace Acrylic

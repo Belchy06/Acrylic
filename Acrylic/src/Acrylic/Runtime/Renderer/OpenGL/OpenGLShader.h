@@ -16,15 +16,15 @@ namespace Acrylic
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		void UploadUniformInt(const String& Name, int Value);
+		virtual void UploadUniformInt(const String& Name, int Value) const override;
 
-		void UploadUniformFloat(const String& Name, float Value);
-		void UploadUniformFloat2(const String& Name, const glm::vec2& Vector);
-		void UploadUniformFloat3(const String& Name, const glm::vec3& Vector);
-		void UploadUniformFloat4(const String& Name, const glm::vec4& Vector);
+		virtual void UploadUniformFloat(const String& Name, float Value) const override;
+		virtual void UploadUniformFloat2(const String& Name, const glm::vec2& Vector) const override;
+		virtual void UploadUniformFloat3(const String& Name, const glm::vec3& Vector) const override;
+		virtual void UploadUniformFloat4(const String& Name, const glm::vec4& Vector) const override;
 
-		void UploadUniformMat3(const String& Name, const glm::mat3& Matrix);
-		void UploadUniformMat4(const String& Name, const glm::mat4& Matrix);
+		virtual void UploadUniformMat3(const String& Name, const glm::mat3& Matrix) const override;
+		virtual void UploadUniformMat4(const String& Name, const glm::mat4& Matrix) const override;
 
 	private:
 		uint32_t RendererId;

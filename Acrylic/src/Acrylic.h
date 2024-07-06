@@ -4,7 +4,7 @@
 #include "Acrylic/Runtime/Core/Containers/Array.h"
 #include "Acrylic/Runtime/Core/Containers/Pair.h"
 #include "Acrylic/Runtime/Core/Containers/String.h"
-#include "Acrylic/Runtime/Core/Logging/Logging.h"
+#include "Acrylic/Runtime/Core/Logging.h"
 #include "Acrylic/Runtime/Core/Core.h"
 #include "Acrylic/Runtime/Core/Timestep.h"
 #include "Acrylic/Runtime/Events/ApplicationEvent.h"
@@ -24,6 +24,7 @@
 #include "Acrylic/Runtime/Renderer/IRenderer.h"
 #include "Acrylic/Runtime/Renderer/Renderer.h"
 #include "Acrylic/Runtime/Renderer/Shader.h"
+#include "Acrylic/Runtime/Renderer/Texture.h"
 #include "Acrylic/Runtime/Renderer/VertexArray.h"
 
 #include "Acrylic/Runtime/Camera/Camera.h"

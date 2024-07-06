@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core/Containers/Array.h"
+#include "Core/Containers/String.h"
 #include "Core/Core.h"
 
 namespace Acrylic

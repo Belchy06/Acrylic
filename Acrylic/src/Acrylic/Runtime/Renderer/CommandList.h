@@ -2,8 +2,6 @@
 
 #include "Renderer/IRenderer.h"
 
-#include "Renderer/OpenGL/OpenGLRenderer.h"
-
 namespace Acrylic
 {
 	class ACRYLIC_API CommandList
@@ -27,6 +25,6 @@ namespace Acrylic
 		static IRenderer* GetRenderer() { return Renderer; } 
 
 	private:
-		inline static IRenderer* Renderer = new OpenGLRenderer();
+		static IRenderer* Renderer;
 	};
 }

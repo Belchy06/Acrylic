@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Core/Containers/String.h"
 #include "Core/Core.h"
+
 #include "LogVerbosity.h"
 
 using LogCategoryName = Acrylic::String;

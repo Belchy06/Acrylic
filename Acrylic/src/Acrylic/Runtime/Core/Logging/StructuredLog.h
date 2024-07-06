@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Core/Containers/Array.h"
 #include "Core/PreprocessorHelpers.h"
+
 #include "LogCategory.h"
 #include "LogVerbosity.h"
 

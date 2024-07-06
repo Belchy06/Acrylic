@@ -17,11 +17,13 @@ IncludeDir["GLFW"] = "Acrylic/src/Acrylic/ThirdParty/glfw/include"
 IncludeDir["GLAD"] = "Acrylic/src/Acrylic/ThirdParty/glad/include"
 IncludeDir["IMGUI"] = "Acrylic/src/Acrylic/ThirdParty/imgui"
 IncludeDir["GLM"] = "Acrylic/src/Acrylic/ThirdParty/GLM"
+IncludeDir["STB"] = "Acrylic/src/Acrylic/ThirdParty/stb"
 
 group "Dependencies"
 	include "Acrylic/src/Acrylic/ThirdParty/glfw"
 	include "Acrylic/src/Acrylic/ThirdParty/glad"
 	include "Acrylic/src/Acrylic/ThirdParty/imgui"
+	include "Acrylic/src/Acrylic/ThirdParty/stb"
 group ""
 
 project "Acrylic"
@@ -61,7 +63,8 @@ project "Acrylic"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.IMGUI}",
-		"%{IncludeDir.GLM}"
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.STB}"
 	}
 
 	links
@@ -69,7 +72,8 @@ project "Acrylic"
 		"GLFW",
 		"GLAD",
 		"opengl32.lib",
-		"ImGui"
+		"ImGui",
+		"STB"
 	}
 
 	filter "system:windows"
@@ -123,7 +127,8 @@ project "Sandbox"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.IMGUI}",
-		"%{IncludeDir.GLM}"
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.STB}",
 	}
 
 	links
@@ -132,7 +137,8 @@ project "Sandbox"
 		"GLFW",
 		"GLAD",
 		"opengl32.lib",
-		"ImGui"
+		"ImGui",
+		"STB"
 	}
 
 	filter "system:windows"

@@ -129,7 +129,7 @@ namespace Acrylic
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUniformInt(const String& Name, int Value)
+	void OpenGLShader::UploadUniformInt(const String& Name, int Value) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 
@@ -142,7 +142,7 @@ namespace Acrylic
 		glUniform1i(Location, Value);
 	}
 
-	void OpenGLShader::UploadUniformFloat(const String& Name, float Value)
+	void OpenGLShader::UploadUniformFloat(const String& Name, float Value) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 
@@ -155,7 +155,7 @@ namespace Acrylic
 		glUniform1f(Location, Value);
 	}
 
-	void OpenGLShader::UploadUniformFloat2(const String& Name, const glm::vec2& Vector)
+	void OpenGLShader::UploadUniformFloat2(const String& Name, const glm::vec2& Vector) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 
@@ -168,7 +168,7 @@ namespace Acrylic
 		glUniform2f(Location, Vector.x, Vector.y);
 	}
 
-	void OpenGLShader::UploadUniformFloat3(const String& Name, const glm::vec3& Vector)
+	void OpenGLShader::UploadUniformFloat3(const String& Name, const glm::vec3& Vector) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 
@@ -181,7 +181,7 @@ namespace Acrylic
 		glUniform3f(Location, Vector.x, Vector.y, Vector.z);
 	}
 
-	void OpenGLShader::UploadUniformFloat4(const String& Name, const glm::vec4& Vector)
+	void OpenGLShader::UploadUniformFloat4(const String& Name, const glm::vec4& Vector) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 
@@ -194,7 +194,7 @@ namespace Acrylic
 		glUniform4f(Location, Vector.x, Vector.y, Vector.z, Vector.w);
 	}
 
-	void OpenGLShader::UploadUniformMat3(const String& Name, const glm::mat3& Matrix)
+	void OpenGLShader::UploadUniformMat3(const String& Name, const glm::mat3& Matrix) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 
@@ -207,7 +207,7 @@ namespace Acrylic
 		glUniformMatrix3fv(Location, 1, GL_FALSE, glm::value_ptr(Matrix));
 	}
 
-	void OpenGLShader::UploadUniformMat4(const String& Name, const glm::mat4& Matrix)
+	void OpenGLShader::UploadUniformMat4(const String& Name, const glm::mat4& Matrix) const
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 

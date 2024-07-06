@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Memory.h"
 #include "Renderer/Buffer.h"
 
 namespace Acrylic
