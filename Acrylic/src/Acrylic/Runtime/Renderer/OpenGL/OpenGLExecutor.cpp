@@ -25,4 +25,9 @@ namespace Acrylic
 	{
 		glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
+
+	void OpenGLExecutor::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)
+	{
+		glViewport(X, Y, Width, Height);
+	}
 }

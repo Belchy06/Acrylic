@@ -20,6 +20,8 @@ namespace Acrylic
 	{
 	public:
 		static void Init();
+		static void OnWindowResize(uint32_t Width, uint32_t Height);
+
 		static void BeginScene(TSharedPtr<ICamera> Camera);
 		static void EndScene();
 		static void Submit(const TSharedPtr<IShader> Shader, const TSharedPtr<IVertexArray>& VertexArray, const glm::mat4 TransformationMatrix = glm::mat4(1.f));

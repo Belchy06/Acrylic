@@ -34,6 +34,7 @@ namespace Acrylic
 	{
 		EventDispatcher Dispatcher(e);
 		Dispatcher.Dispatch<WindowCloseEvent>(AC_BIND_EVENT_FN(Application::OnWindowClosed));
+		Dispatcher.Dispatch<WindowResizeEvent>(AC_BIND_EVENT_FN(Application::OnWindowResized));
 
 		AC_LOG(LogApplication, VeryVerbose, "{0}", e.ToString());
 
@@ -53,6 +54,20 @@ namespace Acrylic
 		return true;
 	}
 
+	bool Application::OnWindowResized(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			bMinimised = true;
+			return false;
+		}
+
+		bMinimised = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
+	}
+
 	void Application::PushLayer(Layer* InLayer)
 	{
 		Stack.PushLayer(InLayer);
@@ -67,13 +82,16 @@ namespace Acrylic
 	{
 		while (bRunning)
 		{
-			float Time = static_cast<float>(IPlatform::GetTime() / 1000.f);
+			float	 Time = static_cast<float>(IPlatform::GetTime() / 1000.f);
 			Timestep Step = Time - LastFrameTime;
 			LastFrameTime = Time;
 
-			for (Layer* l : Stack)
+			if (!bMinimised)
 			{
-				l->OnUpdate(Step);
+				for (Layer* l : Stack)
+				{
+					l->OnUpdate(Step);
+				}
 			}
 
 			GUILayer->Begin();

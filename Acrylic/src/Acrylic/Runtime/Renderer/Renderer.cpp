@@ -30,6 +30,11 @@ namespace Acrylic
 		}
 	}
 
+	void Renderer::OnWindowResize(uint32_t Width, uint32_t Height)
+	{
+		GCommandListExecutor->SetViewport(0, 0, Width, Height);
+	}
+
 	void Renderer::BeginScene(TSharedPtr<ICamera> Camera)
 	{
 		Data->ViewProjectionMatrix = Camera->GetViewProjectionMatrix();

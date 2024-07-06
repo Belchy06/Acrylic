@@ -28,11 +28,13 @@ namespace Acrylic
 
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
+		bool OnWindowResized(WindowResizeEvent& e);
 
 	private:
 		std::unique_ptr<IWindow>	Window;
 		std::unique_ptr<ImGuiLayer> GUILayer;
 		bool						bRunning = true;
+		bool						bMinimised = false;
 		LayerStack					Stack;
 
 		float LastFrameTime = 0.f;
