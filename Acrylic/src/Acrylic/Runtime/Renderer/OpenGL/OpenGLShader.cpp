@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
+#include <filesystem>
 
 namespace Acrylic
 {
@@ -27,7 +28,7 @@ namespace Acrylic
 		return 0;
 	}
 
-	OpenGLShader::OpenGLShader(const String& Path)
+	OpenGLShader::OpenGLShader(const String& Path, const String& InName)
 		: RendererId(0)
 	{
 		String ShaderSource = ReadFile(Path);
@@ -39,10 +40,22 @@ namespace Acrylic
 		TUnorderedMap<GLenum, String> ShaderSources = Preprocess(ShaderSource);
 
 		Compile(ShaderSources);
+
+		if (InName.empty())
+		{
+			// Extract file name from path
+			std::filesystem::path FSPath = Path;
+			Name = FSPath.stem().string(); 
+		}
+		else
+		{
+			Name = InName;
+		}
 	}
 
-	OpenGLShader::OpenGLShader(const String& VertexSrc, const String& FragmentSrc)
+	OpenGLShader::OpenGLShader(const String& VertexSrc, const String& FragmentSrc, const String& Name)
 		: RendererId(0)
+		, Name(Name)
 	{
 		TUnorderedMap<GLenum, String> ShaderSources;
 		ShaderSources[GL_VERTEX_SHADER] = VertexSrc;
@@ -58,7 +71,7 @@ namespace Acrylic
 	String OpenGLShader::ReadFile(const String& Path)
 	{
 		String		  Result;
-		std::ifstream Stream(Path, std::ios::in, std::ios::binary);
+		std::ifstream Stream(Path, std::ios::in | std::ios::binary);
 		if (!Stream)
 		{
 			AC_LOG(LogOpenGLShader, Error, "No shader found at path: {0}", Path);
@@ -112,7 +125,8 @@ namespace Acrylic
 		// Get a program object.
 		GLuint GLProgram = glCreateProgram();
 
-		TArray<GLenum> ShaderIds(Sources.size());
+		TArray<GLenum> ShaderIds;
+		ShaderIds.reserve(Sources.size());
 
 		for (const TPair<GLenum, String>& SourcePair : Sources)
 		{

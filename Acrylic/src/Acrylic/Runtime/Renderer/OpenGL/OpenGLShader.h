@@ -11,12 +11,14 @@ namespace Acrylic
 	class OpenGLShader : public IShader
 	{
 	public:
-		OpenGLShader(const String& Path);
-		OpenGLShader(const String& VertexSrc, const String& FragmentSrc);
+		OpenGLShader(const String& Path, const String& Name = "");
+		OpenGLShader(const String& VertexSrc, const String& FragmentSrc, const String& Name);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual const String& GetName() const override { return Name; }
 
 		virtual void UploadUniformInt(const String& Name, int Value) const override;
 
@@ -35,5 +37,6 @@ namespace Acrylic
 
 	private:
 		uint32_t RendererId;
+		String	 Name;
 	};
 } // namespace Acrylic

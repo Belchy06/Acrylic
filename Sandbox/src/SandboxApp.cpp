@@ -10,6 +10,8 @@ public:
 	ExampleLayer()
 		: Layer("ExampleLayer")
 	{
+		ShaderLibrary = Acrylic::MakeUnique<Acrylic::ShaderLibrary>();
+
 		Camera = Acrylic::MakeShared<Acrylic::OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
 		CameraPosition = Camera->GetPosition();
 		CameraRotation = Camera->GetRotation();
@@ -43,7 +45,7 @@ public:
 		ExampleVertexArray->AddVertexBuffer(ExampleVertexBuffer);
 		ExampleVertexArray->SetIndexBuffer(ExampleIndexBuffer);
 
-		Acrylic::TSharedPtr<Acrylic::IShader> ExampleShader = Acrylic::IShader::Create("assets/shaders/Texture.glsl");
+		Acrylic::TSharedPtr<Acrylic::IShader> ExampleShader = ShaderLibrary->Load("assets/shaders/Texture.glsl");
 
 		ShaderVertexArrayPairs.push_back({ ExampleShader, ExampleVertexArray });
 
@@ -107,7 +109,8 @@ public:
 	}
 
 private:
-	Acrylic::TArray<std::pair<Acrylic::TSharedPtr<Acrylic::IShader>, Acrylic::TSharedPtr<Acrylic::IVertexArray>>> ShaderVertexArrayPairs;
+	Acrylic::TUniquePtr<Acrylic::ShaderLibrary>																		   ShaderLibrary;
+	Acrylic::TArray<Acrylic::TPair<Acrylic::TSharedPtr<Acrylic::IShader>, Acrylic::TSharedPtr<Acrylic::IVertexArray>>> ShaderVertexArrayPairs;
 
 	Acrylic::TSharedPtr<Acrylic::Texture2D> Texture;
 
