@@ -56,7 +56,7 @@ namespace Acrylic
 
 	struct BufferElement
 	{
-		std::string Name;
+		String Name;
 		EDataType	Type;
 		uint32_t	Offset;
 		uint32_t	Size;
@@ -71,7 +71,7 @@ namespace Acrylic
 		{
 		}
 
-		BufferElement(EDataType Type, const std::string& Name, bool bNormalized = false)
+		BufferElement(EDataType Type, const String& Name, bool bNormalized = false)
 			: Name(Name)
 			, Type(Type)
 			, Size(SizeOf(Type))
@@ -127,14 +127,14 @@ namespace Acrylic
 			CalculateOffsetsAndStride();
 		}
 
-		const std::vector<BufferElement>& GetElements() const { return Elements; }
+		const TArray<BufferElement>& GetElements() const { return Elements; }
 		uint32_t						  GetStride() const { return Stride; }
 
-		std::vector<BufferElement>::iterator begin() { return Elements.begin(); }
-		std::vector<BufferElement>::iterator end() { return Elements.end(); }
+		TArray<BufferElement>::iterator		 begin() { return Elements.begin(); }
+		TArray<BufferElement>::iterator end() { return Elements.end(); }
 
-		std::vector<BufferElement>::const_iterator begin() const { return Elements.begin(); }
-		std::vector<BufferElement>::const_iterator end() const { return Elements.end(); }
+		TArray<BufferElement>::const_iterator	   begin() const { return Elements.begin(); }
+		TArray<BufferElement>::const_iterator end() const { return Elements.end(); }
 
 	private:
 		void CalculateOffsetsAndStride()
@@ -150,7 +150,7 @@ namespace Acrylic
 		}
 
 	private:
-		std::vector<BufferElement> Elements;
+		TArray<BufferElement> Elements;
 		uint32_t				   Stride;
 	};
 

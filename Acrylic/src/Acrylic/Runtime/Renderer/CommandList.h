@@ -19,7 +19,7 @@ namespace Acrylic
 			GetRenderer()->SetClearColour(Colour);
 		}
 
-		static inline void DrawIndexed(const std::shared_ptr<IVertexArray>& VertexArray)
+		static inline void DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray)
 		{
 			GetRenderer()->DrawIndexed(VertexArray);
 		}

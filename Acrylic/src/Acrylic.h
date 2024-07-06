@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Acrylic/Runtime/ApplicationCore/Application.h"
+#include "Acrylic/Runtime/Core/Containers/Array.h"
+#include "Acrylic/Runtime/Core/Containers/Pair.h"
+#include "Acrylic/Runtime/Core/Containers/String.h"
 #include "Acrylic/Runtime/Core/Logging/Logging.h"
 #include "Acrylic/Runtime/Core/Core.h"
 #include "Acrylic/Runtime/Core/Timestep.h"

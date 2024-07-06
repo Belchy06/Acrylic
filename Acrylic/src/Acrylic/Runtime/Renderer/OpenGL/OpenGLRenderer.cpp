@@ -15,7 +15,7 @@ namespace Acrylic
 		glClearColor(Colour.r, Colour.g, Colour.b, Colour.a);
 	}
 
-	void OpenGLRenderer::DrawIndexed(const std::shared_ptr<IVertexArray>& VertexArray)
+	void OpenGLRenderer::DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray)
 	{
 		glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}

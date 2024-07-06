@@ -98,13 +98,13 @@ namespace Acrylic
 			LogTemplate* GetNext() { return Next; }
 			void		 SetNext(LogTemplate* Template) { Next = Template; }
 
-			std::vector<LogTemplateOp>&		  GetOpData() { return OpData; }
-			const std::vector<LogTemplateOp>& GetOpData() const { return OpData; }
+			TArray<LogTemplateOp>&			  GetOpData() { return OpData; }
+			const TArray<LogTemplateOp>& GetOpData() const { return OpData; }
 
-			void FormatTo(std::ostream& Out, std::vector<LogField> Fields) const;
+			void FormatTo(std::ostream& Out, const TArray<LogField>& Fields) const;
 
 		private:
-			inline constexpr LogTemplate(const char* StaticFormat, std::vector<LogTemplateOp>&& OpData)
+			inline constexpr LogTemplate(const char* StaticFormat, TArray<LogTemplateOp>&& OpData)
 				: StaticFormat(StaticFormat)
 				, OpData(OpData)
 			{
@@ -115,7 +115,7 @@ namespace Acrylic
 
 			const char*				   StaticFormat = nullptr;
 			LogTemplate*			   Next = nullptr;
-			std::vector<LogTemplateOp> OpData;
+			TArray<LogTemplateOp>	   OpData;
 		};
 
 		class ACRYLIC_API LogTemplateFieldIterator
@@ -130,11 +130,11 @@ namespace Acrylic
 
 			LogTemplateFieldIterator& operator++();
 			inline explicit operator bool() const { return !NextOp.empty(); }
-			inline const std::string& GetName() const { return Name; }
+			inline const String& GetName() const { return Name; }
 
 		private:
-			std::string				   Name;
-			std::vector<LogTemplateOp> NextOp;
+			String				   Name;
+			TArray<LogTemplateOp> NextOp;
 			const char*				   NextFormat = nullptr;
 		};
 
@@ -145,8 +145,8 @@ namespace Acrylic
 		{
 		public:
 			/** The optional name of the category for the log record. None when omitted. */
-			const std::string& GetCategory() const { return Category; }
-			void			   SetCategory(const std::string& InCategory) { Category = InCategory; }
+			const String& GetCategory() const { return Category; }
+			void			   SetCategory(const String& InCategory) { Category = InCategory; }
 
 			/** The verbosity level of the log record. Must be a valid level with no flags or special values. */
 			ELogVerbosity GetVerbosity() const { return Verbosity; }
@@ -165,7 +165,7 @@ namespace Acrylic
 			void			   SetTemplate(const LogTemplate* InTemplate) { Template = InTemplate; }
 
 			/** The fields referenced by the format string, along with optional additional fields. */
-			const std::vector<LogField>& GetFields() const { return Fields; }
+			const TArray<LogField>& GetFields() const { return Fields; }
 			void						 SetFields(const LogTemplate& Template, const LogField* InFields, const int32_t FieldCount)
 			{
 				Fields.assign(InFields, InFields + FieldCount);
@@ -203,10 +203,10 @@ namespace Acrylic
 			const char*			  Format = nullptr;
 			const char*			  File = nullptr;
 			int32_t				  Line = 0;
-			std::string			  Category;
+			String			  Category;
 			ELogVerbosity		  Verbosity = ELogVerbosity::Log;
 			std::time_t			  Time = std::time(nullptr);
-			std::vector<LogField> Fields;
+			TArray<LogField>	  Fields;
 			const LogTemplate*	  Template = nullptr;
 			const char*			  TextNamespace = nullptr;
 			const char*			  TextKey = nullptr;

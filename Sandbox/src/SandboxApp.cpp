@@ -1,4 +1,5 @@
 #include "Acrylic.h"
+#include <imgui.h>
 
 DECLARE_LOG_CATEGORY_EXTERN(LogSandbox, Log);
 DEFINE_LOG_CATEGORY(LogSandbox);
@@ -22,7 +23,7 @@ public:
 		};
 		// clang-format on
 
-		std::shared_ptr<Acrylic::IVertexBuffer> ExampleVertexBuffer = std::shared_ptr<Acrylic::IVertexBuffer>(Acrylic::IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float)));
+		Acrylic::TSharedPtr<Acrylic::IVertexBuffer> ExampleVertexBuffer = Acrylic::TSharedPtr<Acrylic::IVertexBuffer>(Acrylic::IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float)));
 		// clang-format off
 		ExampleVertexBuffer->SetLayout({ 
 			{ Acrylic::EDataType::Float3, "a_Position" },
@@ -36,13 +37,13 @@ public:
 			2, 3, 0
 		};
 		// clang-format on
-		std::shared_ptr<Acrylic::IIndexBuffer> ExampleIndexBuffer = std::shared_ptr<Acrylic::IIndexBuffer>(Acrylic::IIndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
+		Acrylic::TSharedPtr<Acrylic::IIndexBuffer> ExampleIndexBuffer = Acrylic::TSharedPtr<Acrylic::IIndexBuffer>(Acrylic::IIndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
 
-		std::shared_ptr<Acrylic::IVertexArray> ExampleVertexArray = std::shared_ptr<Acrylic::IVertexArray>(Acrylic::IVertexArray::Create());
+		Acrylic::TSharedPtr<Acrylic::IVertexArray> ExampleVertexArray = Acrylic::TSharedPtr<Acrylic::IVertexArray>(Acrylic::IVertexArray::Create());
 		ExampleVertexArray->AddVertexBuffer(ExampleVertexBuffer);
 		ExampleVertexArray->SetIndexBuffer(ExampleIndexBuffer);
 
-		std::string VertexSrc = R"(
+		Acrylic::String VertexSrc = R"(
 			#version 330 core
 
 			layout (location = 0) in vec3 a_Position;
@@ -61,7 +62,7 @@ public:
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			})";
 
-		std::string FragmentSrc = R"(
+		Acrylic::String FragmentSrc = R"(
 			#version 330 core
 
 			layout (location = 0) out vec4 color;
@@ -75,7 +76,7 @@ public:
 				color = v_Color;
 			})";
 
-		std::shared_ptr<Acrylic::IShader> ExampleShader = std::shared_ptr<Acrylic::IShader>(Acrylic::IShader::Create(VertexSrc, FragmentSrc));
+		Acrylic::TSharedPtr<Acrylic::IShader> ExampleShader = Acrylic::TSharedPtr<Acrylic::IShader>(Acrylic::IShader::Create(VertexSrc, FragmentSrc));
 
 		ShaderVertexArrayPairs.push_back({ ExampleShader, ExampleVertexArray });
 	}
@@ -131,10 +132,16 @@ public:
 	{
 	}
 
-private:
-	std::vector<std::pair<std::shared_ptr<Acrylic::IShader>, std::shared_ptr<Acrylic::IVertexArray>>> ShaderVertexArrayPairs;
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Settings");
 
-	std::shared_ptr<Acrylic::OrthographicCamera> Camera;
+	}
+
+private:
+	Acrylic::TArray<std::pair<Acrylic::TSharedPtr<Acrylic::IShader>, Acrylic::TSharedPtr<Acrylic::IVertexArray>>> ShaderVertexArrayPairs;
+
+	Acrylic::TSharedPtr<Acrylic::OrthographicCamera> Camera;
 	glm::vec3									 CameraPosition;
 	float										 CameraRotation;
 };

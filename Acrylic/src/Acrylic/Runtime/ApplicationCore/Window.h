@@ -1,7 +1,5 @@
 #pragma once
 
-#include "acpch.h"
-
 #include "Core/Core.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
@@ -11,11 +9,11 @@ namespace Acrylic
 {
 	struct WindowProperties
 	{
-		std::string Title;
+		String Title;
 		uint32_t	Width;
 		uint32_t	Height;
 
-		WindowProperties(const std::string& Title = "Acrylic Engine", uint32_t Width = 1280, uint32_t Height = 720)
+		WindowProperties(const String& Title = "Acrylic Engine", uint32_t Width = 1280, uint32_t Height = 720)
 			: Title(Title)
 			, Width(Width)
 			, Height(Height)

@@ -3,7 +3,7 @@
 #include "Core/Core.h"
 #include "LogVerbosity.h"
 
-using LogCategoryName = std::string;
+using LogCategoryName = Acrylic::String;
 
 namespace Acrylic
 {

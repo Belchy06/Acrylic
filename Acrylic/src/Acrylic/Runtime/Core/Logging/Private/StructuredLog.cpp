@@ -9,20 +9,20 @@ namespace Acrylic
 	{
 		LogTemplate* LogTemplate::Create(const char* Format, const LogField* Fields, const int32_t FieldCount)
 		{
-			const std::vector<LogField> FieldsView(Fields, Fields + FieldCount);
+			const TArray<LogField>		FieldsView(Fields, Fields + FieldCount);
 			const bool					bFindFields = !!Fields;
 			const bool					bPositional = !FieldCount || std::none_of(FieldsView.begin(), FieldsView.end(), [](const LogField& Field) -> bool { return Field.Name != nullptr; });
 
-			std::vector<LogTemplateOp> Ops;
+			TArray<LogTemplateOp> Ops;
 
 			int32_t		FormatFieldCount = 0;
 			int32_t		BracketSearchOffset = 0;
-			size_t		FormatLength = std::string(Format).length();
+			size_t		FormatLength = String(Format).length();
 			for (const char* TextStart = Format;;)
 			{
-				std::string Brackets = "{}";
-				size_t		End = std::string(TextStart + BracketSearchOffset).find_first_of(Brackets);
-				const char* const TextEnd = End == std::string::npos ? &Format[FormatLength] : TextStart + End;
+				String Brackets = "{}";
+				size_t		End = String(TextStart + BracketSearchOffset).find_first_of(Brackets);
+				const char* const TextEnd = End == String::npos ? &Format[FormatLength] : TextStart + End;
 				BracketSearchOffset = 0;
 
 				if (TextEnd[0] == '{' && TextEnd[1] == '{' || TextEnd[0] == '}' && TextEnd[1] == '}')
@@ -61,9 +61,9 @@ namespace Acrylic
 				// Field
 				const char* const FieldStart = TextStart;
 
-				std::string ValidLogFieldName = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+				String ValidLogFieldName = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
 				size_t		EndIndex = 1;
-				while (ValidLogFieldName.find(FieldStart[EndIndex]) != std::string::npos)
+				while (ValidLogFieldName.find(FieldStart[EndIndex]) != String::npos)
 				{
 					EndIndex++;
 				}
@@ -114,9 +114,9 @@ namespace Acrylic
 			free(Template);
 		}
 
-		void LogTemplate::FormatTo(std::ostream& Out, std::vector<LogField> Fields) const
+		void LogTemplate::FormatTo(std::ostream& Out, const TArray<LogField>& Fields) const
 		{
-			auto FindField = [&Fields, It = Fields.begin(), Index = 0, Format = StaticFormat](std::string Name, int32_t IndexHint = -1) mutable -> LogField& {
+			auto FindField = [&Fields, It = Fields.begin(), Index = 0, Format = StaticFormat](String Name, int32_t IndexHint = -1) mutable -> const LogField& {
 				if (IndexHint >= 0)
 				{
 					for (; Index < IndexHint && It < Fields.end(); ++Index, ++It)
@@ -129,7 +129,7 @@ namespace Acrylic
 						{
 						}
 					}
-					if (IndexHint == Index && Name == (It->Name != nullptr ? std::string(It->Name) : std::string("")))
+					if (IndexHint == Index && Name == (It->Name != nullptr ? String(It->Name) : String("")))
 					{
 						return Fields[std::distance(Fields.begin(), It)];
 					}
@@ -137,7 +137,7 @@ namespace Acrylic
 				const int32_t PrevIndex = Index;
 				for (; It < Fields.end(); ++Index, ++It)
 				{
-					if (Name == (It->Name != nullptr ? std::string(It->Name) : std::string("")))
+					if (Name == (It->Name != nullptr ? String(It->Name) : String("")))
 					{
 						return Fields[std::distance(Fields.begin(), It)];
 					}
@@ -145,7 +145,7 @@ namespace Acrylic
 				It = Fields.begin();
 				for (Index = 0; Index < PrevIndex && It < Fields.end(); ++Index, ++It)
 				{
-					if (Name == (It->Name != nullptr ? std::string(It->Name) : std::string("")))
+					if (Name == (It->Name != nullptr ? String(It->Name) : String("")))
 					{
 						return Fields[std::distance(Fields.begin(), It)];
 					}
@@ -164,14 +164,14 @@ namespace Acrylic
 						Out << std::endl;
 						return;
 					case LogTemplateOp::OpText:
-						Out << std::string(NextFormat, Op.Value);
+						Out << String(NextFormat, Op.Value);
 						break;
 					case LogTemplateOp::OpIndex:
 						FieldIndexHint = Op.Value;
 						break;
 					case LogTemplateOp::OpName:
-						const std::string Name(NextFormat + 1, Op.Value - 2);
-						LogField&		  Field = FindField(Name, FieldIndexHint);
+						const String Name(NextFormat + 1, Op.Value - 2);
+						const LogField&		  Field = FindField(Name, FieldIndexHint);
 						Field.WriteValue(Out, Field.Value);
 						FieldIndexHint = -1;
 						break;
@@ -315,12 +315,12 @@ namespace Acrylic
 		LogTemplateFieldIterator& LogTemplateFieldIterator::operator++()
 		{
 			// Iterate on a copy
-			std::vector<LogTemplateOp> Ops = NextOp;
+			TArray<LogTemplateOp> Ops = NextOp;
 			for (LogTemplateOp& Op : Ops)
 			{
 				if (Op.Code == LogTemplateOp::OpName)
 				{
-					Name = std::string(NextFormat + 1, Op.Value - 2);
+					Name = String(NextFormat + 1, Op.Value - 2);
 					NextFormat += Op.GetSkipSize();
 					NextOp.erase(NextOp.begin());
 					return *this;

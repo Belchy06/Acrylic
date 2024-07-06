@@ -1,6 +1,6 @@
 #pragma once
 
-#include "acpch.h"
+#include "Core/Core.h"
 
 #include <glm/glm.hpp>
 
@@ -14,8 +14,6 @@ namespace Acrylic
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual void UploadUniformMat4(const std::string& Name, const glm::mat4& Matrix) = 0;
-
-		static IShader* Create(const std::string& VertexSrc, const std::string& FragmentSrc);
+		static IShader* Create(const String& VertexSrc, const String& FragmentSrc);
 	};
 }

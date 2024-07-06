@@ -3,13 +3,16 @@
 
 #include "CommandList.h"
 
+// TEMP
+#include "Renderer/OpenGL/OpenGLShader.h"
+
 namespace Acrylic
 {
 	void Renderer::Init()
 	{
 	}
 
-	void Renderer::BeginScene(std::shared_ptr<ICamera> Camera)
+	void Renderer::BeginScene(TSharedPtr<ICamera> Camera)
 	{
 		Data->ViewProjectionMatrix = Camera->GetViewProjectionMatrix();
 	}
@@ -19,11 +22,11 @@ namespace Acrylic
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<IShader> Shader, const std::shared_ptr<IVertexArray>& VertexArray, const glm::mat4 TransformationMatrix)
+	void Renderer::Submit(const TSharedPtr<IShader> Shader, const TSharedPtr<IVertexArray>& VertexArray, const glm::mat4 TransformationMatrix)
 	{
 		Shader->Bind();
-		Shader->UploadUniformMat4("u_ViewProjection", Data->ViewProjectionMatrix);
-		Shader->UploadUniformMat4("u_Transform", TransformationMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(Shader)->UploadUniformMat4("u_ViewProjection", Data->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(Shader)->UploadUniformMat4("u_Transform", TransformationMatrix);
 
 		VertexArray->Bind();
 		CommandList::DrawIndexed(VertexArray);

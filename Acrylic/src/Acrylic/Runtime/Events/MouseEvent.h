@@ -16,7 +16,7 @@ namespace Acrylic
 		FORCEINLINE double GetDeltaX() { return DeltaX; }
 		FORCEINLINE double GetDeltaY() { return DeltaY; }
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseMovedEvent: " << DeltaX << ", " << DeltaY;
@@ -43,7 +43,7 @@ namespace Acrylic
 		FORCEINLINE double GetX() { return X; }
 		FORCEINLINE double GetY() { return Y; }
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseScrolledEvent: " << X << ", " << Y;
@@ -83,7 +83,7 @@ namespace Acrylic
 		{
 		}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseButtonPressedEvent: " << Button;
@@ -101,7 +101,7 @@ namespace Acrylic
 		{
 		}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseButtonReleasedEvent: " << Button;

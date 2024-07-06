@@ -2,6 +2,8 @@
 
 #include "Events/Event.h"
 
+#include <sstream>
+
 namespace Acrylic
 {
 	class ACRYLIC_API WindowResizeEvent : public Event
@@ -16,7 +18,7 @@ namespace Acrylic
 		FORCEINLINE uint32_t GetWidth() { return Width; }
 		FORCEINLINE uint32_t GetHeight() { return Height; }
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "WindowResizeEvent: " << Width << ", " << Height;
@@ -35,7 +37,7 @@ namespace Acrylic
 	public:
 		WindowCloseEvent() {}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "WindowCloseEvent";
@@ -51,7 +53,7 @@ namespace Acrylic
 	public:
 		AppTickEvent() {}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "AppTickEvent";
@@ -67,7 +69,7 @@ namespace Acrylic
 	public:
 		AppUpdateEvent() {}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "AppUpdateEvent";
@@ -83,7 +85,7 @@ namespace Acrylic
 	public:
 		AppRenderEvent() {}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "AppRenderEvent";

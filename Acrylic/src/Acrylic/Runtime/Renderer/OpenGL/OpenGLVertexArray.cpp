@@ -52,7 +52,7 @@ namespace Acrylic
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<IVertexBuffer>& VertexBuffer)
+	void OpenGLVertexArray::AddVertexBuffer(const TSharedPtr<IVertexBuffer>& VertexBuffer)
 	{
 		AC_ASSERT(VertexBuffer->GetLayout().GetElements().size() > 0)
 
@@ -76,7 +76,7 @@ namespace Acrylic
 		VertexBuffers.push_back(VertexBuffer);
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IIndexBuffer>& InIndexBuffer)
+	void OpenGLVertexArray::SetIndexBuffer(const TSharedPtr<IIndexBuffer>& InIndexBuffer)
 	{
 		glBindVertexArray(RendererId);
 		InIndexBuffer->Bind();

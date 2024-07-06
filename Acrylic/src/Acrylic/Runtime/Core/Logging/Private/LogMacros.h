@@ -12,7 +12,7 @@
 #define DECLARE_LOG_CATEGORY_EXTERN(CategoryName, DefaultVerbosity)                               \
 	extern struct LogCategory##CategoryName : public Acrylic::LogCategory<Acrylic::ELogVerbosity::DefaultVerbosity> \
 	{                                                                                             \
-		FORCEINLINE LogCategory##CategoryName() : LogCategory(std::string(#CategoryName)) {}      \
+		FORCEINLINE LogCategory##CategoryName() : LogCategory(Acrylic::String(#CategoryName)) {}      \
 	} CategoryName;
 
 /**

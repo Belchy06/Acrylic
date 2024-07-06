@@ -1,4 +1,5 @@
 #include "acpch.h"
+
 #include "Shader.h"
 
 #include "Renderer/Renderer.h"
@@ -6,7 +7,7 @@
 
 namespace Acrylic
 {
-	IShader* IShader::Create(const std::string& VertexSrc, const std::string& FragmentSrc)
+	IShader* IShader::Create(const String& VertexSrc, const String& FragmentSrc)
 	{
 		switch (Renderer::GetRenderInterface())
 		{

@@ -11,6 +11,6 @@ namespace Acrylic
 
 		virtual void Clear() override;
 		virtual void SetClearColour(const glm::vec4& Colour) override;
-		virtual void DrawIndexed(const std::shared_ptr<IVertexArray>& VertexArray) override;
+		virtual void DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray) override;
 	};
 } // namespace Acrylic

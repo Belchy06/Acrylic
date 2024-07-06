@@ -30,7 +30,7 @@ namespace Acrylic
 
 		FORCEINLINE int GetRepeatCount() { return RepeatCount;  }
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyPressedEvent: " << KeyCode << "(" << RepeatCount << " repeats)";
@@ -50,7 +50,7 @@ namespace Acrylic
 		{
 		}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << KeyCode;
@@ -68,7 +68,7 @@ namespace Acrylic
 		{
 		}
 
-		virtual std::string ToString() const override
+		virtual String ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyCharEvent: " << KeyCode;

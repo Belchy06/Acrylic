@@ -3,7 +3,7 @@
 
 namespace Acrylic
 {
-	Layer::Layer(const std::string& DebugName)
+	Layer::Layer(const String& DebugName)
 		: DebugName(DebugName)
 	{
 	}

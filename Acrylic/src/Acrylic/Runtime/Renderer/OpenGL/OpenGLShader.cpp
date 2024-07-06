@@ -8,14 +8,14 @@ namespace Acrylic
 {
 	DEFINE_LOG_CATEGORY(LogOpenGLShader);
 
-	OpenGLShader::OpenGLShader(const std::string& VertexSrc, const std::string& FragmentSrc)
+	OpenGLShader::OpenGLShader(const String& VertexSrc, const String& FragmentSrc)
 		: RendererId(0)
 	{
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 		// Send the vertex shader source code to GL
-		// Note that std::string's .c_str is NULL character terminated.
+		// Note that String's .c_str is NULL character terminated.
 		const GLchar* source = (const GLchar*)VertexSrc.c_str();
 		glShaderSource(vertexShader, 1, &source, 0);
 
@@ -30,7 +30,7 @@ namespace Acrylic
 			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
+			TArray<GLchar> infoLog(maxLength);
 			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
 
 			// We don't need the shader anymore.
@@ -46,7 +46,7 @@ namespace Acrylic
 		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 		// Send the fragment shader source code to GL
-		// Note that std::string's .c_str is NULL character terminated.
+		// Note that String's .c_str is NULL character terminated.
 		source = (const GLchar*)FragmentSrc.c_str();
 		glShaderSource(fragmentShader, 1, &source, 0);
 
@@ -60,7 +60,7 @@ namespace Acrylic
 			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
+			TArray<GLchar> infoLog(maxLength);
 			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
 
 			// We don't need the shader anymore.
@@ -95,7 +95,7 @@ namespace Acrylic
 			glGetProgramiv(RendererId, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
+			TArray<GLchar> infoLog(maxLength);
 			glGetProgramInfoLog(RendererId, maxLength, &maxLength, &infoLog[0]);
 
 			// We don't need the program anymore.
@@ -129,7 +129,85 @@ namespace Acrylic
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUniformMat4(const std::string& Name, const glm::mat4& Matrix)
+	void OpenGLShader::UploadUniformInt(const String& Name, int Value)
+	{
+		// BIND PROGRAM BEFORE UPLOADING
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Float uniform not found: {0}", Name);
+			return;
+		}
+		glUniform1i(Location, Value);
+	}
+
+	void OpenGLShader::UploadUniformFloat(const String& Name, float Value)
+	{
+		// BIND PROGRAM BEFORE UPLOADING
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Float uniform not found: {0}", Name);
+			return;
+		}
+		glUniform1f(Location, Value);
+	}
+
+	void OpenGLShader::UploadUniformFloat2(const String& Name, const glm::vec2& Vector)
+	{
+		// BIND PROGRAM BEFORE UPLOADING
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Vec2 uniform not found: {0}", Name);
+			return;
+		}
+		glUniform2f(Location, Vector.x, Vector.y);
+	}
+
+	void OpenGLShader::UploadUniformFloat3(const String& Name, const glm::vec3& Vector)
+	{
+		// BIND PROGRAM BEFORE UPLOADING
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Vec3 uniform not found: {0}", Name);
+			return;
+		}
+		glUniform3f(Location, Vector.x, Vector.y, Vector.z);
+	}
+
+	void OpenGLShader::UploadUniformFloat4(const String& Name, const glm::vec4& Vector)
+	{
+		// BIND PROGRAM BEFORE UPLOADING
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Vec4 uniform not found: {0}", Name);
+			return;
+		}
+		glUniform4f(Location, Vector.x, Vector.y, Vector.z, Vector.w);
+	}
+
+	void OpenGLShader::UploadUniformMat3(const String& Name, const glm::mat3& Matrix)
+	{
+		// BIND PROGRAM BEFORE UPLOADING
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Mat4 uniform not found: {0}", Name);
+			return;
+		}
+		glUniformMatrix3fv(Location, 1, GL_FALSE, glm::value_ptr(Matrix));
+	}
+
+	void OpenGLShader::UploadUniformMat4(const String& Name, const glm::mat4& Matrix)
 	{
 		// BIND PROGRAM BEFORE UPLOADING
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "acpch.h"
+#include <functional>
 
 #ifdef AC_PLATFORM_WINDOWS
 	#if AC_DYNAMIC_LINK

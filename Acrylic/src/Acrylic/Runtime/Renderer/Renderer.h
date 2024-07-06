@@ -20,9 +20,9 @@ namespace Acrylic
 	{
 	public:
 		static void Init(); 
-		static void BeginScene(std::shared_ptr<ICamera> Camera);
+		static void BeginScene(TSharedPtr<ICamera> Camera);
 		static void EndScene();
-		static void Submit(const std::shared_ptr<IShader> Shader, const std::shared_ptr<IVertexArray>& VertexArray, const glm::mat4 TransformationMatrix = glm::mat4(1.f));
+		static void Submit(const TSharedPtr<IShader> Shader, const TSharedPtr<IVertexArray>& VertexArray, const glm::mat4 TransformationMatrix = glm::mat4(1.f));
 
 		static FORCEINLINE ERenderInterface GetRenderInterface() { return API; }
 

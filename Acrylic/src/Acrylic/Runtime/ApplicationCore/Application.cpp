@@ -35,7 +35,7 @@ namespace Acrylic
 
 		AC_LOG(LogApplication, VeryVerbose, "{0}", e.ToString());
 
-		for (std::vector<Layer*>::iterator It = Stack.end(); It != Stack.begin();)
+		for (TArray<Layer*>::iterator It = Stack.end(); It != Stack.begin();)
 		{
 			(*--It)->OnEvent(e);
 			if (e.IsHandled())

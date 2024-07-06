@@ -65,7 +65,7 @@ namespace Acrylic
 		virtual EEventType	GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual EEventCategory GetCategoryFlags() const = 0;
-		virtual std::string ToString() const { return GetName(); }
+		virtual String ToString() const { return GetName(); }
 
 		FORCEINLINE bool IsInCategory(EEventCategory Category)
 		{

@@ -15,7 +15,7 @@ namespace Acrylic
 
 	static void GLFWErrorCallback(int Error, const char* Description)
 	{
-		AC_LOG(LogWindowsWindow, Log, "GLFW Error: ({0}), {1}", Error, std::string(Description));
+		AC_LOG(LogWindowsWindow, Log, "GLFW Error: ({0}), {1}", Error, String(Description));
 	}
 
 	IWindow* IWindow::Create(const WindowProperties& Properties)

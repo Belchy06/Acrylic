@@ -9,7 +9,7 @@ namespace Acrylic
 	class ACRYLIC_API Layer
 	{
 	public:
-		Layer(const std::string& DebugName = "Layer");
+		Layer(const String& DebugName = "Layer");
 		virtual ~Layer();
 
 		virtual void OnAttach() {}
@@ -18,9 +18,9 @@ namespace Acrylic
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& e) {}
 
-		FORCEINLINE const std::string& GetName() const { return DebugName;  }
+		FORCEINLINE const String& GetName() const { return DebugName;  }
 		
 	private:
-		std::string DebugName;
+		String DebugName;
 	};
 } // namespace Acrylic
