@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ApplicationCore/Window.h"
-#include "Core/Logging/Logging.h"
+#include "Core/Logging.h"
 #include "Renderer/OpenGL/OpenGLContext.h"
 
 namespace Acrylic

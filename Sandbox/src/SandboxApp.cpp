@@ -10,7 +10,7 @@ public:
 	ExampleLayer()
 		: Layer("ExampleLayer")
 	{
-		Camera = std::unique_ptr<Acrylic::OrthographicCamera>(new Acrylic::OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f));
+		Camera = Acrylic::MakeShared<Acrylic::OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
 		CameraPosition = Camera->GetPosition();
 		CameraRotation = Camera->GetRotation();
 
@@ -23,7 +23,7 @@ public:
 		};
 		// clang-format on
 
-		Acrylic::TSharedPtr<Acrylic::IVertexBuffer> ExampleVertexBuffer = Acrylic::TSharedPtr<Acrylic::IVertexBuffer>(Acrylic::IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float)));
+		Acrylic::TSharedPtr<Acrylic::IVertexBuffer> ExampleVertexBuffer = Acrylic::IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float));
 		// clang-format off
 		ExampleVertexBuffer->SetLayout({ 
 			{ Acrylic::EDataType::Float3, "a_Position" },
@@ -37,48 +37,17 @@ public:
 			2, 3, 0
 		};
 		// clang-format on
-		Acrylic::TSharedPtr<Acrylic::IIndexBuffer> ExampleIndexBuffer = Acrylic::TSharedPtr<Acrylic::IIndexBuffer>(Acrylic::IIndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
+		Acrylic::TSharedPtr<Acrylic::IIndexBuffer> ExampleIndexBuffer = Acrylic::IIndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t));
 
-		Acrylic::TSharedPtr<Acrylic::IVertexArray> ExampleVertexArray = Acrylic::TSharedPtr<Acrylic::IVertexArray>(Acrylic::IVertexArray::Create());
+		Acrylic::TSharedPtr<Acrylic::IVertexArray> ExampleVertexArray = Acrylic::IVertexArray::Create();
 		ExampleVertexArray->AddVertexBuffer(ExampleVertexBuffer);
 		ExampleVertexArray->SetIndexBuffer(ExampleIndexBuffer);
 
-		Acrylic::String VertexSrc = R"(
-			#version 330 core
-
-			layout (location = 0) in vec3 a_Position;
-			layout (location = 1) in vec2 a_TexCoord;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-  
-			out vec2 v_TexCoord;
-
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			})";
-
-		Acrylic::String FragmentSrc = R"(
-			#version 330 core
-
-			layout (location = 0) out vec4 color;
-	  
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main()
-			{
-				color = texture2D(u_Texture, v_TexCoord);
-			})";
-
-		Acrylic::TSharedPtr<Acrylic::IShader> ExampleShader = Acrylic::TSharedPtr<Acrylic::IShader>(Acrylic::IShader::Create(VertexSrc, FragmentSrc));
+		Acrylic::TSharedPtr<Acrylic::IShader> ExampleShader = Acrylic::IShader::Create("assets/shaders/Texture.glsl");
 
 		ShaderVertexArrayPairs.push_back({ ExampleShader, ExampleVertexArray });
 
-		Texture = Acrylic::Texture2D::Create("assets/texture.png");
+		Texture = Acrylic::Texture2D::Create("assets/textures/Test.png");
 
 		ExampleShader->Bind();
 		ExampleShader->UploadUniformInt("u_Texture", 0);

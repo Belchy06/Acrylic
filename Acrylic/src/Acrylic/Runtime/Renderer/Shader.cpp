@@ -7,14 +7,27 @@
 
 namespace Acrylic
 {
-	IShader* IShader::Create(const String& VertexSrc, const String& FragmentSrc)
+	TSharedPtr<IShader> IShader::Create(const String& Path)
 	{
 		switch (Renderer::GetRenderInterface())
 		{
 			case ERenderInterface::None:
 				return nullptr;
 			case ERenderInterface::OpenGL:
-				return new OpenGLShader(VertexSrc, FragmentSrc);
+				return MakeShared<OpenGLShader>(Path);
+			default:
+				return nullptr;
+		}
+	}
+
+	TSharedPtr<IShader> IShader::Create(const String& VertexSrc, const String& FragmentSrc)
+	{
+		switch (Renderer::GetRenderInterface())
+		{
+			case ERenderInterface::None:
+				return nullptr;
+			case ERenderInterface::OpenGL:
+				return MakeShared<OpenGLShader>(VertexSrc, FragmentSrc);
 			default:
 				return nullptr;
 		}

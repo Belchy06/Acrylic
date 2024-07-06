@@ -3,6 +3,7 @@
 #include "Core/Containers/Array.h"
 #include "Core/Containers/String.h"
 #include "Core/Core.h"
+#include "Core/Memory.h"
 
 namespace Acrylic
 {
@@ -58,11 +59,11 @@ namespace Acrylic
 
 	struct BufferElement
 	{
-		String Name;
-		EDataType	Type;
-		uint32_t	Offset;
-		uint32_t	Size;
-		bool		bNormalized;
+		String	  Name;
+		EDataType Type;
+		uint32_t  Offset;
+		uint32_t  Size;
+		bool	  bNormalized;
 
 		BufferElement()
 			: Name("")
@@ -130,12 +131,12 @@ namespace Acrylic
 		}
 
 		const TArray<BufferElement>& GetElements() const { return Elements; }
-		uint32_t						  GetStride() const { return Stride; }
+		uint32_t					 GetStride() const { return Stride; }
 
-		TArray<BufferElement>::iterator		 begin() { return Elements.begin(); }
+		TArray<BufferElement>::iterator begin() { return Elements.begin(); }
 		TArray<BufferElement>::iterator end() { return Elements.end(); }
 
-		TArray<BufferElement>::const_iterator	   begin() const { return Elements.begin(); }
+		TArray<BufferElement>::const_iterator begin() const { return Elements.begin(); }
 		TArray<BufferElement>::const_iterator end() const { return Elements.end(); }
 
 	private:
@@ -153,7 +154,7 @@ namespace Acrylic
 
 	private:
 		TArray<BufferElement> Elements;
-		uint32_t				   Stride;
+		uint32_t			  Stride;
 	};
 
 	class IVertexBuffer
@@ -167,7 +168,7 @@ namespace Acrylic
 		virtual void				SetLayout(const BufferLayout& Layout) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 
-		static IVertexBuffer* Create(float* Vertices, uint32_t Count);
+		static TSharedPtr<IVertexBuffer> Create(float* Vertices, uint32_t Count);
 	};
 
 	class IIndexBuffer
@@ -179,6 +180,6 @@ namespace Acrylic
 		virtual void	 Unbind() const = 0;
 		virtual uint32_t GetCount() const = 0;
 
-		static IIndexBuffer* Create(uint32_t* Indices, uint32_t Count);
+		static TSharedPtr<IIndexBuffer> Create(uint32_t* Indices, uint32_t Count);
 	};
 } // namespace Acrylic

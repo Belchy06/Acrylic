@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Core/Memory.h"
 #include "Core/Containers/String.h"
 
 #include <glm/glm.hpp>
@@ -26,6 +27,7 @@ namespace Acrylic
 		virtual void UploadUniformMat3(const String& Name, const glm::mat3& Matrix) const = 0;
 		virtual void UploadUniformMat4(const String& Name, const glm::mat4& Matrix) const = 0;
 
-		static IShader* Create(const String& VertexSrc, const String& FragmentSrc);
+		static TSharedPtr<IShader> Create(const String& Path);
+		static TSharedPtr<IShader> Create(const String& VertexSrc, const String& FragmentSrc);
 	};
 }

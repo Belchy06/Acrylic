@@ -6,29 +6,29 @@
 
 namespace Acrylic
 {
-	IVertexBuffer* IVertexBuffer::Create(float* Vertices, uint32_t Count)
+	TSharedPtr<IVertexBuffer> IVertexBuffer::Create(float* Vertices, uint32_t Count)
 	{
 		switch (Renderer::GetRenderInterface())
 		{
 			case ERenderInterface::None:
 				return nullptr;
 			case ERenderInterface::OpenGL:
-				return new OpenGLVertexBuffer(Vertices, Count);
+				return MakeShared<OpenGLVertexBuffer>(Vertices, Count);
 			default:
 				return nullptr;
 		}
 	}
 
-	IIndexBuffer* IIndexBuffer::Create(uint32_t* Indices, uint32_t Count)
+	TSharedPtr<IIndexBuffer> IIndexBuffer::Create(uint32_t* Indices, uint32_t Count)
 	{
 		switch (Renderer::GetRenderInterface())
 		{
 			case ERenderInterface::None:
 				return nullptr;
 			case ERenderInterface::OpenGL:
-				return new OpenGLIndexBuffer(Indices, Count);
+				return MakeShared<OpenGLIndexBuffer>(Indices, Count);
 			default:
 				return nullptr;
 		}
 	}
-}
+} // namespace Acrylic

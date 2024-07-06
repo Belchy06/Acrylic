@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ApplicationCore/Window.h"
-#include "Core/Logging/Logging.h"
+#include "Core/Logging.h"
 #include "Core/Timestep.h"
 #include "Layers/LayerStack.h"
 #include "Layers/ImGui/ImGuiLayer.h"

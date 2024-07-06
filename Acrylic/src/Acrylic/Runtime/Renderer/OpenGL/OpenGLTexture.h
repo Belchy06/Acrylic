@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Logging/Logging.h"
+#include "Core/Logging.h"
 #include "Renderer/Texture.h"
 
 namespace Acrylic

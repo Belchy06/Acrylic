@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Core/Logging/Logging.h"
+#include "Core/Containers/UnorderedMap.h"
+#include "Core/Logging.h"
 #include "Renderer/Shader.h"
 
 namespace Acrylic
@@ -10,6 +11,7 @@ namespace Acrylic
 	class OpenGLShader : public IShader
 	{
 	public:
+		OpenGLShader(const String& Path);
 		OpenGLShader(const String& VertexSrc, const String& FragmentSrc);
 		virtual ~OpenGLShader();
 
@@ -25,6 +27,11 @@ namespace Acrylic
 
 		virtual void UploadUniformMat3(const String& Name, const glm::mat3& Matrix) const override;
 		virtual void UploadUniformMat4(const String& Name, const glm::mat4& Matrix) const override;
+
+	private:
+		String								ReadFile(const String& Path);
+		TUnorderedMap<unsigned int, String> Preprocess(const String& Source);
+		void								Compile(const TUnorderedMap<unsigned int, String>& Sources);
 
 	private:
 		uint32_t RendererId;

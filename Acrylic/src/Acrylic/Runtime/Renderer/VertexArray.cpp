@@ -6,14 +6,14 @@
 
 namespace Acrylic
 {
-	IVertexArray* IVertexArray::Create()
+	TSharedPtr<IVertexArray> IVertexArray::Create()
 	{
 		switch (Renderer::GetRenderInterface())
 		{
 			case ERenderInterface::None:
 				return nullptr;
 			case ERenderInterface::OpenGL:
-				return new OpenGLVertexArray();
+				return MakeShared<OpenGLVertexArray>();
 			default:
 				return nullptr;
 		}
