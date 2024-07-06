@@ -89,17 +89,14 @@ namespace Acrylic
 
 	class ACRYLIC_API EventDispatcher
 	{
-		template<typename T>
-		using EventFn = std::function<bool(T&)>;
-
 	public:
 		EventDispatcher(Event& InEvent)
 			: EventInternal(InEvent)
 		{
 		}
 
-		template<typename T>
-		bool Dispatch(EventFn<T> Func)
+		template<typename T, typename F>
+		bool Dispatch(const F& Func)
 		{
 			if (EventInternal.GetEventType() == T::GetStaticType())
 			{

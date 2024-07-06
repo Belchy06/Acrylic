@@ -1,8 +1,6 @@
 #include "acpch.h"
 #include "OrthographicCamera.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
 namespace Acrylic
 {
 	OrthographicCamera::OrthographicCamera(float Left, float Right, float Bottom, float Top)

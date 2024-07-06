@@ -28,3 +28,4 @@
 
 #include "Acrylic/Runtime/Camera/Camera.h"
 #include "Acrylic/Runtime/Camera/OrthographicCamera/OrthographicCamera.h"
+#include "Acrylic/Runtime/Camera/OrthographicCamera/OrthographicCameraController.h"

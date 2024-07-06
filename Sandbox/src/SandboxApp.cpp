@@ -11,10 +11,7 @@ public:
 		: Layer("ExampleLayer")
 	{
 		ShaderLibrary = Acrylic::MakeUnique<Acrylic::ShaderLibrary>();
-
-		Camera = Acrylic::MakeShared<Acrylic::OrthographicCamera>(-1.6f, 1.6f, -0.9f, 0.9f);
-		CameraPosition = Camera->GetPosition();
-		CameraRotation = Camera->GetRotation();
+		CameraController = Acrylic::MakeUnique<Acrylic::OrthographicCameraController>(1280.f / 720.f, true);
 
 		// clang-format off
 		float Vertices[4 * 5] = {
@@ -58,41 +55,15 @@ public:
 	virtual void OnUpdate(Acrylic::Timestep ts) override
 	{
 		AC_LOG(LogSandbox, Log, "Delta time: {0}s ({1}ms)", ts, ts.GetMilliseconds());
+		
+		// Update
+		CameraController->OnUpdate(ts);
 
-		if (Acrylic::IInput::IsKeyPressed(AC_KEY_W))
-		{
-			CameraPosition.y += 5.f * ts;
-		}
-		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_S))
-		{
-			CameraPosition.y -= 5.f * ts;
-		}
-
-		if (Acrylic::IInput::IsKeyPressed(AC_KEY_A))
-		{
-			CameraPosition.x -= 5.f * ts;
-		}
-		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_D))
-		{
-			CameraPosition.x += 5.f * ts;
-		}
-
-		if (Acrylic::IInput::IsKeyPressed(AC_KEY_Q))
-		{
-			CameraRotation += 180 * ts;
-		}
-		else if (Acrylic::IInput::IsKeyPressed(AC_KEY_E))
-		{
-			CameraRotation -= 180 * ts;
-		}
-
+		// Render
 		Acrylic::GCommandListExecutor->SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
 		Acrylic::GCommandListExecutor->Clear();
 
-		Camera->SetPosition(CameraPosition);
-		Camera->SetRotation(CameraRotation);
-
-		Acrylic::Renderer::BeginScene(Camera);
+		Acrylic::Renderer::BeginScene(CameraController->GetCamera());
 
 		Texture->Bind(0);
 
@@ -106,6 +77,7 @@ public:
 
 	virtual void OnEvent(Acrylic::Event& e) override
 	{
+		CameraController->OnEvent(e);
 	}
 
 private:
@@ -114,9 +86,7 @@ private:
 
 	Acrylic::TSharedPtr<Acrylic::Texture2D> Texture;
 
-	Acrylic::TSharedPtr<Acrylic::OrthographicCamera> Camera;
-	glm::vec3										 CameraPosition;
-	float											 CameraRotation;
+	Acrylic::TUniquePtr<Acrylic::OrthographicCameraController> CameraController;
 };
 
 class Sandbox : public Acrylic::Application
