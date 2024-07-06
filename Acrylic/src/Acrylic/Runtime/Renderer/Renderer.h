@@ -19,7 +19,7 @@ namespace Acrylic
 	class ACRYLIC_API Renderer
 	{
 	public:
-		static void Init(); 
+		static void Init();
 		static void BeginScene(TSharedPtr<ICamera> Camera);
 		static void EndScene();
 		static void Submit(const TSharedPtr<IShader> Shader, const TSharedPtr<IVertexArray>& VertexArray, const glm::mat4 TransformationMatrix = glm::mat4(1.f));
@@ -27,7 +27,7 @@ namespace Acrylic
 		static FORCEINLINE ERenderInterface GetRenderInterface() { return API; }
 
 	private:
-		inline static ERenderInterface API = ERenderInterface::OpenGL;
+		inline static ERenderInterface API;
 
 		struct SceneData
 		{

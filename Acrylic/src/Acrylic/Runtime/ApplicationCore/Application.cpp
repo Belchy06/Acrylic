@@ -19,6 +19,8 @@ namespace Acrylic
 		Window = std::unique_ptr<IWindow>(IWindow::Create());
 		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
 
+		Renderer::Init();
+
 		Stack.PushOverlay(new ImGuiLayer());
 
 		LastFrameTime = static_cast<float>(IPlatform::GetTime());

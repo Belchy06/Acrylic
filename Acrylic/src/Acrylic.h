@@ -21,7 +21,6 @@
 #include "Acrylic/Runtime/Renderer/Buffer.h"
 #include "Acrylic/Runtime/Renderer/CommandList.h"
 #include "Acrylic/Runtime/Renderer/Context.h"
-#include "Acrylic/Runtime/Renderer/IRenderer.h"
 #include "Acrylic/Runtime/Renderer/Renderer.h"
 #include "Acrylic/Runtime/Renderer/Shader.h"
 #include "Acrylic/Runtime/Renderer/Texture.h"

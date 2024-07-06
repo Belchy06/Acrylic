@@ -1,30 +1,22 @@
 #pragma once
 
-#include "Renderer/IRenderer.h"
+#include "Core/Core.h"
+#include "Renderer/Shader.h"
+#include "Renderer/VertexArray.h"
+
+#include <glm/glm.hpp>
 
 namespace Acrylic
 {
-	class ACRYLIC_API CommandList
+	class ACRYLIC_API ICommandListExecutor
 	{
 	public:
-		static inline void Clear()
-		{
-			GetRenderer()->Clear();
-		}
+		virtual ~ICommandListExecutor() = default;
 
-		static inline void SetClearColour(const glm::vec4& Colour)
-		{
-			GetRenderer()->SetClearColour(Colour);
-		}
-
-		static inline void DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray)
-		{
-			GetRenderer()->DrawIndexed(VertexArray);
-		}
-
-		static IRenderer* GetRenderer() { return Renderer; } 
-
-	private:
-		static IRenderer* Renderer;
+		virtual void Clear() = 0;
+		virtual void SetClearColour(const glm::vec4& Colour) = 0;
+		virtual void DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray) = 0;
 	};
+
+	extern inline ICommandListExecutor* GCommandListExecutor = nullptr;
 }

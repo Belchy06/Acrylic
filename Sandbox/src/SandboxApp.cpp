@@ -115,8 +115,8 @@ public:
 			CameraRotation -= 180 * ts;
 		}
 
-		Acrylic::CommandList::SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
-		Acrylic::CommandList::Clear();
+		Acrylic::GCommandListExecutor->SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
+		Acrylic::GCommandListExecutor->Clear();
 
 		Camera->SetPosition(CameraPosition);
 		Camera->SetRotation(CameraRotation);

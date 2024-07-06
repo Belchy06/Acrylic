@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Renderer/IRenderer.h"
+#include "Renderer/CommandList.h"
 
 namespace Acrylic
 {
-	class OpenGLRenderer : public IRenderer
+	class OpenGLExecutor : public ICommandListExecutor
 	{
 	public:
-		OpenGLRenderer() = default;
+		OpenGLExecutor();
 
 		virtual void Clear() override;
 		virtual void SetClearColour(const glm::vec4& Colour) override;
