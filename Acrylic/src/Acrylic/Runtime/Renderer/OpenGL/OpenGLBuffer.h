@@ -7,11 +7,14 @@ namespace Acrylic
 	class OpenGLVertexBuffer : public IVertexBuffer
 	{
 	public:
+		OpenGLVertexBuffer(uint32_t Size);
 		OpenGLVertexBuffer(float* Vertices, uint32_t Count);
 		virtual ~OpenGLVertexBuffer() override;
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual void SetData(const void* Data, uint32_t Size) override;
 
 		virtual void				SetLayout(const BufferLayout& InLayout) { Layout = InLayout; }
 		virtual const BufferLayout& GetLayout() const { return Layout; }

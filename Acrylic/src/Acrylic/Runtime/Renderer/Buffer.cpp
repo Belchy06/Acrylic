@@ -6,6 +6,19 @@
 
 namespace Acrylic
 {
+	TSharedPtr<IVertexBuffer> IVertexBuffer::Create(uint32_t Size)
+	{
+		switch (GRenderInterface)
+		{
+			case ERenderInterface::None:
+				return nullptr;
+			case ERenderInterface::OpenGL:
+				return MakeShared<OpenGLVertexBuffer>(Size);
+			default:
+				return nullptr;
+		}
+	}
+
 	TSharedPtr<IVertexBuffer> IVertexBuffer::Create(float* Vertices, uint32_t Count)
 	{
 		switch (GRenderInterface)

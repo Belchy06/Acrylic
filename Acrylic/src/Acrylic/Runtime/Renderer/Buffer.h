@@ -165,9 +165,12 @@ namespace Acrylic
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
+		virtual void SetData(const void* Data, uint32_t Size) = 0;
+
 		virtual void				SetLayout(const BufferLayout& Layout) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 
+		static TSharedPtr<IVertexBuffer> Create(uint32_t Size);
 		static TSharedPtr<IVertexBuffer> Create(float* Vertices, uint32_t Count);
 	};
 

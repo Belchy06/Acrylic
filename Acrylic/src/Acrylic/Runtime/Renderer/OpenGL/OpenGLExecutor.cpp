@@ -31,11 +31,11 @@ namespace Acrylic
 		glClearColor(Colour.r, Colour.g, Colour.b, Colour.a);
 	}
 
-	void OpenGLExecutor::DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray)
+	void OpenGLExecutor::DrawIndexed(const TSharedPtr<IVertexArray>& VertexArray, uint32_t IndexCount)
 	{
 		AC_PROFILE_FUNCTION()
 
-		glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, IndexCount > 0 ? IndexCount : VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	void OpenGLExecutor::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)

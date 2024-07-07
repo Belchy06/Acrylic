@@ -6,6 +6,10 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
+#define MAXQUADS 10000
+#define MAXVERTICES MAXQUADS * 4
+#define MAXINDICES MAXQUADS * 6
+
 namespace Acrylic
 {
 	void Renderer2D::Init()
@@ -15,35 +19,39 @@ namespace Acrylic
 		RendererBase::Init();
 
 		Data = new Renderer2DStorage();
+		Data->VertexArray = IVertexArray::Create();
 
+		Data->VertexBuffer = IVertexBuffer::Create(MAXVERTICES / sizeof(QuadVertex));
 		// clang-format off
-		float Vertices[4 * 5] = {
-			-0.75f, -0.75f, 0.0f, 0.0f, 0.0f, 
-			 0.75f, -0.75f, 0.0f, 1.0f, 0.0f, 
-			 0.75f,  0.75f, 0.0f, 1.0f, 1.0f,
-			-0.75f,  0.75f, 0.0f, 0.0f, 1.0f,
-		};
-		// clang-format on
-
-		TSharedPtr<IVertexBuffer> VertexBuffer = IVertexBuffer::Create(Vertices, sizeof(Vertices) / sizeof(float));
-		// clang-format off
-		VertexBuffer->SetLayout({ 
+		Data->VertexBuffer->SetLayout({ 
 			{ EDataType::Float3, "a_Position" },
+			{ EDataType::Float4, "a_Color" },
 			{ EDataType::Float2, "a_TexCoord" } 
 		});
 		// clang-format on
 
-		// clang-format off
-		uint32_t Indices[6] = {
-			0, 1, 2,
-			2, 3, 0
-		};
-		// clang-format on
-		TSharedPtr<IIndexBuffer> IndexBuffer = IIndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t));
+		Data->QuadVertexBuffer = new QuadVertex[MAXVERTICES];
 
-		Data->VertexArray = IVertexArray::Create();
-		Data->VertexArray->AddVertexBuffer(VertexBuffer);
-		Data->VertexArray->SetIndexBuffer(IndexBuffer);
+		uint32_t* QuadIndices = new uint32_t[MAXINDICES];
+		uint32_t  Offset = 0;
+		for (uint32_t i = 0; i < MAXINDICES;)
+		{
+			QuadIndices[i++] = Offset + 0;
+			QuadIndices[i++] = Offset + 1;
+			QuadIndices[i++] = Offset + 2;
+
+			QuadIndices[i++] = Offset + 2;
+			QuadIndices[i++] = Offset + 3;
+			QuadIndices[i++] = Offset + 0;
+
+			Offset += 4;
+		}
+
+		Data->IndexBuffer = IIndexBuffer::Create(QuadIndices, MAXINDICES);
+		delete[] QuadIndices;
+
+		Data->VertexArray->AddVertexBuffer(Data->VertexBuffer);
+		Data->VertexArray->SetIndexBuffer(Data->IndexBuffer);
 
 		uint32_t		  WhiteTextureData = 0xFFFFFFFF;
 		CreateTextureDesc Desc = { 1, 1, EPixelFormat::RGB8, new UploadArrayBulkData(&WhiteTextureData, 4) };
@@ -67,11 +75,24 @@ namespace Acrylic
 
 		Data->Shader->Bind();
 		Data->Shader->UploadUniformMat4("u_ViewProjection", Camera->GetViewProjectionMatrix());
+
+		Data->QuadIndex = 0;
+		Data->QuadVertexBufferPtr = Data->QuadVertexBuffer;
+	}
+
+	void Renderer2D::Flush()
+	{
+		GCommandListExecutor->DrawIndexed(Data->VertexArray, Data->QuadIndex);
 	}
 
 	void Renderer2D::EndScene()
 	{
 		AC_PROFILE_FUNCTION()
+
+		uint32_t DataNum = PTRDIFF_TO_UINT32(Data->QuadVertexBufferPtr - Data->QuadVertexBuffer);
+		Data->VertexBuffer->SetData(Data->QuadVertexBuffer, DataNum * sizeof(QuadVertex));
+
+		Flush();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const glm::vec4& Colour)
@@ -85,15 +106,33 @@ namespace Acrylic
 	{
 		AC_PROFILE_FUNCTION()
 
-		Data->Shader->UploadUniformFloat4("u_Color", Colour);
-		Data->Shader->UploadUniformFloat("u_TilingFactor", 1.f);
-		Data->WhiteTexture->Bind();
-
 		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Position) * glm::scale(glm::mat4(1.f), glm::vec3(Size, 1.f));
-		Data->Shader->UploadUniformMat4("u_Transform", Transform);
 
-		Data->VertexArray->Bind();
-		GCommandListExecutor->DrawIndexed(Data->VertexArray);
+		// Top Right
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Colour;
+		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 0.f };
+		Data->QuadVertexBufferPtr++;
+
+		// Bottom Right
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x + Size.x, Position.y, 0.f, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Colour;
+		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 0.f };
+		Data->QuadVertexBufferPtr++;
+
+		// Bottom Left
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x + Size.x, Position.y + Size.y, 0.f, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Colour;
+		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 1.f };
+		Data->QuadVertexBufferPtr++;
+
+		// Top Left
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x, Position.y + Size.y, 0.f, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Colour;
+		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 1.f };
+		Data->QuadVertexBufferPtr++;
+
+		Data->QuadIndex += 6;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, const glm::vec4& Tint)

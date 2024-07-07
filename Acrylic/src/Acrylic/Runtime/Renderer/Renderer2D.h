@@ -18,6 +18,7 @@ namespace Acrylic
 		static void Shutdown();
 
 		static void BeginScene(TSharedPtr<ICamera> Camera);
+		static void Flush();
 		static void EndScene();
 
 		// Primitives
@@ -27,11 +28,24 @@ namespace Acrylic
 		static void DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, const glm::vec4& Tint = glm::vec4(1.f));
 
 	private:
+		struct QuadVertex
+		{
+			glm::vec3 Position;
+			glm::vec4 Colour;
+			glm::vec2 TexCoord;
+		};
+
 		struct Renderer2DStorage
 		{
-			TSharedPtr<IVertexArray> VertexArray;
-			TSharedPtr<IShader>		 Shader;
-			TSharedPtr<Texture2D>	 WhiteTexture;
+			TSharedPtr<IVertexArray>  VertexArray;
+			TSharedPtr<IVertexBuffer> VertexBuffer;
+			TSharedPtr<IIndexBuffer>  IndexBuffer;
+			TSharedPtr<IShader>		  Shader;
+			TSharedPtr<Texture2D>	  WhiteTexture;
+
+			uint32_t	QuadIndex = 0;
+			QuadVertex* QuadVertexBuffer = nullptr;
+			QuadVertex* QuadVertexBufferPtr = nullptr;
 		};
 
 		inline static Renderer2DStorage* Data;
