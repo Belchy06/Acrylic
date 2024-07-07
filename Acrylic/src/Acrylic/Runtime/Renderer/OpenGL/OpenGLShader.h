@@ -21,6 +21,7 @@ namespace Acrylic
 		virtual const String& GetName() const override { return Name; }
 
 		virtual void UploadUniformInt(const String& Name, int Value) const override;
+		virtual void UploadUniformIntArray(const String& Name, int* Value, uint32_t Count) const override;
 
 		virtual void UploadUniformFloat(const String& Name, float Value) const override;
 		virtual void UploadUniformFloat2(const String& Name, const glm::vec2& Vector) const override;

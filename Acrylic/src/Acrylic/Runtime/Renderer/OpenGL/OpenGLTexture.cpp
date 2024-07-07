@@ -115,6 +115,11 @@ namespace Acrylic
 		glDeleteTextures(1, &RendererId);
 	}
 
+	uint32_t OpenGLTexture2D::GetID() const
+	{
+		return RendererId;
+	}
+
 	uint32_t OpenGLTexture2D::GetWidth() const
 	{
 		return Width;

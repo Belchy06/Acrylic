@@ -12,6 +12,7 @@ namespace Acrylic
 		OpenGLTexture2D(const String& Path);
 		virtual ~OpenGLTexture2D();
 
+		virtual uint32_t GetID() const override;
 		virtual uint32_t GetWidth() const override;
 		virtual uint32_t GetHeight() const override;
 

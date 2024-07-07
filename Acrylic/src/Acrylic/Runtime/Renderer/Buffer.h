@@ -130,14 +130,14 @@ namespace Acrylic
 			CalculateOffsetsAndStride();
 		}
 
-		const TArray<BufferElement>& GetElements() const { return Elements; }
+		const TVector<BufferElement>& GetElements() const { return Elements; }
 		uint32_t					 GetStride() const { return Stride; }
 
-		TArray<BufferElement>::iterator begin() { return Elements.begin(); }
-		TArray<BufferElement>::iterator end() { return Elements.end(); }
+		TVector<BufferElement>::iterator begin() { return Elements.begin(); }
+		TVector<BufferElement>::iterator end() { return Elements.end(); }
 
-		TArray<BufferElement>::const_iterator begin() const { return Elements.begin(); }
-		TArray<BufferElement>::const_iterator end() const { return Elements.end(); }
+		TVector<BufferElement>::const_iterator begin() const { return Elements.begin(); }
+		TVector<BufferElement>::const_iterator end() const { return Elements.end(); }
 
 	private:
 		void CalculateOffsetsAndStride()
@@ -153,7 +153,7 @@ namespace Acrylic
 		}
 
 	private:
-		TArray<BufferElement> Elements;
+		TVector<BufferElement> Elements;
 		uint32_t			  Stride;
 	};
 

@@ -9,11 +9,11 @@ namespace Acrylic
 	{
 		LogTemplate* LogTemplate::Create(const char* Format, const LogField* Fields, const int32_t FieldCount)
 		{
-			const TArray<LogField>		FieldsView(Fields, Fields + FieldCount);
+			const TVector<LogField>		FieldsView(Fields, Fields + FieldCount);
 			const bool					bFindFields = !!Fields;
 			const bool					bPositional = !FieldCount || std::none_of(FieldsView.begin(), FieldsView.end(), [](const LogField& Field) -> bool { return Field.Name != nullptr; });
 
-			TArray<LogTemplateOp> Ops;
+			TVector<LogTemplateOp> Ops;
 
 			int32_t		FormatFieldCount = 0;
 			int32_t		BracketSearchOffset = 0;
@@ -114,7 +114,7 @@ namespace Acrylic
 			free(Template);
 		}
 
-		void LogTemplate::FormatTo(std::ostream& Out, const TArray<LogField>& Fields) const
+		void LogTemplate::FormatTo(std::ostream& Out, const TVector<LogField>& Fields) const
 		{
 			auto FindField = [&Fields, It = Fields.begin(), Index = 0, Format = StaticFormat](String Name, int32_t IndexHint = -1) mutable -> const LogField& {
 				if (IndexHint >= 0)
@@ -315,7 +315,7 @@ namespace Acrylic
 		LogTemplateFieldIterator& LogTemplateFieldIterator::operator++()
 		{
 			// Iterate on a copy
-			TArray<LogTemplateOp> Ops = NextOp;
+			TVector<LogTemplateOp> Ops = NextOp;
 			for (LogTemplateOp& Op : Ops)
 			{
 				if (Op.Code == LogTemplateOp::OpName)

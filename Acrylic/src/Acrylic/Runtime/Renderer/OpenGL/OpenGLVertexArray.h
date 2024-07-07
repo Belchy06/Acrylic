@@ -16,13 +16,13 @@ namespace Acrylic
 		virtual void AddVertexBuffer(const TSharedPtr<IVertexBuffer>& VertexBuffer) override;
 		virtual void SetIndexBuffer(const TSharedPtr<IIndexBuffer>& IndexBuffer) override;
 
-		virtual const TArray<TSharedPtr<IVertexBuffer>>& GetVertexBuffers() const override { return VertexBuffers; }
+		virtual const TVector<TSharedPtr<IVertexBuffer>>& GetVertexBuffers() const override { return VertexBuffers; }
 		virtual const TSharedPtr<IIndexBuffer>&				  GetIndexBuffer() const override { return IndexBuffer; }
 
 	private:
 		uint32_t RendererId;
 
-		TArray<TSharedPtr<IVertexBuffer>> VertexBuffers;
+		TVector<TSharedPtr<IVertexBuffer>> VertexBuffers;
 		TSharedPtr<IIndexBuffer>			   IndexBuffer;
 	};
 } // namespace Acrylic

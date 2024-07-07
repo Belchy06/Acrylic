@@ -9,6 +9,12 @@
 #include "Renderer/Texture.h"
 #include "Renderer/VertexArray.h"
 
+// TODO: RendererCapabilities
+#define MAXQUADS 10000
+#define MAXVERTICES MAXQUADS * 4
+#define MAXINDICES MAXQUADS * 6
+#define MAXTEXTURESLOTS 32
+
 namespace Acrylic
 {
 	class ACRYLIC_API Renderer2D
@@ -24,8 +30,8 @@ namespace Acrylic
 		// Primitives
 		static void DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const glm::vec4& Colour);
 		static void DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const glm::vec4& Colour);
-		static void DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, const glm::vec4& Tint = glm::vec4(1.f));
-		static void DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, const glm::vec4& Tint = glm::vec4(1.f));
+		static void DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, float TilingFactor = 1.f, const glm::vec4& Tint = glm::vec4(1.f));
+		static void DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, float TilingFactor = 1.f, const glm::vec4& Tint = glm::vec4(1.f));
 
 	private:
 		struct QuadVertex
@@ -33,6 +39,8 @@ namespace Acrylic
 			glm::vec3 Position;
 			glm::vec4 Colour;
 			glm::vec2 TexCoord;
+			float	  TexIndex;
+			float	  TilingFactor;
 		};
 
 		struct Renderer2DStorage
@@ -41,11 +49,13 @@ namespace Acrylic
 			TSharedPtr<IVertexBuffer> VertexBuffer;
 			TSharedPtr<IIndexBuffer>  IndexBuffer;
 			TSharedPtr<IShader>		  Shader;
-			TSharedPtr<Texture2D>	  WhiteTexture;
 
 			uint32_t	QuadIndex = 0;
 			QuadVertex* QuadVertexBuffer = nullptr;
 			QuadVertex* QuadVertexBufferPtr = nullptr;
+
+			TArray<TSharedPtr<ITexture>, MAXTEXTURESLOTS> Textures;
+			uint32_t									  TexturesIndex = 1; // 0 = white texture
 		};
 
 		inline static Renderer2DStorage* Data;

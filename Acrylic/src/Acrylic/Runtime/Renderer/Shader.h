@@ -21,6 +21,7 @@ namespace Acrylic
 
 		// TEMP (to be removed)
 		virtual void UploadUniformInt(const String& Name, int Value) const = 0;
+		virtual void UploadUniformIntArray(const String& Name, int* Value, uint32_t Count) const = 0;
 
 		virtual void UploadUniformFloat(const String& Name, float Value) const = 0;
 		virtual void UploadUniformFloat2(const String& Name, const glm::vec2& Vector) const = 0;

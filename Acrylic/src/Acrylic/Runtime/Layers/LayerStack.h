@@ -17,11 +17,11 @@ namespace Acrylic
 		void PopLayer(Layer* InLayer);
 		void PopOverlay(Layer* InOverlay);
 
-		TArray<Layer*>::iterator	  begin() { return Layers.begin(); }
-		TArray<Layer*>::iterator end() { return Layers.end(); }
+		TVector<Layer*>::iterator begin() { return Layers.begin(); }
+		TVector<Layer*>::iterator end() { return Layers.end(); }
 
 	private:
-		TArray<Layer*> Layers;
+		TVector<Layer*> Layers;
 		uint32_t			LayerInsertIndex = 0;
 	};
 } // namespace Acrylic

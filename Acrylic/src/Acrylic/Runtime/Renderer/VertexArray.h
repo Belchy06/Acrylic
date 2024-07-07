@@ -16,7 +16,7 @@ namespace Acrylic
 		virtual void AddVertexBuffer(const TSharedPtr<IVertexBuffer>& VertexBuffer) = 0;
 		virtual void SetIndexBuffer(const TSharedPtr<IIndexBuffer>& IndexBuffer) = 0;
 
-		virtual const TArray<TSharedPtr<IVertexBuffer>>& GetVertexBuffers() const = 0;
+		virtual const TVector<TSharedPtr<IVertexBuffer>>& GetVertexBuffers() const = 0;
 		virtual const TSharedPtr<IIndexBuffer>&				  GetIndexBuffer() const = 0;
 
 		static TSharedPtr<IVertexArray> Create();

@@ -30,7 +30,7 @@ namespace Acrylic
 
 	void LayerStack::PopLayer(Layer* InLayer)
 	{
-		TArray<Layer*>::iterator It = std::find(Layers.begin(), Layers.end(), InLayer);
+		TVector<Layer*>::iterator It = std::find(Layers.begin(), Layers.end(), InLayer);
 		if (It != Layers.end())
 		{
 			InLayer->OnAttach();
@@ -41,7 +41,7 @@ namespace Acrylic
 
 	void LayerStack::PopOverlay(Layer* InOverlay)
 	{
-		TArray<Layer*>::iterator It = std::find(Layers.begin(), Layers.end(), InOverlay);
+		TVector<Layer*>::iterator It = std::find(Layers.begin(), Layers.end(), InOverlay);
 		if (It != Layers.end())
 		{
 			InOverlay->OnDetach();

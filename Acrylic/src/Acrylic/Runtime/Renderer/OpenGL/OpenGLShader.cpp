@@ -136,7 +136,7 @@ namespace Acrylic
 		// Get a program object.
 		GLuint GLProgram = glCreateProgram();
 
-		TArray<GLenum> ShaderIds;
+		TVector<GLenum> ShaderIds;
 		ShaderIds.reserve(Sources.size());
 
 		for (const TPair<GLenum, String>& SourcePair : Sources)
@@ -155,7 +155,7 @@ namespace Acrylic
 				GLint MaxLength = 0;
 				glGetShaderiv(Shader, GL_INFO_LOG_LENGTH, &MaxLength);
 
-				TArray<GLchar> InfoLog(MaxLength);
+				TVector<GLchar> InfoLog(MaxLength);
 				glGetShaderInfoLog(Shader, MaxLength, &MaxLength, &InfoLog[0]);
 
 				glDeleteShader(Shader);
@@ -179,7 +179,7 @@ namespace Acrylic
 			GLint MaxLength = 0;
 			glGetProgramiv(GLProgram, GL_INFO_LOG_LENGTH, &MaxLength);
 
-			TArray<GLchar> InfoLog(MaxLength);
+			TVector<GLchar> InfoLog(MaxLength);
 			glGetProgramInfoLog(GLProgram, MaxLength, &MaxLength, &InfoLog[0]);
 
 			glDeleteProgram(GLProgram);
@@ -228,6 +228,19 @@ namespace Acrylic
 			return;
 		}
 		glUniform1i(Location, Value);
+	}
+
+	void OpenGLShader::UploadUniformIntArray(const String& Name, int* Value, uint32_t Count) const
+	{
+		AC_PROFILE_FUNCTION()
+
+		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
+		if (Location == -1)
+		{
+			AC_LOG(LogOpenGLShader, Error, "Float uniform not found: {0}", Name);
+			return;
+		}
+		glUniform1iv(Location, Count, Value);
 	}
 
 	void OpenGLShader::UploadUniformFloat(const String& Name, float Value) const

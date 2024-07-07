@@ -100,13 +100,13 @@ namespace Acrylic
 			LogTemplate* GetNext() { return Next; }
 			void		 SetNext(LogTemplate* Template) { Next = Template; }
 
-			TArray<LogTemplateOp>&			  GetOpData() { return OpData; }
-			const TArray<LogTemplateOp>& GetOpData() const { return OpData; }
+			TVector<LogTemplateOp>&		  GetOpData() { return OpData; }
+			const TVector<LogTemplateOp>& GetOpData() const { return OpData; }
 
-			void FormatTo(std::ostream& Out, const TArray<LogField>& Fields) const;
+			void FormatTo(std::ostream& Out, const TVector<LogField>& Fields) const;
 
 		private:
-			inline constexpr LogTemplate(const char* StaticFormat, TArray<LogTemplateOp>&& OpData)
+			inline constexpr LogTemplate(const char* StaticFormat, TVector<LogTemplateOp>&& OpData)
 				: StaticFormat(StaticFormat)
 				, OpData(OpData)
 			{
@@ -117,7 +117,7 @@ namespace Acrylic
 
 			const char*				   StaticFormat = nullptr;
 			LogTemplate*			   Next = nullptr;
-			TArray<LogTemplateOp>	   OpData;
+			TVector<LogTemplateOp>	   OpData;
 		};
 
 		class ACRYLIC_API LogTemplateFieldIterator
@@ -136,7 +136,7 @@ namespace Acrylic
 
 		private:
 			String				   Name;
-			TArray<LogTemplateOp> NextOp;
+			TVector<LogTemplateOp> NextOp;
 			const char*				   NextFormat = nullptr;
 		};
 
@@ -167,7 +167,7 @@ namespace Acrylic
 			void			   SetTemplate(const LogTemplate* InTemplate) { Template = InTemplate; }
 
 			/** The fields referenced by the format string, along with optional additional fields. */
-			const TArray<LogField>& GetFields() const { return Fields; }
+			const TVector<LogField>& GetFields() const { return Fields; }
 			void						 SetFields(const LogTemplate& Template, const LogField* InFields, const int32_t FieldCount)
 			{
 				Fields.assign(InFields, InFields + FieldCount);
@@ -208,7 +208,7 @@ namespace Acrylic
 			String			  Category;
 			ELogVerbosity		  Verbosity = ELogVerbosity::Log;
 			std::time_t			  Time = std::time(nullptr);
-			TArray<LogField>	  Fields;
+			TVector<LogField>	  Fields;
 			const LogTemplate*	  Template = nullptr;
 			const char*			  TextNamespace = nullptr;
 			const char*			  TextKey = nullptr;
