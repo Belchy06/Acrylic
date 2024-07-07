@@ -17,20 +17,25 @@ namespace Acrylic
 	{
 		if (IInput::IsKeyPressed(AC_KEY_W))
 		{
-			CameraPosition.y += MoveSpeed * ts;
+			CameraPosition.x -= sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
+			CameraPosition.y += cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
+
 		}
 		else if (IInput::IsKeyPressed(AC_KEY_S))
 		{
-			CameraPosition.y -= MoveSpeed * ts;
+			CameraPosition.x += sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
+			CameraPosition.y -= cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
 		}
 
 		if (IInput::IsKeyPressed(AC_KEY_A))
 		{
-			CameraPosition.x -= MoveSpeed * ts;
+			CameraPosition.x -= cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
+			CameraPosition.y -= sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
 		}
 		else if (IInput::IsKeyPressed(AC_KEY_D))
 		{
-			CameraPosition.x += MoveSpeed * ts;
+			CameraPosition.x += cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
+			CameraPosition.y += sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
 		}
 
 		Camera->SetPosition(CameraPosition);	

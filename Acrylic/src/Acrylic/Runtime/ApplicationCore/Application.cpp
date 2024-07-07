@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Renderer2D.h"
 #include "Platform.h"
 
 #include <glfw/glfw3.h>
@@ -20,6 +21,7 @@ namespace Acrylic
 		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		Renderer2D::Init();
 
 		Stack.PushOverlay(new ImGuiLayer());
 

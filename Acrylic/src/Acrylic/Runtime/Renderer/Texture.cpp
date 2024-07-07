@@ -6,9 +6,22 @@
 
 namespace Acrylic
 {
+	TSharedPtr<Texture2D> Texture2D::Create(CreateTextureDesc& Desc)
+	{
+		switch (GRenderInterface)
+		{
+			case ERenderInterface::None:
+				return nullptr;
+			case ERenderInterface::OpenGL:
+				return MakeShared<OpenGLTexture2D>(Desc);
+			default:
+				return nullptr;
+		}
+	}
+
 	TSharedPtr<Texture2D> Texture2D::Create(const String& Path)
 	{
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				return nullptr;

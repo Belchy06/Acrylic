@@ -8,6 +8,7 @@ namespace Acrylic
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
+		OpenGLTexture2D(CreateTextureDesc& Desc);
 		OpenGLTexture2D(const String& Path);
 		virtual ~OpenGLTexture2D();
 

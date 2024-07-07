@@ -9,7 +9,7 @@ namespace Acrylic
 {
 	TSharedPtr<IShader> IShader::Create(const String& Path, const String& Name)
 	{
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				return nullptr;
@@ -22,7 +22,7 @@ namespace Acrylic
 
 	TSharedPtr<IShader> IShader::Create(const String& VertexSrc, const String& FragmentSrc, const String& Name)
 	{
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				return nullptr;

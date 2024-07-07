@@ -8,7 +8,7 @@ namespace Acrylic
 {
 	TSharedPtr<IVertexBuffer> IVertexBuffer::Create(float* Vertices, uint32_t Count)
 	{
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				return nullptr;
@@ -21,7 +21,7 @@ namespace Acrylic
 
 	TSharedPtr<IIndexBuffer> IIndexBuffer::Create(uint32_t* Indices, uint32_t Count)
 	{
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				return nullptr;

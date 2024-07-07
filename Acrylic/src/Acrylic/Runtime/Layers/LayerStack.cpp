@@ -33,6 +33,7 @@ namespace Acrylic
 		TArray<Layer*>::iterator It = std::find(Layers.begin(), Layers.end(), InLayer);
 		if (It != Layers.end())
 		{
+			InLayer->OnAttach();
 			Layers.erase(It);
 			LayerInsertIndex--;
 		}
@@ -43,6 +44,7 @@ namespace Acrylic
 		TArray<Layer*>::iterator It = std::find(Layers.begin(), Layers.end(), InOverlay);
 		if (It != Layers.end())
 		{
+			InOverlay->OnDetach();
 			Layers.erase(It);
 		}
 	}

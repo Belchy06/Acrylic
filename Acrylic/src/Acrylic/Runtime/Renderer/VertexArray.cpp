@@ -8,7 +8,7 @@ namespace Acrylic
 {
 	TSharedPtr<IVertexArray> IVertexArray::Create()
 	{
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				return nullptr;

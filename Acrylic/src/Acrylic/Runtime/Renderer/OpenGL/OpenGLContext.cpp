@@ -25,6 +25,11 @@ namespace Acrylic
 		AC_LOG(LogOpenGLContext, Log, "\tVendor: {0}", glGetString(GL_VENDOR));
 		AC_LOG(LogOpenGLContext, Log, "\tRenderer: {0}", glGetString(GL_RENDERER));
 		AC_LOG(LogOpenGLContext, Log, "\tVersion: {0}", glGetString(GL_VERSION));
+
+		int Major, Minor;
+		glGetIntegerv(GL_MAJOR_VERSION, &Major);
+		glGetIntegerv(GL_MINOR_VERSION, &Minor);
+		AC_ASSERT(Major > 4 || Major == 4 && Minor >= 5);
 	}
 
 	void OpenGLContext::SwapBuffers()

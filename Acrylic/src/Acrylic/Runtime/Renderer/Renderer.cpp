@@ -7,7 +7,7 @@
 
 namespace Acrylic
 {
-	void Renderer::Init()
+	void RendererBase::Init()
 	{
 		if (GCommandListExecutor)
 		{
@@ -16,9 +16,9 @@ namespace Acrylic
 		}
 
 		// TODO: parse command line for rendering type
-		API = ERenderInterface::OpenGL;
+		GRenderInterface = ERenderInterface::OpenGL;
 
-		switch (Renderer::GetRenderInterface())
+		switch (GRenderInterface)
 		{
 			case ERenderInterface::None:
 				break;
@@ -28,6 +28,11 @@ namespace Acrylic
 			default:
 				break;
 		}
+	}
+
+	void Renderer::Init()
+	{
+		RendererBase::Init();
 	}
 
 	void Renderer::OnWindowResize(uint32_t Width, uint32_t Height)

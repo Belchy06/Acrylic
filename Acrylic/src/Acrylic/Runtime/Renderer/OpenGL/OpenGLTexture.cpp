@@ -6,6 +6,60 @@
 
 namespace Acrylic
 {
+	GLenum GetOpenGLPixelFormat(EPixelFormat PixelFormat)
+	{
+		switch (PixelFormat)
+		{
+			case EPixelFormat::RGBA8:
+				return GL_RGBA8;
+			case EPixelFormat::RGB8:
+				return GL_RGB8;
+		}
+
+		AC_ASSERT(false);
+		return 0;
+	}
+
+	GLenum GetOpenGLDataFormat(EPixelFormat PixelFormat)
+	{
+		switch (PixelFormat)
+		{
+			case EPixelFormat::RGBA8:
+				return GL_RGBA;
+			case EPixelFormat::RGB8:
+				return GL_RGB;				
+		}
+
+		AC_ASSERT(false);
+		return 0;
+	}
+
+	OpenGLTexture2D::OpenGLTexture2D(CreateTextureDesc& Desc)
+		: Width(Desc.Width)
+		, Height(Desc.Height)
+		, RendererId(0)
+	{
+		GLenum InternalFormat = GetOpenGLPixelFormat(Desc.PixelFormat); 
+		GLenum DataFormat = GetOpenGLDataFormat(Desc.PixelFormat);
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &RendererId);
+		glTextureStorage2D(RendererId, 1, InternalFormat, Width, Height);
+
+		glTextureParameteri(RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		if (Desc.BulkData != nullptr)
+		{
+			glTextureSubImage2D(RendererId, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, Desc.BulkData->GetData());
+
+			Desc.BulkData->Discard();
+			Desc.BulkData = nullptr;
+		}
+	}
+
 	OpenGLTexture2D::OpenGLTexture2D(const String& Path)
 		: Path(Path)
 		, Width(0)
