@@ -86,6 +86,7 @@ namespace Acrylic
 		AC_PROFILE_FUNCTION()
 
 		Data->Shader->UploadUniformFloat4("u_Color", Colour);
+		Data->Shader->UploadUniformFloat("u_TilingFactor", 1.f);
 		Data->WhiteTexture->Bind();
 
 		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Position) * glm::scale(glm::mat4(1.f), glm::vec3(Size, 1.f));
@@ -107,6 +108,7 @@ namespace Acrylic
 		AC_PROFILE_FUNCTION()
 
 		Data->Shader->UploadUniformFloat4("u_Color", Tint);
+		Data->Shader->UploadUniformFloat("u_TilingFactor", 1.f);
 		Texture->Bind();
 
 		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Position) * glm::scale(glm::mat4(1.f), glm::vec3(Size, 1.f));
