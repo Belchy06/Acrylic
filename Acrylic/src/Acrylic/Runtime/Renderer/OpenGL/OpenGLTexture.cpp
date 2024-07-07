@@ -1,8 +1,10 @@
 #include "acpch.h"
 #include "OpenGLTexture.h"
 
-#include <stb_image.h>
+#include "Core/Instrumentation.h"
+
 #include <glad/glad.h>
+#include <stb_image.h>
 
 namespace Acrylic
 {
@@ -39,6 +41,8 @@ namespace Acrylic
 		, Height(Desc.Height)
 		, RendererId(0)
 	{
+		AC_PROFILE_FUNCTION()
+
 		GLenum InternalFormat = GetOpenGLPixelFormat(Desc.PixelFormat); 
 		GLenum DataFormat = GetOpenGLDataFormat(Desc.PixelFormat);
 
@@ -66,6 +70,8 @@ namespace Acrylic
 		, Height(0)
 		, RendererId(0)
 	{
+		AC_PROFILE_FUNCTION()
+
 		stbi_set_flip_vertically_on_load(1);
 
 		int		 LoadedWidth, LoadedHeight, LoadedChannels;
@@ -121,6 +127,8 @@ namespace Acrylic
 
 	void OpenGLTexture2D::Bind(uint32_t Slot) const
 	{
+		AC_PROFILE_FUNCTION()
+
 		glBindTextureUnit(Slot, RendererId);
 	}
 } // namespace Acrylic

@@ -1,6 +1,8 @@
 #include "acpch.h"
 #include "OpenGLVertexArray.h"
 
+#include "Core/Instrumentation.h"
+
 #include <glad/glad.h>
 
 namespace Acrylic
@@ -33,27 +35,37 @@ namespace Acrylic
 	OpenGLVertexArray::OpenGLVertexArray()
 		: RendererId(0)
 	{
+		AC_PROFILE_FUNCTION()
+
 		glCreateVertexArrays(1, &RendererId);
 
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		AC_PROFILE_FUNCTION()
+
 		glDeleteVertexArrays(1, &RendererId);
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
+		AC_PROFILE_FUNCTION()
+
 		glBindVertexArray(RendererId);
 	}
 
 	void OpenGLVertexArray::Unbind() const
 	{
+		AC_PROFILE_FUNCTION()
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const TSharedPtr<IVertexBuffer>& VertexBuffer)
 	{
+		AC_PROFILE_FUNCTION()
+
 		AC_ASSERT(VertexBuffer->GetLayout().GetElements().size() > 0)
 
 		glBindVertexArray(RendererId);
@@ -78,6 +90,8 @@ namespace Acrylic
 
 	void OpenGLVertexArray::SetIndexBuffer(const TSharedPtr<IIndexBuffer>& InIndexBuffer)
 	{
+		AC_PROFILE_FUNCTION()
+
 		glBindVertexArray(RendererId);
 		InIndexBuffer->Bind();
 

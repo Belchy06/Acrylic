@@ -1,6 +1,7 @@
 #include "acpch.h"
 #include "Renderer2D.h"
 
+#include "Core/Instrumentation.h"
 #include "Renderer/Renderer.h"
 
 #include <glm/ext/matrix_transform.hpp>
@@ -9,6 +10,8 @@ namespace Acrylic
 {
 	void Renderer2D::Init()
 	{
+		AC_PROFILE_FUNCTION()
+
 		RendererBase::Init();
 
 		Data = new Renderer2DStorage();
@@ -53,26 +56,35 @@ namespace Acrylic
 
 	void Renderer2D::Shutdown()
 	{
+		AC_PROFILE_FUNCTION()
+
 		delete Data;
 	}
 
 	void Renderer2D::BeginScene(TSharedPtr<ICamera> Camera)
 	{
+		AC_PROFILE_FUNCTION()
+
 		Data->Shader->Bind();
 		Data->Shader->UploadUniformMat4("u_ViewProjection", Camera->GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
 	{
+		AC_PROFILE_FUNCTION()
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const glm::vec4& Colour)
 	{
+		AC_PROFILE_FUNCTION()
+
 		DrawQuad(glm::vec3(Position, 0.f), Size, Colour);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const glm::vec4& Colour)
 	{
+		AC_PROFILE_FUNCTION()
+
 		Data->Shader->UploadUniformFloat4("u_Color", Colour);
 		Data->WhiteTexture->Bind();
 
@@ -85,11 +97,15 @@ namespace Acrylic
 
 	void Renderer2D::DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, const glm::vec4& Tint)
 	{
+		AC_PROFILE_FUNCTION()
+
 		DrawQuad(glm::vec3(Position, 0.f), Size, Texture, Tint);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, const glm::vec4& Tint)
 	{
+		AC_PROFILE_FUNCTION()
+
 		Data->Shader->UploadUniformFloat4("u_Color", Tint);
 		Texture->Bind();
 

@@ -2,6 +2,7 @@
 #include "OpenGLShader.h"
 
 #include "Core/Containers/Pair.h"
+#include "Core/Instrumentation.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -31,6 +32,8 @@ namespace Acrylic
 	OpenGLShader::OpenGLShader(const String& Path, const String& InName)
 		: RendererId(0)
 	{
+		AC_PROFILE_FUNCTION()
+
 		String ShaderSource = ReadFile(Path);
 		if (ShaderSource.empty())
 		{
@@ -57,6 +60,8 @@ namespace Acrylic
 		: RendererId(0)
 		, Name(Name)
 	{
+		AC_PROFILE_FUNCTION()
+
 		TUnorderedMap<GLenum, String> ShaderSources;
 		ShaderSources[GL_VERTEX_SHADER] = VertexSrc;
 		ShaderSources[GL_FRAGMENT_SHADER] = FragmentSrc;
@@ -70,6 +75,8 @@ namespace Acrylic
 
 	String OpenGLShader::ReadFile(const String& Path)
 	{
+		AC_PROFILE_FUNCTION()
+
 		String		  Result;
 		std::ifstream Stream(Path, std::ios::in | std::ios::binary);
 		if (!Stream)
@@ -96,6 +103,8 @@ namespace Acrylic
 
 	TUnorderedMap<GLenum, String> OpenGLShader::Preprocess(const String& Source)
 	{
+		AC_PROFILE_FUNCTION()
+
 		TUnorderedMap<GLenum, String> ShaderSources;
 
 		const char* TypeToken = "#type";
@@ -120,6 +129,8 @@ namespace Acrylic
 
 	void OpenGLShader::Compile(const TUnorderedMap<GLenum, String>& Sources)
 	{
+		AC_PROFILE_FUNCTION()
+
 		// Vertex and fragment shaders are successfully compiled.
 		// Now time to link them together into a program.
 		// Get a program object.
@@ -194,17 +205,21 @@ namespace Acrylic
 
 	void OpenGLShader::Bind() const
 	{
+		AC_PROFILE_FUNCTION()
+
 		glUseProgram(RendererId);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		AC_PROFILE_FUNCTION()
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::UploadUniformInt(const String& Name, int Value) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)
@@ -217,7 +232,7 @@ namespace Acrylic
 
 	void OpenGLShader::UploadUniformFloat(const String& Name, float Value) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)
@@ -230,7 +245,7 @@ namespace Acrylic
 
 	void OpenGLShader::UploadUniformFloat2(const String& Name, const glm::vec2& Vector) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)
@@ -243,7 +258,7 @@ namespace Acrylic
 
 	void OpenGLShader::UploadUniformFloat3(const String& Name, const glm::vec3& Vector) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)
@@ -256,7 +271,7 @@ namespace Acrylic
 
 	void OpenGLShader::UploadUniformFloat4(const String& Name, const glm::vec4& Vector) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)
@@ -269,7 +284,7 @@ namespace Acrylic
 
 	void OpenGLShader::UploadUniformMat3(const String& Name, const glm::mat3& Matrix) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)
@@ -282,7 +297,7 @@ namespace Acrylic
 
 	void OpenGLShader::UploadUniformMat4(const String& Name, const glm::mat4& Matrix) const
 	{
-		// BIND PROGRAM BEFORE UPLOADING
+		AC_PROFILE_FUNCTION()
 
 		GLint Location = glGetUniformLocation(RendererId, Name.c_str());
 		if (Location == -1)

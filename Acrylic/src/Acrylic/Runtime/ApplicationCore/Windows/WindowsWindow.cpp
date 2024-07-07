@@ -1,6 +1,7 @@
 #include "acpch.h"
 #include "WindowsWindow.h"
 
+#include "Core/Instrumentation.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
@@ -35,6 +36,8 @@ namespace Acrylic
 
 	void WindowsWindow::Init(const WindowProperties& Properties)
 	{
+		AC_PROFILE_FUNCTION()
+
 		Data.Title = Properties.Title;
 		Data.Width = Properties.Width;
 		Data.Height = Properties.Height;
@@ -146,17 +149,23 @@ namespace Acrylic
 
 	void WindowsWindow::Shutdown()
 	{
+		AC_PROFILE_FUNCTION()
+
 		glfwDestroyWindow(Window);
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
+		AC_PROFILE_FUNCTION()
+
 		glfwPollEvents();
 		GraphicsContext->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool bEnabled)
 	{
+		AC_PROFILE_FUNCTION()
+
 		glfwSwapInterval(bEnabled ? 1 : 0);
 		Data.bVsync = bEnabled;
 	}

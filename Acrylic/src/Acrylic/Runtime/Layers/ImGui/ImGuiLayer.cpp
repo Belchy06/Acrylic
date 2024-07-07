@@ -58,12 +58,6 @@ namespace Acrylic
 		IO.DeltaTime = ts.GetSeconds();
 	}
 
-	void ImGuiLayer::OnImGuiRender()
-	{
-		static bool bShow = true;
-		ImGui::ShowDemoWindow(&bShow);
-	}
-
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();

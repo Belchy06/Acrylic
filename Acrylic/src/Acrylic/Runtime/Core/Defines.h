@@ -20,6 +20,7 @@
 
 #ifdef AC_DEBUG
 	#define AC_ENABLE_ASSERTS 1
+	#define AC_ENABLE_PROFILING 1
 #endif
 
 #if AC_ENABLE_ASSERTS

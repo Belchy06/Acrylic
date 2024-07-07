@@ -1,6 +1,8 @@
 #include "acpch.h"
 #include "OpenGLContext.h"
 
+#include "Core/Instrumentation.h"
+
 #include <glfw/glfw3.h>
 #include <glad/glad.h>
 
@@ -16,6 +18,8 @@ namespace Acrylic
 
 	void OpenGLContext::Init()
 	{
+		AC_PROFILE_FUNCTION()
+
 		glfwMakeContextCurrent(WindowHandle);
 
 		int Status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -34,6 +38,8 @@ namespace Acrylic
 
 	void OpenGLContext::SwapBuffers()
 	{
+		AC_PROFILE_FUNCTION()
+
 		AC_ASSERT(WindowHandle);
 		glfwSwapBuffers(WindowHandle);
 	}

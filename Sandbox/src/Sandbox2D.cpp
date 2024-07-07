@@ -21,22 +21,32 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Acrylic::Timestep ts)
 {
+	AC_PROFILE_FUNCTION()
+
 	// Update
-	CameraController->OnUpdate(ts);
+	{
+		AC_PROFILE_SCOPE("Update")
+		CameraController->OnUpdate(ts);
+	}
 
-	// Render
-	Acrylic::GCommandListExecutor->SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
-	Acrylic::GCommandListExecutor->Clear();
+	{
+		AC_PROFILE_SCOPE("Render")
+		// Render
+		Acrylic::GCommandListExecutor->SetClearColour({ 1.f, 0.1f, 0.1f, 1.f });
+		Acrylic::GCommandListExecutor->Clear();
 
-	Acrylic::Renderer2D::BeginScene(CameraController->GetCamera());
-	Acrylic::Renderer2D::DrawQuad({ -1.f, 0.f }, { .8f, .8f }, glm::vec4(Color, 1.f));
-	Acrylic::Renderer2D::DrawQuad({  .5f,-.5f }, { .5f, .75f }, glm::vec4(Color, 1.f));
-	Acrylic::Renderer2D::DrawQuad({ .0f, .0f, -0.1f }, { 10.f, 10.f }, Texture);
-	Acrylic::Renderer2D::EndScene();
+		Acrylic::Renderer2D::BeginScene(CameraController->GetCamera());
+		Acrylic::Renderer2D::DrawQuad({ -1.f, 0.f }, { .8f, .8f }, glm::vec4(Color, 1.f));
+		Acrylic::Renderer2D::DrawQuad({ .5f, -.5f }, { .5f, .75f }, glm::vec4(Color, 1.f));
+		Acrylic::Renderer2D::DrawQuad({ .0f, .0f, -0.1f }, { 10.f, 10.f }, Texture);
+		Acrylic::Renderer2D::EndScene();
+	}
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+	AC_PROFILE_FUNCTION()
+
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit3("Color", glm::value_ptr(Color));
 	ImGui::End();

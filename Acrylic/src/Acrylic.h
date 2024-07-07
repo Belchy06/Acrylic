@@ -1,18 +1,23 @@
 #pragma once
 
 #include "Acrylic/Runtime/ApplicationCore/Application.h"
+
 #include "Acrylic/Runtime/Core/Containers/Array.h"
 #include "Acrylic/Runtime/Core/Containers/Pair.h"
 #include "Acrylic/Runtime/Core/Containers/String.h"
+#include "Acrylic/Runtime/Core/Instrumentation.h"
 #include "Acrylic/Runtime/Core/Logging.h"
 #include "Acrylic/Runtime/Core/Core.h"
 #include "Acrylic/Runtime/Core/Timestep.h"
+
 #include "Acrylic/Runtime/Events/ApplicationEvent.h"
 #include "Acrylic/Runtime/Events/KeyEvent.h"
 #include "Acrylic/Runtime/Events/MouseEvent.h"
+
 #include "Acrylic/Runtime/Layers/Layer.h"
 #include "Acrylic/Runtime/Layers/LayerStack.h"
 #include "Acrylic/Runtime/Layers/ImGui/ImGuiLayer.h"
+
 #include "Acrylic/Runtime/Input/Input.h"
 #include "Acrylic/Runtime/Input/KeyCodes.h"
 #include "Acrylic/Runtime/Input/MouseButtonCodes.h"
