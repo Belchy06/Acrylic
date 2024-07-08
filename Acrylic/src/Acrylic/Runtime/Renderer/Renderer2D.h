@@ -28,10 +28,16 @@ namespace Acrylic
 		static void EndScene();
 
 		// Primitives
-		static void DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const glm::vec4& Colour);
-		static void DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const glm::vec4& Colour);
-		static void DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, float TilingFactor = 1.f, const glm::vec4& Tint = glm::vec4(1.f));
-		static void DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, float TilingFactor = 1.f, const glm::vec4& Tint = glm::vec4(1.f));
+		struct DrawQuadProps
+		{
+			glm::vec3			 Position = glm::vec3(0.f);
+			glm::vec2			 Size = glm::vec2(1.f);
+			float				 Rotation = 0.f; // Degrees
+			glm::vec4			 Colour = glm::vec4(1.f);
+			TSharedPtr<ITexture> Texture = nullptr;
+			float				 TilingFactor = 1.f;
+		};
+		static void DrawQuad(const DrawQuadProps& Props);
 
 	private:
 		struct QuadVertex

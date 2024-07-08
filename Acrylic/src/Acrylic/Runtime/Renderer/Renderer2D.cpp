@@ -64,7 +64,6 @@ namespace Acrylic
 		Data->Shader = IShader::Create("assets/shaders/Texture.glsl");
 		Data->Shader->Bind();
 		Data->Shader->UploadUniformIntArray("u_Texture", Samplers, MAXTEXTURESLOTS);
-
 	}
 
 	void Renderer2D::Shutdown()
@@ -107,113 +106,62 @@ namespace Acrylic
 		Flush();
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const glm::vec4& Colour)
+	void Renderer2D::DrawQuad(const DrawQuadProps& Props)
 	{
 		AC_PROFILE_FUNCTION()
 
-		DrawQuad(glm::vec3(Position, 0.f), Size, Colour);
-	}
-
-	void Renderer2D::DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const glm::vec4& Colour)
-	{
-		AC_PROFILE_FUNCTION()
-
-		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Position) * glm::scale(glm::mat4(1.f), glm::vec3(Size, 1.f));
-
-		// Top Right
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 0.f };
-		Data->QuadVertexBufferPtr->TexIndex = 0;
-		Data->QuadVertexBufferPtr->TilingFactor = 1.f;
-		Data->QuadVertexBufferPtr++;
-
-		// Bottom Right
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x + Size.x, Position.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 0.f };
-		Data->QuadVertexBufferPtr->TexIndex = 0;
-		Data->QuadVertexBufferPtr->TilingFactor = 1.f;
-		Data->QuadVertexBufferPtr++;
-
-		// Bottom Left
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x + Size.x, Position.y + Size.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 1.f };
-		Data->QuadVertexBufferPtr->TexIndex = 0;
-		Data->QuadVertexBufferPtr->TilingFactor = 1.f;
-		Data->QuadVertexBufferPtr++;
-
-		// Top Left
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x, Position.y + Size.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 1.f };
-		Data->QuadVertexBufferPtr->TexIndex = 0;
-		Data->QuadVertexBufferPtr->TilingFactor = 1.f;
-		Data->QuadVertexBufferPtr++;
-
-		Data->QuadIndex += 6;
-	}
-
-	void Renderer2D::DrawQuad(const glm::vec2& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, float TilingFactor, const glm::vec4& Tint)
-	{
-		AC_PROFILE_FUNCTION()
-
-		DrawQuad(glm::vec3(Position, 0.f), Size, Texture, TilingFactor, Tint);
-	}
-
-	void Renderer2D::DrawQuad(const glm::vec3& Position, const glm::vec2& Size, const TSharedPtr<ITexture>& Texture, float TilingFactor, const glm::vec4& Tint)
-	{
-		AC_PROFILE_FUNCTION()
-
-		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Position) * glm::scale(glm::mat4(1.f), glm::vec3(Size, 1.f));
+		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Props.Position) * glm::rotate(glm::mat4(1.f), glm::radians(Props.Rotation), { 0.f, 0.f, 1.f }) * glm::scale(glm::mat4(1.f), glm::vec3(Props.Size, 1.f));
 
 		uint32_t TextureIndex = 0;
-		for (uint32_t i = 1; i < Data->TexturesIndex; i++)
+		if (Props.Texture != nullptr)
 		{
-			if (Data->Textures[i]->GetID() == Texture->GetID())
+			// User has specified a texture. Update textures array and texture index
+			for (uint32_t i = 1; i < Data->TexturesIndex; i++)
 			{
-				TextureIndex = i;
-				break;
+				if (Data->Textures[i]->GetID() == Props.Texture->GetID())
+				{
+					TextureIndex = i;
+					break;
+				}
+			}
+
+			if (TextureIndex == 0)
+			{
+				TextureIndex = Data->TexturesIndex++;
+				Data->Textures[TextureIndex] = Props.Texture;
 			}
 		}
 
-		if (TextureIndex == 0)
-		{
-			TextureIndex = Data->TexturesIndex++;
-			Data->Textures[TextureIndex] = Texture;
-		}
-
 		// Top Right
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Tint;
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Props.Colour;
 		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 0.f };
 		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = TilingFactor;
+		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
 		Data->QuadVertexBufferPtr++;
 
 		// Bottom Right
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x + Size.x, Position.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Tint;
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position.x + Props.Size.x, Props.Position.y, 0.f, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Props.Colour;
 		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 0.f };
 		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = TilingFactor;
+		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
 		Data->QuadVertexBufferPtr++;
 
 		// Bottom Left
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x + Size.x, Position.y + Size.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Tint;
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position.x + Props.Size.x, Props.Position.y + Props.Size.y, 0.f, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Props.Colour;
 		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 1.f };
 		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = TilingFactor;
+		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
 		Data->QuadVertexBufferPtr++;
 
 		// Top Left
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Position.x, Position.y + Size.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Tint;
+		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position.x, Props.Position.y + Props.Size.y, 0.f, 1.f);
+		Data->QuadVertexBufferPtr->Colour = Props.Colour;
 		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 1.f };
 		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = TilingFactor;
+		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
 		Data->QuadVertexBufferPtr++;
 
 		Data->QuadIndex += 6;

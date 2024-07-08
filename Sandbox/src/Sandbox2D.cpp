@@ -36,8 +36,17 @@ void Sandbox2D::OnUpdate(Acrylic::Timestep ts)
 		Acrylic::GCommandListExecutor->Clear();
 
 		Acrylic::Renderer2D::BeginScene(CameraController->GetCamera());
-		Acrylic::Renderer2D::DrawQuad({ -1.f, 0.f }, { .8f, .8f }, glm::vec4(Color, 1.f));
-		Acrylic::Renderer2D::DrawQuad({ .0f, .0f, -0.1f }, { 10.f, 10.f }, Texture, 10.f, glm::vec4(Color, 1.f));
+		Acrylic::Renderer2D::DrawQuad({ //
+			.Position = { -1.f, 0.f, 0.f },
+			.Size = { .8f, .8f },
+			.Colour = glm::vec4(Color, 1.f) });
+		Acrylic::Renderer2D::DrawQuad({ //
+			.Position = { .0f, .0f, -0.1f },
+			.Size = { 10.f, 10.f },
+			.Rotation = 45.f,
+			.Colour = glm::vec4(Color, 1.f), // Tint
+			.Texture = Texture,
+			.TilingFactor = 10.f });
 		Acrylic::Renderer2D::EndScene();
 	}
 }
