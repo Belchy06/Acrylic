@@ -25,4 +25,20 @@ namespace Acrylic
 
 		uint32_t RendererId;
 	};
+
+	class OpenGLSubTexture2D : public SubTexture2D
+	{
+	public:
+		OpenGLSubTexture2D(TSharedPtr<Texture2D> Texture, const glm::vec2& Coords, const glm::vec2& Size);
+		virtual ~OpenGLSubTexture2D() = default;
+
+		virtual uint32_t GetID() const override { return Texture->GetID(); }
+		virtual uint32_t GetWidth() const override { return Texture->GetWidth(); }
+		virtual uint32_t GetHeight() const override { return Texture->GetHeight(); }
+
+		virtual void Bind(uint32_t Slot = 0) const override { Texture->Bind(Slot); }
+
+	private:
+		TSharedPtr<Texture2D> Texture;
+	};
 } // namespace Acrylic

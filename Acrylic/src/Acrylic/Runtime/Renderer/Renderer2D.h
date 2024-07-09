@@ -9,6 +9,8 @@
 #include "Renderer/Texture.h"
 #include "Renderer/VertexArray.h"
 
+#include "glm/gtc/constants.hpp"
+
 // TODO: RendererCapabilities
 #define MAXQUADS 10000
 #define MAXVERTICES MAXQUADS * 4
@@ -43,12 +45,12 @@ namespace Acrylic
 		// Primitives
 		struct DrawQuadProps
 		{
-			glm::vec3			 Position = glm::vec3(0.f);
-			glm::vec2			 Size = glm::vec2(1.f);
-			float				 Rotation = 0.f; // Radians
-			glm::vec4			 Colour = glm::vec4(1.f);
-			TSharedPtr<ITexture> Texture = nullptr;
-			float				 TilingFactor = 1.f;
+			glm::vec3			  Position = glm::vec3(0.f);
+			glm::vec2			  Size = glm::vec2(1.f);
+			float				  Rotation = 0.f; // Radians
+			glm::vec4			  Colour = glm::vec4(1.f);
+			TSharedPtr<Texture2D> Texture = nullptr;
+			float				  TilingFactor = 1.f;
 		};
 		static void DrawQuad(const DrawQuadProps& Props);
 
@@ -68,8 +70,8 @@ namespace Acrylic
 
 		struct Renderer2DStorage
 		{
-			TArray<TSharedPtr<ITexture>, MAXTEXTURESLOTS> Textures;
-			uint32_t									  TexturesIndex = 1; // 0 = white texture
+			TArray<TSharedPtr<Texture2D>, MAXTEXTURESLOTS> Textures;
+			uint32_t									   TexturesIndex = 1; // 0 = white texture
 
 			glm::vec4 QuadVertexPositions[4];
 

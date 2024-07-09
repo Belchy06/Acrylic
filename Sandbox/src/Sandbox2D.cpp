@@ -13,7 +13,11 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-	Texture = Acrylic::Texture2D::Create("assets/textures/Test.png");
+	TextureTest = Acrylic::Texture2D::Create("assets/textures/Test.png");
+	TextureSpritesheet = Acrylic::Texture2D::Create("assets/textures/Spritesheet.png");
+	TextureStairs = Acrylic::SubTexture2D::Create(TextureSpritesheet, { 7, 6 }, { 128, 128 });
+	TextureBarrel = Acrylic::SubTexture2D::Create(TextureSpritesheet, { 8, 2 }, { 128, 128 });
+	TextureTree = Acrylic::SubTexture2D::Create(TextureSpritesheet, { 2, 0.5f }, { 128, 256 });
 
 	// Default Values
 	ParticleProps.Colour.Begin = { 254 / 255.f, 212 / 255.f, 123 / 255.f, 1.f };
@@ -47,8 +51,8 @@ void Sandbox2D::OnUpdate(Acrylic::Timestep ts)
 		Acrylic::CameraControllerBounds Bounds = CameraController->GetBounds();
 		glm::vec3						CameraPos = CameraController->GetCamera()->GetPosition();
 
-		float X = (MousePos.first / Width) * Bounds.GetWidth() - Bounds.GetWidth() * 0.5;
-		float Y = Bounds.GetHeight() * 0.5 - (MousePos.second / Height) * Bounds.GetHeight();
+		float X = ((float)MousePos.first / Width) * Bounds.GetWidth() - Bounds.GetWidth() * 0.5f;
+		float Y = Bounds.GetHeight() * 0.5f - ((float)MousePos.second / Height) * Bounds.GetHeight();
 		ParticleProps.Position.Translation = { X + CameraPos.x, Y + CameraPos.y, 0.f };
 		for (int i = 0; i < ParticleCount; i++)
 		{
@@ -68,6 +72,24 @@ void Sandbox2D::OnUpdate(Acrylic::Timestep ts)
 		// Render
 		Acrylic::GCommandListExecutor->SetClearColour({ 0.1f, 0.1f, 0.1f, 1.f });
 		Acrylic::GCommandListExecutor->Clear();
+
+		Acrylic::Renderer2D::BeginScene(CameraController->GetCamera());
+		Acrylic::Renderer2D::DrawQuad({
+			.Position = { 0.f, 0.f, .5f }, //
+			.Size = { 1.f, 1.f },		   //
+			.Texture = TextureStairs	   //
+		});
+		Acrylic::Renderer2D::DrawQuad({
+			.Position = { 1.f, 0.f, .5f }, //
+			.Size = { 1.f, 1.f },		   //
+			.Texture = TextureBarrel	   //
+		});
+		Acrylic::Renderer2D::DrawQuad({
+			.Position = { -1.f, 0.f, .5f }, //
+			.Size = { 1.f, 2.f },			//
+			.Texture = TextureTree			//
+		});
+		Acrylic::Renderer2D::EndScene();
 
 		ParticleSystem->OnRender(CameraController->GetCamera());
 	}

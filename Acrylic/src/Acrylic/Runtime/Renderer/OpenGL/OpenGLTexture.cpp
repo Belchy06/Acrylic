@@ -29,7 +29,7 @@ namespace Acrylic
 			case EPixelFormat::RGBA8:
 				return GL_RGBA;
 			case EPixelFormat::RGB8:
-				return GL_RGB;				
+				return GL_RGB;
 		}
 
 		AC_ASSERT(false);
@@ -43,7 +43,7 @@ namespace Acrylic
 	{
 		AC_PROFILE_FUNCTION()
 
-		GLenum InternalFormat = GetOpenGLPixelFormat(Desc.PixelFormat); 
+		GLenum InternalFormat = GetOpenGLPixelFormat(Desc.PixelFormat);
 		GLenum DataFormat = GetOpenGLDataFormat(Desc.PixelFormat);
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &RendererId);
@@ -135,5 +135,19 @@ namespace Acrylic
 		AC_PROFILE_FUNCTION()
 
 		glBindTextureUnit(Slot, RendererId);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	OpenGLSubTexture2D::OpenGLSubTexture2D(TSharedPtr<Texture2D> Texture, const glm::vec2& Coords, const glm::vec2& Size)
+		: Texture(Texture)
+	{
+		glm::vec2 Min = { ((Coords.x) * Size.x) / Texture->GetWidth(), ((Coords.y + 1) * Size.y) / Texture->GetHeight() };
+		glm::vec2 Max = { ((Coords.x + 1) * Size.x) / Texture->GetWidth(), (Coords.y * Size.y) / Texture->GetHeight() };
+
+		TextureCoords[0] = { Min.x, Min.y };
+		TextureCoords[1] = { Max.x, Min.y };
+		TextureCoords[2] = { Max.x, Max.y };
+		TextureCoords[3] = { Min.x, Max.y };
 	}
 } // namespace Acrylic

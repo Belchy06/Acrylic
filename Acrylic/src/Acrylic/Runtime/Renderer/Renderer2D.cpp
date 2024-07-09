@@ -110,6 +110,8 @@ namespace Acrylic
 	{
 		if (Data->QuadIndexCount > 0)
 		{
+			Data->QuadShader->Bind();
+
 			uint32_t DataNum = PTRDIFF_TO_UINT32(Data->QuadVertexPtrEnd - Data->QuadVertexPtr);
 			Data->QuadVertexBuffer->SetData(Data->QuadVertexPtr, DataNum * sizeof(QuadVertex));
 
@@ -118,7 +120,6 @@ namespace Acrylic
 				Data->Textures[i]->Bind(i);
 			}
 
-			Data->QuadShader->Bind();
 			GCommandListExecutor->DrawIndexed(Data->QuadVertexArray, Data->QuadIndexCount);
 
 			RendererStats->DrawCalls++;
@@ -167,19 +168,18 @@ namespace Acrylic
 		}
 
 		glm::mat4 Transform =
-			glm::translate(glm::mat4(1.f), Props.Position) *							   // translate
+			glm::translate(glm::mat4(1.f), Props.Position) *				 // translate
 			glm::rotate(glm::mat4(1.f), Props.Rotation, { 0.f, 0.f, 1.f }) * // rotate
-			glm::scale(glm::mat4(1.f), glm::vec3(Props.Size, 1.f));						   // scale
+			glm::scale(glm::mat4(1.f), glm::vec3(Props.Size, 1.f));			 // scale
 
-		constexpr size_t	QuadVertexCount = 4;
-		constexpr glm::vec2 TextureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		constexpr size_t QuadVertexCount = 4;
 
 		for (size_t i = 0; i < QuadVertexCount; i++)
 		{
 			Data->QuadVertexPtrEnd->Position = Transform * Data->QuadVertexPositions[i];
 			Data->QuadVertexPtrEnd->Colour = Props.Colour;
-			Data->QuadVertexPtrEnd->TexCoord = TextureCoords[i];
-			Data->QuadVertexPtrEnd->TexIndex = TextureIndex;
+			Data->QuadVertexPtrEnd->TexCoord = Props.Texture ? Props.Texture->GetTexCoords()[i] : glm::vec2(0.f);
+			Data->QuadVertexPtrEnd->TexIndex = (float)TextureIndex;
 			Data->QuadVertexPtrEnd->TilingFactor = Props.TilingFactor;
 			Data->QuadVertexPtrEnd++;
 		}

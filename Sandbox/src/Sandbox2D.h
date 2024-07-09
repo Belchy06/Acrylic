@@ -20,7 +20,12 @@ public:
 
 private:
 	Acrylic::TUniquePtr<Acrylic::OrthographicCameraController> CameraController;
-	Acrylic::TSharedPtr<Acrylic::Texture2D>					   Texture;
+	Acrylic::TSharedPtr<Acrylic::Texture2D>					   TextureTest;
+
+	Acrylic::TSharedPtr<Acrylic::Texture2D>	   TextureSpritesheet;
+	Acrylic::TSharedPtr<Acrylic::SubTexture2D> TextureStairs;
+	Acrylic::TSharedPtr<Acrylic::SubTexture2D> TextureBarrel;
+	Acrylic::TSharedPtr<Acrylic::SubTexture2D> TextureTree;
 
 	Acrylic::TUniquePtr<Acrylic::ParticleSystem> ParticleSystem;
 	Acrylic::ParticleProps						 ParticleProps;

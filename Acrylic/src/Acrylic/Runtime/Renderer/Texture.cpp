@@ -31,4 +31,30 @@ namespace Acrylic
 				return nullptr;
 		}
 	}
+
+	TSharedPtr<SubTexture2D> SubTexture2D::Create(const String& Path, const glm::vec2& Coords, const glm::vec2& Size)
+	{
+		switch (GRenderInterface)
+		{
+			case ERenderInterface::None:
+				return nullptr;
+			case ERenderInterface::OpenGL:
+				return MakeShared<OpenGLSubTexture2D>(Texture2D::Create(Path), Coords, Size);
+			default:
+				return nullptr;
+		}
+	}
+
+	TSharedPtr<SubTexture2D> SubTexture2D::Create(TSharedPtr<Texture2D> Texture, const glm::vec2& Coords, const glm::vec2& Size)
+	{
+		switch (GRenderInterface)
+		{
+			case ERenderInterface::None:
+				return nullptr;
+			case ERenderInterface::OpenGL:
+				return MakeShared<OpenGLSubTexture2D>(Texture, Coords, Size);
+			default:
+				return nullptr;
+		}
+	}
 } // namespace Acrylic
