@@ -20,8 +20,21 @@ namespace Acrylic
 	class ACRYLIC_API Renderer2D
 	{
 	public:
-		static void Init();
-		static void Shutdown();
+		struct Stats
+		{
+			uint32_t DrawCalls = 0;
+			uint32_t QuadCount = 0;
+		};
+
+	public:
+		static void				  Init();
+		static void				  Shutdown();
+		static const Stats* const GetStats() { return RendererStats; }
+		static void				  ResetStats()
+		{
+			RendererStats->DrawCalls = 0;
+			RendererStats->QuadCount = 0;
+		}
 
 		static void BeginScene(TSharedPtr<ICamera> Camera);
 		static void Flush();
@@ -40,6 +53,10 @@ namespace Acrylic
 		static void DrawQuad(const DrawQuadProps& Props);
 
 	private:
+		static void StartBatch();
+		static void NextBatch();
+
+	private:
 		struct QuadVertex
 		{
 			glm::vec3 Position;
@@ -51,19 +68,22 @@ namespace Acrylic
 
 		struct Renderer2DStorage
 		{
-			TSharedPtr<IVertexArray>  VertexArray;
-			TSharedPtr<IVertexBuffer> VertexBuffer;
-			TSharedPtr<IIndexBuffer>  IndexBuffer;
-			TSharedPtr<IShader>		  Shader;
-
-			uint32_t	QuadIndex = 0;
-			QuadVertex* QuadVertexBuffer = nullptr;
-			QuadVertex* QuadVertexBufferPtr = nullptr;
-
 			TArray<TSharedPtr<ITexture>, MAXTEXTURESLOTS> Textures;
 			uint32_t									  TexturesIndex = 1; // 0 = white texture
+
+			glm::vec4 QuadVertexPositions[4];
+
+			// Quads
+			TSharedPtr<IVertexArray>  QuadVertexArray;
+			TSharedPtr<IIndexBuffer>  QuadIndexBuffer;
+			TSharedPtr<IVertexBuffer> QuadVertexBuffer;
+			TSharedPtr<IShader>		  QuadShader;
+			uint32_t				  QuadIndexCount = 0;
+			QuadVertex*				  QuadVertexPtr = nullptr;
+			QuadVertex*				  QuadVertexPtrEnd = nullptr;
 		};
 
 		inline static Renderer2DStorage* Data;
+		inline static Stats*			 RendererStats;
 	};
 } // namespace Acrylic

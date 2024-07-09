@@ -22,5 +22,6 @@ private:
 	Acrylic::TUniquePtr<Acrylic::OrthographicCameraController> CameraController;
 	Acrylic::TSharedPtr<Acrylic::Texture2D>					   Texture;
 
-	glm::vec3 Color = { 0.2f, 0.3f, 0.8f };
+	glm::vec3 Color = { 1.f, 1.f, 1.f };
+	int		  NumQuads[2] = { 10, 10 }; // x, y
 };

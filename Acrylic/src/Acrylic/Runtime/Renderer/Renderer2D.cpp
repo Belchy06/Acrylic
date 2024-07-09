@@ -14,12 +14,14 @@ namespace Acrylic
 
 		RendererBase::Init();
 
-		Data = new Renderer2DStorage();
-		Data->VertexArray = IVertexArray::Create();
+		RendererStats = new Stats();
 
-		Data->VertexBuffer = IVertexBuffer::Create(MAXVERTICES / sizeof(QuadVertex));
+		Data = new Renderer2DStorage();
+		Data->QuadVertexArray = IVertexArray::Create();
+
+		Data->QuadVertexBuffer = IVertexBuffer::Create(MAXVERTICES * sizeof(QuadVertex));
 		// clang-format off
-		Data->VertexBuffer->SetLayout({ 
+		Data->QuadVertexBuffer->SetLayout({ 
 			{ EDataType::Float3, "a_Position" },
 			{ EDataType::Float4, "a_Color" },
 			{ EDataType::Float2, "a_TexCoord" },
@@ -27,8 +29,9 @@ namespace Acrylic
 			{ EDataType::Float, "a_TilingFactor" }
 		});
 		// clang-format on
+		Data->QuadVertexArray->AddVertexBuffer(Data->QuadVertexBuffer);
 
-		Data->QuadVertexBuffer = new QuadVertex[MAXVERTICES];
+		Data->QuadVertexPtr = new QuadVertex[MAXVERTICES];
 
 		uint32_t* QuadIndices = new uint32_t[MAXINDICES];
 		uint32_t  Offset = 0;
@@ -45,11 +48,9 @@ namespace Acrylic
 			Offset += 4;
 		}
 
-		Data->IndexBuffer = IIndexBuffer::Create(QuadIndices, MAXINDICES);
+		Data->QuadIndexBuffer = IIndexBuffer::Create(QuadIndices, MAXINDICES);
+		Data->QuadVertexArray->SetIndexBuffer(Data->QuadIndexBuffer);
 		delete[] QuadIndices;
-
-		Data->VertexArray->AddVertexBuffer(Data->VertexBuffer);
-		Data->VertexArray->SetIndexBuffer(Data->IndexBuffer);
 
 		uint32_t		  WhiteTextureData = 0xFFFFFFFF;
 		CreateTextureDesc Desc = { 1, 1, EPixelFormat::RGB8, new UploadArrayBulkData(&WhiteTextureData, 4) };
@@ -61,47 +62,70 @@ namespace Acrylic
 			Samplers[i] = i;
 		}
 
-		Data->Shader = IShader::Create("assets/shaders/Texture.glsl");
-		Data->Shader->Bind();
-		Data->Shader->UploadUniformIntArray("u_Texture", Samplers, MAXTEXTURESLOTS);
+		Data->QuadShader = IShader::Create("assets/shaders/Texture.glsl");
+		Data->QuadShader->Bind();
+		Data->QuadShader->UploadUniformIntArray("u_Texture", Samplers, MAXTEXTURESLOTS);
+
+		Data->QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+		Data->QuadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
+		Data->QuadVertexPositions[2] = { 0.5f, 0.5f, 0.0f, 1.0f };
+		Data->QuadVertexPositions[3] = { -0.5f, 0.5f, 0.0f, 1.0f };
 	}
 
 	void Renderer2D::Shutdown()
 	{
 		AC_PROFILE_FUNCTION()
 
+		delete RendererStats;
 		delete Data;
+	}
+
+	void Renderer2D::StartBatch()
+	{
+		Data->QuadIndexCount = 0;
+		Data->QuadVertexPtrEnd = Data->QuadVertexPtr;
+
+		Data->TexturesIndex = 1;
+	}
+
+	void Renderer2D::NextBatch()
+	{
+		Flush();
+		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(TSharedPtr<ICamera> Camera)
 	{
 		AC_PROFILE_FUNCTION()
 
-		Data->Shader->Bind();
-		Data->Shader->UploadUniformMat4("u_ViewProjection", Camera->GetViewProjectionMatrix());
+		Data->QuadShader->Bind();
+		Data->QuadShader->UploadUniformMat4("u_ViewProjection", Camera->GetViewProjectionMatrix());
 
-		Data->QuadIndex = 0;
-		Data->QuadVertexBufferPtr = Data->QuadVertexBuffer;
-
-		Data->TexturesIndex = 1;
+		StartBatch();
 	}
 
 	void Renderer2D::Flush()
 	{
-		for (uint32_t i = 0; i < Data->TexturesIndex; i++)
+		if (Data->QuadIndexCount > 0)
 		{
-			Data->Textures[i]->Bind(i);
-		}
+			uint32_t DataNum = PTRDIFF_TO_UINT32(Data->QuadVertexPtrEnd - Data->QuadVertexPtr);
+			Data->QuadVertexBuffer->SetData(Data->QuadVertexPtr, DataNum * sizeof(QuadVertex));
 
-		GCommandListExecutor->DrawIndexed(Data->VertexArray, Data->QuadIndex);
+			for (uint32_t i = 0; i < Data->TexturesIndex; i++)
+			{
+				Data->Textures[i]->Bind(i);
+			}
+
+			Data->QuadShader->Bind();
+			GCommandListExecutor->DrawIndexed(Data->QuadVertexArray, Data->QuadIndexCount);
+
+			RendererStats->DrawCalls++;
+		}
 	}
 
 	void Renderer2D::EndScene()
 	{
 		AC_PROFILE_FUNCTION()
-
-		uint32_t DataNum = PTRDIFF_TO_UINT32(Data->QuadVertexBufferPtr - Data->QuadVertexBuffer);
-		Data->VertexBuffer->SetData(Data->QuadVertexBuffer, DataNum * sizeof(QuadVertex));
 
 		Flush();
 	}
@@ -110,7 +134,10 @@ namespace Acrylic
 	{
 		AC_PROFILE_FUNCTION()
 
-		glm::mat4 Transform = glm::translate(glm::mat4(1.f), Props.Position) * glm::rotate(glm::mat4(1.f), glm::radians(Props.Rotation), { 0.f, 0.f, 1.f }) * glm::scale(glm::mat4(1.f), glm::vec3(Props.Size, 1.f));
+		if (Data->QuadIndexCount >= MAXINDICES)
+		{
+			NextBatch();
+		}
 
 		uint32_t TextureIndex = 0;
 		if (Props.Texture != nullptr)
@@ -127,43 +154,36 @@ namespace Acrylic
 
 			if (TextureIndex == 0)
 			{
+				if (Data->TexturesIndex >= MAXTEXTURESLOTS)
+				{
+					NextBatch();
+				}
+
 				TextureIndex = Data->TexturesIndex++;
 				Data->Textures[TextureIndex] = Props.Texture;
 			}
 		}
 
-		// Top Right
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Props.Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 0.f };
-		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
-		Data->QuadVertexBufferPtr++;
+		glm::mat4 Transform =
+			glm::translate(glm::mat4(1.f), Props.Position) *							   // translate
+			glm::rotate(glm::mat4(1.f), glm::radians(Props.Rotation), { 0.f, 0.f, 1.f }) * // rotate
+			glm::scale(glm::mat4(1.f), glm::vec3(Props.Size, 1.f));						   // scale
 
-		// Bottom Right
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position.x + Props.Size.x, Props.Position.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Props.Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 0.f };
-		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
-		Data->QuadVertexBufferPtr++;
+		constexpr size_t	QuadVertexCount = 4;
+		constexpr glm::vec2 TextureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
-		// Bottom Left
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position.x + Props.Size.x, Props.Position.y + Props.Size.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Props.Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 1.f, 1.f };
-		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
-		Data->QuadVertexBufferPtr++;
+		for (size_t i = 0; i < QuadVertexCount; i++)
+		{
+			Data->QuadVertexPtrEnd->Position = Transform * Data->QuadVertexPositions[i];
+			Data->QuadVertexPtrEnd->Colour = Props.Colour;
+			Data->QuadVertexPtrEnd->TexCoord = TextureCoords[i];
+			Data->QuadVertexPtrEnd->TexIndex = TextureIndex;
+			Data->QuadVertexPtrEnd->TilingFactor = Props.TilingFactor;
+			Data->QuadVertexPtrEnd++;
+		}
 
-		// Top Left
-		Data->QuadVertexBufferPtr->Position = Transform * glm::vec4(Props.Position.x, Props.Position.y + Props.Size.y, 0.f, 1.f);
-		Data->QuadVertexBufferPtr->Colour = Props.Colour;
-		Data->QuadVertexBufferPtr->TexCoord = { 0.f, 1.f };
-		Data->QuadVertexBufferPtr->TexIndex = TextureIndex;
-		Data->QuadVertexBufferPtr->TilingFactor = Props.TilingFactor;
-		Data->QuadVertexBufferPtr++;
+		Data->QuadIndexCount += 6;
 
-		Data->QuadIndex += 6;
+		RendererStats->QuadCount++;
 	}
 } // namespace Acrylic

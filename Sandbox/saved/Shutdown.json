@@ -1,0 +1,1 @@
+{"otherData": {},"traceEvents":[{},{"cat":"function","dur":37374,"name":"void __cdecl Acrylic::WindowsWindow::Shutdown(void)","ph":"X","pid":0,"tid":44452,"ts":392369602688.600}]}

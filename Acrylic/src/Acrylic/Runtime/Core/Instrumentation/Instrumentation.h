@@ -73,7 +73,7 @@ namespace Acrylic
 			JSON << ",{";
 			JSON << "\"cat\":\"function\",";
 			JSON << "\"dur\":" << (Result.ElapsedTime.count()) << ',';
-			JSON << "\"Name\":\"" << Result.Name << "\",";
+			JSON << "\"name\":\"" << Result.Name << "\",";
 			JSON << "\"ph\":\"X\",";
 			JSON << "\"pid\":0,";
 			JSON << "\"tid\":" << Result.ThreadID << ",";

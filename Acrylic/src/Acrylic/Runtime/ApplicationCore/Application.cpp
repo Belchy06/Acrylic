@@ -84,6 +84,8 @@ namespace Acrylic
 	{
 		while (bRunning)
 		{
+			Renderer2D::ResetStats();
+
 			float	 Time = static_cast<float>(IPlatform::GetTime() / 1000.f);
 			Timestep Step = Time - LastFrameTime;
 			LastFrameTime = Time;

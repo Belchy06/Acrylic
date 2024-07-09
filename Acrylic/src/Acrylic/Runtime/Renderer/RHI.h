@@ -21,4 +21,6 @@ namespace Acrylic
 		RGBA8,
 		RGB8,
 	};
+
+
 }
