@@ -1,11 +1,9 @@
 #include "acpch.h"
-#include "WindowsPlatform.h"
+#include "ApplicationCore/Platform.h"
 
 namespace Acrylic
 {
-	IPlatform* IPlatform::Singleton = new WindowsPlatform();
-
-	double WindowsPlatform::GetTimeImpl()
+	double Platform::GetTime()
 	{
 		LARGE_INTEGER Frequency;
 		if (!QueryPerformanceFrequency(&Frequency))

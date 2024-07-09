@@ -16,38 +16,37 @@ namespace Acrylic
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
-		if (IInput::IsKeyPressed(AC_KEY_W))
+		if (Input::IsKeyPressed(AC_KEY_W))
 		{
 			CameraPosition.x -= sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
 			CameraPosition.y -= cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
-
 		}
-		else if (IInput::IsKeyPressed(AC_KEY_S))
+		else if (Input::IsKeyPressed(AC_KEY_S))
 		{
 			CameraPosition.x += sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
 			CameraPosition.y += cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
 		}
 
-		if (IInput::IsKeyPressed(AC_KEY_A))
+		if (Input::IsKeyPressed(AC_KEY_A))
 		{
 			CameraPosition.x -= cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
 			CameraPosition.y -= sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
 		}
-		else if (IInput::IsKeyPressed(AC_KEY_D))
+		else if (Input::IsKeyPressed(AC_KEY_D))
 		{
 			CameraPosition.x += cos(glm::radians(CameraRotation)) * MoveSpeed * ts;
 			CameraPosition.y += sin(glm::radians(CameraRotation)) * MoveSpeed * ts;
 		}
 
-		Camera->SetPosition(CameraPosition);	
+		Camera->SetPosition(CameraPosition);
 
 		if (bRotate)
 		{
-			if (IInput::IsKeyPressed(AC_KEY_Q))
+			if (Input::IsKeyPressed(AC_KEY_Q))
 			{
 				CameraRotation += RotateSpeed * ts;
 			}
-			else if (IInput::IsKeyPressed(AC_KEY_E))
+			else if (Input::IsKeyPressed(AC_KEY_E))
 			{
 				CameraRotation -= RotateSpeed * ts;
 			}

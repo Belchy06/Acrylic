@@ -25,7 +25,7 @@ namespace Acrylic
 
 		Stack.PushOverlay(new ImGuiLayer());
 
-		LastFrameTime = static_cast<float>(IPlatform::GetTime());
+		LastFrameTime = static_cast<float>(Platform::GetTime());
 	}
 
 	Application::~Application()
@@ -86,7 +86,7 @@ namespace Acrylic
 		{
 			Renderer2D::ResetStats();
 
-			float	 Time = static_cast<float>(IPlatform::GetTime() / 1000.f);
+			float	 Time = static_cast<float>(Platform::GetTime() / 1000.f);
 			Timestep Step = Time - LastFrameTime;
 			LastFrameTime = Time;
 

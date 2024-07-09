@@ -1,28 +1,19 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Core/Containers/Pair.h"
 #include "KeyCodes.h"
 #include "MouseButtonCodes.h"
 
 namespace Acrylic
 {
-	class ACRYLIC_API IInput
+	class ACRYLIC_API Input
 	{
 	public:
-		static bool IsKeyPressed(int KeyCode) { return Singleton->IsKeyPressedImpl(KeyCode); }
-		static bool IsMouseButtonPressed(int Button) { return Singleton->IsMouseButtonPressedImpl(Button); }
-		static std::pair<double, double> GetMousePostion() { return Singleton->GetMousePostionImpl(); }
-		static double GetMouseX() { return Singleton->GetMouseXImpl(); }
-		static double GetMouseY() { return Singleton->GetMouseYImpl(); }
-
-	protected:
-		virtual bool IsKeyPressedImpl(int KeyCode) = 0;
-		virtual bool IsMouseButtonPressedImpl(int Button) = 0;
-		virtual std::pair<double, double> GetMousePostionImpl() = 0;
-		virtual double GetMouseXImpl() = 0;
-		virtual double GetMouseYImpl() = 0;
-
-	private:
-		static IInput* Singleton;
+		static bool					 IsKeyPressed(int KeyCode);
+		static bool					 IsMouseButtonPressed(int Button);
+		static TPair<double, double> GetMousePostion();
+		static double				 GetMouseX();
+		static double				 GetMouseY();
 	};
-}
+} // namespace Acrylic

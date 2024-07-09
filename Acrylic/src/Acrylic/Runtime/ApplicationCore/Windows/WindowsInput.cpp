@@ -1,5 +1,5 @@
 #include "acpch.h"
-#include "WindowsInput.h"
+#include "Input/Input.h"
 
 #include "ApplicationCore/Application.h"
 
@@ -7,9 +7,7 @@
 
 namespace Acrylic
 {
-	IInput* IInput::Singleton = new WindowsInput();
-
-	bool WindowsInput::IsKeyPressedImpl(int KeyCode)
+	bool Input::IsKeyPressed(int KeyCode)
 	{
 		IWindow& Window = Application::GetWindow();
 
@@ -17,7 +15,7 @@ namespace Acrylic
 		return State == GLFW_PRESS || State == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(int Button)
+	bool Input::IsMouseButtonPressed(int Button)
 	{
 		IWindow& Window = Application::GetWindow();
 
@@ -25,7 +23,7 @@ namespace Acrylic
 		return State == GLFW_PRESS;
 	}
 
-	std::pair<double, double> WindowsInput::GetMousePostionImpl()
+	std::pair<double, double> Input::GetMousePostion()
 	{
 		IWindow& Window = Application::GetWindow();
 
@@ -35,15 +33,15 @@ namespace Acrylic
 		return { XPos, YPos };
 	}
 
-	double WindowsInput::GetMouseXImpl()
+	double Input::GetMouseX()
 	{
-		auto[XPos, YPos] = GetMousePostionImpl();
+		auto[XPos, YPos] = GetMousePostion();
 		return XPos;
 	}
 
-	double WindowsInput::GetMouseYImpl()
+	double Input::GetMouseY()
 	{
-		auto [XPos, YPos] = GetMousePostionImpl();
+		auto [XPos, YPos] = GetMousePostion();
 		return YPos;
 	}
 }

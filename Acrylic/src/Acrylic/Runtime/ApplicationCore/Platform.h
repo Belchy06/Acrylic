@@ -4,15 +4,9 @@
 
 namespace Acrylic
 {
-	class ACRYLIC_API IPlatform
+	class ACRYLIC_API Platform
 	{
 	public:
-		static double GetTime() { return Singleton->GetTimeImpl(); }
-
-	protected:
-		virtual double GetTimeImpl() = 0;
-
-	private:
-		static IPlatform* Singleton;
+		static double GetTime();
 	};
 }
