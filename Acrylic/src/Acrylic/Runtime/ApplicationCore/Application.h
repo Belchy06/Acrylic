@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ApplicationCore/Window.h"
+#include "Core/Containers/String.h"
 #include "Core/Logging.h"
 #include "Core/Memory.h"
 #include "Core/Timestep.h"
@@ -14,7 +15,7 @@ namespace Acrylic
 	class ACRYLIC_API Application
 	{
 	public:
-		Application();
+		Application(const String& Name);
 		virtual ~Application();
 
 		void Run();

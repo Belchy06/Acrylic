@@ -9,9 +9,9 @@ namespace Acrylic
 {
 	struct WindowProperties
 	{
-		String Title;
-		uint32_t	Width;
-		uint32_t	Height;
+		String	 Title;
+		uint32_t Width;
+		uint32_t Height;
 
 		WindowProperties(const String& Title = "Acrylic Engine", uint32_t Width = 1280, uint32_t Height = 720)
 			: Title(Title)
@@ -42,4 +42,4 @@ namespace Acrylic
 
 		static IWindow* Create(const WindowProperties& Properties = WindowProperties());
 	};
-}
+} // namespace Acrylic

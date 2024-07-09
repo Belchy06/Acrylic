@@ -23,6 +23,12 @@ namespace Acrylic
 		Desc.Height = Height;					//
 		Desc.PixelFormat = EPixelFormat::RGBA8; //
 
+		if (RendererId || Backbuffer)
+		{
+			glDeleteFramebuffers(1, &RendererId);
+			Backbuffer = nullptr;
+		}
+
 		glCreateFramebuffers(1, &RendererId);
 		glBindFramebuffer(GL_FRAMEBUFFER, RendererId);
 
@@ -37,6 +43,7 @@ namespace Acrylic
 	void OpenGLViewport::Bind()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, RendererId);
+		glViewport(0, 0, Backbuffer->GetDesc().Width, Backbuffer->GetDesc().Height);
 	}
 
 	void OpenGLViewport::Unbind()

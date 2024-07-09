@@ -14,10 +14,10 @@ namespace Acrylic
 
 	Application* Application::Singleton = nullptr;
 
-	Application::Application()
+	Application::Application(const String& Name)
 	{
 		Singleton = this;
-		Window = std::unique_ptr<IWindow>(IWindow::Create());
+		Window = TUniquePtr<IWindow>(IWindow::Create(WindowProperties(Name)));
 		Window->SetEventCallback(AC_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();

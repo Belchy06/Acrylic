@@ -11,6 +11,7 @@ namespace Acrylic
 	{
 	public:
 		AcrylicEditor()
+			: Application("Acrylic Editor")
 		{
 			AC_LOG(LogEditor, Log, "Creating Editor application");
 

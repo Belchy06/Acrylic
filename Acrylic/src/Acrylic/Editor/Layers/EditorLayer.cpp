@@ -14,6 +14,8 @@ namespace Acrylic
 		, Viewport(IViewport::Create(1280, 720))
 		, CameraController(MakeUnique<OrthographicCameraController>(1280.f / 720.f, true))
 	{
+		ViewportSize = { Viewport->GetBackbuffer()->GetDesc().Width, Viewport->GetBackbuffer()->GetDesc().Height };
+
 		ViewportBounds[0] = glm::vec2(0.f);
 		ViewportBounds[1] = glm::vec2(0.f);
 	}
@@ -158,7 +160,15 @@ namespace Acrylic
 		// Application::GetApplication().GetImGuiLayer()->BlockEvents(!bViewportHovered);
 
 		ImVec2 ViewportPanelSize = ImGui::GetContentRegionAvail();
-		ViewportSize = { ViewportPanelSize.x, ViewportPanelSize.y };
+		if (ViewportSize != *((glm::vec2*)&ViewportPanelSize))
+		{
+			Viewport->Resize(ViewportPanelSize.x, ViewportPanelSize.y);
+			ViewportSize = { ViewportPanelSize.x, ViewportPanelSize.y };
+
+			// Trigger a fake window resize event to cause the camera controller to up
+			WindowResizeEvent FakeEvent(ViewportSize.x, ViewportSize.y);
+			CameraController->OnEvent(FakeEvent);
+		}
 
 		uint64_t TextureID = Viewport->GetBackbuffer()->GetID();
 		ImGui::Image(reinterpret_cast<void*>(TextureID), ImVec2{ ViewportSize.x, ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -182,6 +192,8 @@ namespace Acrylic
 	void EditorLayer::OnEvent(Event& e)
 	{
 		AC_PROFILE_FUNCTION()
+
+		CameraController->OnEvent(e);
 	}
 
 } // namespace Acrylic

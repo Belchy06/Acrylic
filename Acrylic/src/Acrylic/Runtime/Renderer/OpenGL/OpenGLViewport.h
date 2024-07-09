@@ -19,7 +19,7 @@ namespace Acrylic
 		virtual void				 Bind() override;
 		virtual void				 Unbind() override;
 	private:
-		uint32_t			 RendererId;
-		TSharedPtr<ITexture> Backbuffer;
+		uint32_t			 RendererId = 0;
+		TSharedPtr<ITexture> Backbuffer = nullptr;
 	};
 } // namespace Acrylic
