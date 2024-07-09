@@ -4,3 +4,4 @@ intermediates/
 **/*.vcxproj
 **/*.filters
 **/*.user
+**/*.json

@@ -10,9 +10,10 @@ namespace Acrylic
 	public:
 		OrthographicCameraController(float AspectRatio, bool bRotate = false);
 
-		virtual void				OnUpdate(Timestep ts) override;
-		virtual void				OnEvent(Event& e) override;
-		virtual TSharedPtr<ICamera> GetCamera() override { return Camera; }
+		virtual void					OnUpdate(Timestep ts) override;
+		virtual void					OnEvent(Event& e) override;
+		virtual CameraControllerBounds& GetBounds() override { return Bounds; }
+		virtual TSharedPtr<ICamera>		GetCamera() override { return Camera; }
 
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
@@ -22,6 +23,8 @@ namespace Acrylic
 		bool  bRotate;
 		float AspectRatio;
 		float ZoomLevel = 1.f;
+
+		CameraControllerBounds Bounds;
 
 		TSharedPtr<OrthographicCamera> Camera;
 

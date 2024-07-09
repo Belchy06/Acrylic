@@ -7,8 +7,9 @@ namespace Acrylic
 	OrthographicCameraController::OrthographicCameraController(float AspectRatio, bool bRotate)
 		: bRotate(bRotate)
 		, AspectRatio(AspectRatio)
+		, Bounds({ -AspectRatio * ZoomLevel, AspectRatio * ZoomLevel, -ZoomLevel, ZoomLevel })
+		, Camera(MakeShared<OrthographicCamera>(Bounds.Left, Bounds.Right, Bounds.Bottom, Bounds.Top))
 	{
-		Camera = MakeShared<OrthographicCamera>(-AspectRatio * ZoomLevel, AspectRatio * ZoomLevel, -ZoomLevel, ZoomLevel);
 		CameraPosition = Camera->GetPosition();
 		CameraRotation = Camera->GetRotation();
 	}
@@ -67,7 +68,8 @@ namespace Acrylic
 	{
 		ZoomLevel -= e.GetY() * ZoomSpeed;
 		ZoomLevel = std::max(ZoomLevel, 0.25f);
-		Camera->SetProjection(-AspectRatio * ZoomLevel, AspectRatio * ZoomLevel, -ZoomLevel, ZoomLevel);
+		Bounds = { -AspectRatio * ZoomLevel, AspectRatio * ZoomLevel, -ZoomLevel, ZoomLevel };
+		Camera->SetProjection(Bounds.Left, Bounds.Right, Bounds.Bottom, Bounds.Top);
 
 		return false;
 	}
@@ -75,7 +77,8 @@ namespace Acrylic
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
 		AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		Camera->SetProjection(-AspectRatio * ZoomLevel, AspectRatio * ZoomLevel, -ZoomLevel, ZoomLevel);
+		Bounds = { -AspectRatio * ZoomLevel, AspectRatio * ZoomLevel, -ZoomLevel, ZoomLevel };
+		Camera->SetProjection(Bounds.Left, Bounds.Right, Bounds.Bottom, Bounds.Top);
 
 		return false;
 	}

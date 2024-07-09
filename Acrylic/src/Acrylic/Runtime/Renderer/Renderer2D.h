@@ -45,7 +45,7 @@ namespace Acrylic
 		{
 			glm::vec3			 Position = glm::vec3(0.f);
 			glm::vec2			 Size = glm::vec2(1.f);
-			float				 Rotation = 0.f; // Degrees
+			float				 Rotation = 0.f; // Radians
 			glm::vec4			 Colour = glm::vec4(1.f);
 			TSharedPtr<ITexture> Texture = nullptr;
 			float				 TilingFactor = 1.f;

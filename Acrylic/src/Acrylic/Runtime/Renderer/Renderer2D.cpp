@@ -66,10 +66,12 @@ namespace Acrylic
 		Data->QuadShader->Bind();
 		Data->QuadShader->UploadUniformIntArray("u_Texture", Samplers, MAXTEXTURESLOTS);
 
+		// clang-format off
 		Data->QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
-		Data->QuadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
-		Data->QuadVertexPositions[2] = { 0.5f, 0.5f, 0.0f, 1.0f };
-		Data->QuadVertexPositions[3] = { -0.5f, 0.5f, 0.0f, 1.0f };
+		Data->QuadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
+		Data->QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
+		Data->QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+		// clang-format on
 	}
 
 	void Renderer2D::Shutdown()
@@ -166,7 +168,7 @@ namespace Acrylic
 
 		glm::mat4 Transform =
 			glm::translate(glm::mat4(1.f), Props.Position) *							   // translate
-			glm::rotate(glm::mat4(1.f), glm::radians(Props.Rotation), { 0.f, 0.f, 1.f }) * // rotate
+			glm::rotate(glm::mat4(1.f), Props.Rotation, { 0.f, 0.f, 1.f }) * // rotate
 			glm::scale(glm::mat4(1.f), glm::vec3(Props.Size, 1.f));						   // scale
 
 		constexpr size_t	QuadVertexCount = 4;

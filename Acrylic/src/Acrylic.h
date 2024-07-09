@@ -22,6 +22,8 @@
 #include "Acrylic/Runtime/Input/KeyCodes.h"
 #include "Acrylic/Runtime/Input/MouseButtonCodes.h"
 
+#include "Acrylic/Runtime/Particle/Particle.h"
+
 #include "Acrylic/Runtime/Renderer/Buffer.h"
 #include "Acrylic/Runtime/Renderer/CommandList.h"
 #include "Acrylic/Runtime/Renderer/Context.h"

@@ -22,6 +22,7 @@ private:
 	Acrylic::TUniquePtr<Acrylic::OrthographicCameraController> CameraController;
 	Acrylic::TSharedPtr<Acrylic::Texture2D>					   Texture;
 
-	glm::vec3 Color = { 1.f, 1.f, 1.f };
-	int		  NumQuads[2] = { 10, 10 }; // x, y
+	Acrylic::TUniquePtr<Acrylic::ParticleSystem> ParticleSystem;
+	Acrylic::ParticleProps						 ParticleProps;
+	int											 ParticleCount = 5;
 };
