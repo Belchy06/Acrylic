@@ -12,9 +12,9 @@
 
 namespace Acrylic
 {
-	ParticleSystem::ParticleSystem()
+	ParticleSystem::ParticleSystem(size_t MaxParticles)
 	{
-		ParticlePool.resize(1000);
+		ParticlePool.resize(MaxParticles);
 	}
 
 	void ParticleSystem::OnUpdate(Timestep ts)

@@ -52,7 +52,7 @@ namespace Acrylic
 	class ACRYLIC_API ParticleSystem
 	{
 	public:
-		ParticleSystem();
+		ParticleSystem(size_t MaxParticles = 100000);
 
 		void OnUpdate(Timestep ts);
 		void OnRender(TSharedPtr<ICamera> Camera);
