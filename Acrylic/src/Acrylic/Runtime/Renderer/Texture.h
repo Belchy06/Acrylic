@@ -46,12 +46,15 @@ namespace Acrylic
 		const uint32_t	  SizeInBytes;
 	};
 
-	struct ACRYLIC_API CreateTextureDesc
+	struct ACRYLIC_API TextureDesc
 	{
 		uint32_t	 Width;
 		uint32_t	 Height;
 		EPixelFormat PixelFormat;
+	};
 
+	struct ACRYLIC_API CreateTextureDesc : public TextureDesc
+	{
 		/* Optional initial data to fill the resource with. */
 		IBulkData* BulkData = nullptr;
 	};
@@ -63,10 +66,12 @@ namespace Acrylic
 
 		virtual uint32_t GetID() const = 0;
 
-		virtual uint32_t GetWidth() const = 0;
-		virtual uint32_t GetHeight() const = 0;
+		virtual const TextureDesc& GetDesc() { return Desc; };
 
 		virtual void Bind(uint32_t Slot = 0) const = 0;
+
+	protected:
+		TextureDesc Desc;
 	};
 
 	class ACRYLIC_API Texture2D : public ITexture

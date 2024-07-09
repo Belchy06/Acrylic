@@ -3,6 +3,7 @@
 #include "Core/Instrumentation.h"
 #include "ApplicationCore/Application.h"
 #include "Renderer/Renderer2D.h"
+#include "Renderer/CommandList.h"
 
 #include <imgui.h>
 
@@ -10,7 +11,11 @@ namespace Acrylic
 {
 	EditorLayer::EditorLayer()
 		: Layer("Editor")
+		, Viewport(IViewport::Create(1280, 720))
+		, CameraController(MakeUnique<OrthographicCameraController>(1280.f / 720.f, true))
 	{
+		ViewportBounds[0] = glm::vec2(0.f);
+		ViewportBounds[1] = glm::vec2(0.f);
 	}
 
 	void EditorLayer::OnAttach()
@@ -23,15 +28,40 @@ namespace Acrylic
 		AC_PROFILE_FUNCTION()
 	}
 
-	void EditorLayer::OnUpdate(Acrylic::Timestep ts)
+	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		AC_PROFILE_FUNCTION()
+
+		{
+			AC_PROFILE_SCOPE("Update")
+			// Update
+			CameraController->OnUpdate(ts);
+		}
+
+		{
+			AC_PROFILE_SCOPE("Render")
+			// Render
+			Viewport->Bind();
+
+			GCommandListExecutor->SetClearColour({ 0.1f, 0.1f, 0.1f, 1.f });
+			GCommandListExecutor->Clear();
+
+			Renderer2D::BeginScene(CameraController->GetCamera());
+			Renderer2D::DrawQuad({
+				.Position = { 0.f, 0.f, .5f },	 //
+				.Size = { 1.f, 1.f },			 //
+				.Colour = { 1.f, 1.f, 1.f, 1.f } //
+			});
+			Renderer2D::EndScene();
+
+			Viewport->Unbind();
+		}
 	}
 
 	void EditorLayer::OnImGuiRender()
 	{
 		AC_PROFILE_FUNCTION()
-
+#if 1
 		// Note: Switch this to true to enable dockspace
 		static bool				  bDockspaceOpen = true;
 		static bool				  bFullscreen = true;
@@ -116,30 +146,40 @@ namespace Acrylic
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
-		/*auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-		auto viewportOffset = ImGui::GetWindowPos();
-		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+		auto ViewportMinRegion = ImGui::GetWindowContentRegionMin();
+		auto ViewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto ViewportOffset = ImGui::GetWindowPos();
+		ViewportBounds[0] = { ViewportMinRegion.x + ViewportOffset.x, ViewportMinRegion.y + ViewportOffset.y };
+		ViewportBounds[1] = { ViewportMaxRegion.x + ViewportOffset.x, ViewportMaxRegion.y + ViewportOffset.y };
 
 		bViewportFocused = ImGui::IsWindowFocused();
 		bViewportHovered = ImGui::IsWindowHovered();
 
-		Application::GetApplication().GetImGuiLayer()->BlockEvents(!bViewportHovered);
+		// Application::GetApplication().GetImGuiLayer()->BlockEvents(!bViewportHovered);
 
-		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+		ImVec2 ViewportPanelSize = ImGui::GetContentRegionAvail();
+		ViewportSize = { ViewportPanelSize.x, ViewportPanelSize.y };
 
-		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });*/
+		uint64_t TextureID = Viewport->GetBackbuffer()->GetID();
+		ImGui::Image(reinterpret_cast<void*>(TextureID), ImVec2{ ViewportSize.x, ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		ImGui::End();
 		ImGui::PopStyleVar();
 
 		ImGui::End();
+#else
+		const Renderer2D::Stats* Statistics = Renderer2D::GetStats();
+		ImGui::Begin("Stats");
+		ImGui::Text("Renderer2D Stats");
+		ImGui::Text("Draw Calls: %d", Statistics->DrawCalls);
+		ImGui::Text("Quads:      %d", Statistics->QuadCount);
+		ImGui::Text("Vertices    %d", Statistics->QuadCount * 4);
+		ImGui::Text("Indices:    %d", Statistics->QuadCount * 6);
+		ImGui::End();
+#endif
 	}
 
-	void EditorLayer::OnEvent(Acrylic::Event& e)
+	void EditorLayer::OnEvent(Event& e)
 	{
 		AC_PROFILE_FUNCTION()
 	}

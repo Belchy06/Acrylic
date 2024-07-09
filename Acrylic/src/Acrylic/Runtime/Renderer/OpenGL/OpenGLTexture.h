@@ -13,15 +13,11 @@ namespace Acrylic
 		virtual ~OpenGLTexture2D();
 
 		virtual uint32_t GetID() const override;
-		virtual uint32_t GetWidth() const override;
-		virtual uint32_t GetHeight() const override;
 
 		virtual void Bind(uint32_t Slot = 0) const override;
 
 	private:
 		String Path;
-		uint32_t Width;
-		uint32_t Height;
 
 		uint32_t RendererId;
 	};
@@ -33,8 +29,7 @@ namespace Acrylic
 		virtual ~OpenGLSubTexture2D() = default;
 
 		virtual uint32_t GetID() const override { return Texture->GetID(); }
-		virtual uint32_t GetWidth() const override { return Texture->GetWidth(); }
-		virtual uint32_t GetHeight() const override { return Texture->GetHeight(); }
+		virtual const TextureDesc& GetDesc() override { return Texture->GetDesc(); }
 
 		virtual void Bind(uint32_t Slot = 0) const override { Texture->Bind(Slot); }
 

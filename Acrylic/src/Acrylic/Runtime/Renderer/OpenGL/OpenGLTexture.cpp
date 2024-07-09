@@ -22,6 +22,20 @@ namespace Acrylic
 		return 0;
 	}
 
+	EPixelFormat GetPixelFormat(GLenum OpenGLPixelFormat)
+	{
+		switch (OpenGLPixelFormat)
+		{
+			case GL_RGBA8:
+				return EPixelFormat::RGBA8;
+			case GL_RGB8:
+				return EPixelFormat::RGB8;
+		}
+
+		AC_ASSERT(false);
+		return EPixelFormat::Unknown;
+	}
+
 	GLenum GetOpenGLDataFormat(EPixelFormat PixelFormat)
 	{
 		switch (PixelFormat)
@@ -36,18 +50,16 @@ namespace Acrylic
 		return 0;
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(CreateTextureDesc& Desc)
-		: Width(Desc.Width)
-		, Height(Desc.Height)
-		, RendererId(0)
+	OpenGLTexture2D::OpenGLTexture2D(CreateTextureDesc& InDesc)
+		: RendererId(0)
 	{
 		AC_PROFILE_FUNCTION()
 
-		GLenum InternalFormat = GetOpenGLPixelFormat(Desc.PixelFormat);
-		GLenum DataFormat = GetOpenGLDataFormat(Desc.PixelFormat);
+		GLenum InternalFormat = GetOpenGLPixelFormat(InDesc.PixelFormat);
+		GLenum DataFormat = GetOpenGLDataFormat(InDesc.PixelFormat);
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &RendererId);
-		glTextureStorage2D(RendererId, 1, InternalFormat, Width, Height);
+		glTextureStorage2D(RendererId, 1, InternalFormat, InDesc.Width, InDesc.Height);
 
 		glTextureParameteri(RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -55,19 +67,21 @@ namespace Acrylic
 		glTextureParameteri(RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		if (Desc.BulkData != nullptr)
+		if (InDesc.BulkData != nullptr)
 		{
-			glTextureSubImage2D(RendererId, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, Desc.BulkData->GetData());
+			glTextureSubImage2D(RendererId, 0, 0, 0, InDesc.Width, InDesc.Height, DataFormat, GL_UNSIGNED_BYTE, InDesc.BulkData->GetData());
 
-			Desc.BulkData->Discard();
-			Desc.BulkData = nullptr;
+			InDesc.BulkData->Discard();
+			InDesc.BulkData = nullptr;
 		}
+
+		Desc.Width = InDesc.Width;
+		Desc.Height = InDesc.Height;
+		Desc.PixelFormat = Desc.PixelFormat;
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const String& Path)
 		: Path(Path)
-		, Width(0)
-		, Height(0)
 		, RendererId(0)
 	{
 		AC_PROFILE_FUNCTION()
@@ -80,9 +94,6 @@ namespace Acrylic
 		{
 			return;
 		}
-
-		Width = LoadedWidth;
-		Height = LoadedHeight;
 
 		GLenum InternalFormat = 0, DataFormat = 0;
 		if (LoadedChannels == 4)
@@ -97,7 +108,7 @@ namespace Acrylic
 		}
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &RendererId);
-		glTextureStorage2D(RendererId, 1, InternalFormat, Width, Height);
+		glTextureStorage2D(RendererId, 1, InternalFormat, LoadedWidth, LoadedHeight);
 
 		glTextureParameteri(RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -105,9 +116,13 @@ namespace Acrylic
 		glTextureParameteri(RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTextureSubImage2D(RendererId, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, Data);
+		glTextureSubImage2D(RendererId, 0, 0, 0, LoadedWidth, LoadedHeight, DataFormat, GL_UNSIGNED_BYTE, Data);
 
 		stbi_image_free(Data);
+
+		Desc.Width = LoadedWidth;
+		Desc.Height = LoadedHeight;
+		Desc.PixelFormat = GetPixelFormat(InternalFormat);
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()
@@ -118,16 +133,6 @@ namespace Acrylic
 	uint32_t OpenGLTexture2D::GetID() const
 	{
 		return RendererId;
-	}
-
-	uint32_t OpenGLTexture2D::GetWidth() const
-	{
-		return Width;
-	}
-
-	uint32_t OpenGLTexture2D::GetHeight() const
-	{
-		return Height;
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t Slot) const
@@ -142,8 +147,8 @@ namespace Acrylic
 	OpenGLSubTexture2D::OpenGLSubTexture2D(TSharedPtr<Texture2D> Texture, const glm::vec2& Coords, const glm::vec2& Size)
 		: Texture(Texture)
 	{
-		glm::vec2 Min = { ((Coords.x) * Size.x) / Texture->GetWidth(), ((Coords.y + 1) * Size.y) / Texture->GetHeight() };
-		glm::vec2 Max = { ((Coords.x + 1) * Size.x) / Texture->GetWidth(), (Coords.y * Size.y) / Texture->GetHeight() };
+		glm::vec2 Min = { ((Coords.x) * Size.x) / Texture->GetDesc().Width, ((Coords.y + 1) * Size.y) / Texture->GetDesc().Height };
+		glm::vec2 Max = { ((Coords.x + 1) * Size.x) / Texture->GetDesc().Width, (Coords.y * Size.y) / Texture->GetDesc().Height };
 
 		TextureCoords[0] = { Min.x, Min.y };
 		TextureCoords[1] = { Max.x, Min.y };
