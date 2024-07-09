@@ -23,7 +23,8 @@ namespace Acrylic
 		Renderer::Init();
 		Renderer2D::Init();
 
-		Stack.PushOverlay(new ImGuiLayer());
+		GUILayer = new ImGuiLayer(); 
+		Stack.PushOverlay(GUILayer);
 
 		LastFrameTime = static_cast<float>(Platform::GetTime());
 	}
@@ -112,9 +113,5 @@ namespace Acrylic
 	void Application::Close()
 	{
 		bRunning = false;
-	}
-
-	void Application::BlockEvents()
-	{
 	}
 } // namespace Acrylic

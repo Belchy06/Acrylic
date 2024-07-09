@@ -58,6 +58,19 @@ namespace Acrylic
 		IO.DeltaTime = ts.GetSeconds();
 	}
 
+	void ImGuiLayer::OnEvent(Event& e)
+	{
+		if (bBlockingEvents)
+		{
+			ImGuiIO& IO = ImGui::GetIO();
+			if (e.IsInCategory(EEventCategory::Mouse) && IO.WantCaptureMouse || //
+				e.IsInCategory(EEventCategory::Keyboard) && IO.WantCaptureKeyboard)
+			{
+				e.SetHandled();
+			}
+		}
+	}
+
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
@@ -65,7 +78,7 @@ namespace Acrylic
 		ImGui::NewFrame();
 	}
 
-	void ImGuiLayer::End() 
+	void ImGuiLayer::End()
 	{
 		ImGuiIO& IO = ImGui::GetIO();
 		IO.DisplaySize = ImVec2(static_cast<float>(Application::GetWindow().GetWidth()), static_cast<float>(Application::GetWindow().GetHeight()));

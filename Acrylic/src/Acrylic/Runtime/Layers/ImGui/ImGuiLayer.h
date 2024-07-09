@@ -16,11 +16,16 @@ namespace Acrylic
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate(Timestep ts) override;
+		virtual void OnEvent(Event& e) override;
 
 		void Begin();
 		void End();
 
+		void BlockEvents(bool bBlockEvents) { bBlockingEvents = bBlockEvents; }
+
 	private:
 		float DeltaTime = 0.f;
+
+		bool bBlockingEvents = false;
 	};
 } // namespace Acrylic

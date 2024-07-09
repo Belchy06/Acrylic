@@ -20,7 +20,7 @@ namespace Acrylic
 
 		void Run();
 		void Close();
-		void BlockEvents();
+		void BlockImGuiEvents(bool bBlockEvents) { GUILayer->BlockEvents(bBlockEvents); }
 
 		void OnEvent(Event& e);
 
@@ -36,9 +36,10 @@ namespace Acrylic
 
 	private:
 		TUniquePtr<IWindow>	   Window;
-		TUniquePtr<ImGuiLayer> GUILayer;
+		ImGuiLayer*			   GUILayer; // Raw ptr because layer stack owns it
 		bool				   bRunning = true;
 		bool				   bMinimised = false;
+		bool				   bBlockingImGuiEvents = false;
 		LayerStack			   Stack;
 
 		float LastFrameTime = 0.f;

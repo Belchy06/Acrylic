@@ -37,7 +37,10 @@ namespace Acrylic
 		{
 			AC_PROFILE_SCOPE("Update")
 			// Update
-			CameraController->OnUpdate(ts);
+			if (bViewportHovered)
+			{
+				CameraController->OnUpdate(ts);
+			}
 		}
 
 		{
@@ -157,7 +160,7 @@ namespace Acrylic
 		bViewportFocused = ImGui::IsWindowFocused();
 		bViewportHovered = ImGui::IsWindowHovered();
 
-		// Application::GetApplication().GetImGuiLayer()->BlockEvents(!bViewportHovered);
+		Application::GetApplication().BlockImGuiEvents(!bViewportHovered);
 
 		ImVec2 ViewportPanelSize = ImGui::GetContentRegionAvail();
 		if (ViewportSize != *((glm::vec2*)&ViewportPanelSize))
