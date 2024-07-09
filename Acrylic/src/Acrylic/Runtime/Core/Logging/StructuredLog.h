@@ -6,6 +6,8 @@
 #include "LogCategory.h"
 #include "LogVerbosity.h"
 
+#include <atomic>
+
 namespace Acrylic
 {
 #define AC_LOG(CategoryName, Verbosity, Format, ...) AC_PRIVATE_LOG_CALL(AC_LOG_EX, (CategoryName, Verbosity, Format AC_PRIVATE_LOG_FIELDS(__VA_ARGS__)))

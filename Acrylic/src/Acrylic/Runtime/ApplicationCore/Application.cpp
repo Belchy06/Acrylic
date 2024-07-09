@@ -108,4 +108,13 @@ namespace Acrylic
 			Window->OnUpdate();
 		}
 	}
+
+	void Application::Close()
+	{
+		bRunning = false;
+	}
+
+	void Application::BlockEvents()
+	{
+	}
 } // namespace Acrylic

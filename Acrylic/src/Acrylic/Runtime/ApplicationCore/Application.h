@@ -2,6 +2,7 @@
 
 #include "ApplicationCore/Window.h"
 #include "Core/Logging.h"
+#include "Core/Memory.h"
 #include "Core/Timestep.h"
 #include "Layers/LayerStack.h"
 #include "Layers/ImGui/ImGuiLayer.h"
@@ -17,6 +18,8 @@ namespace Acrylic
 		virtual ~Application();
 
 		void Run();
+		void Close();
+		void BlockEvents();
 
 		void OnEvent(Event& e);
 
@@ -31,11 +34,11 @@ namespace Acrylic
 		bool OnWindowResized(WindowResizeEvent& e);
 
 	private:
-		std::unique_ptr<IWindow>	Window;
-		std::unique_ptr<ImGuiLayer> GUILayer;
-		bool						bRunning = true;
-		bool						bMinimised = false;
-		LayerStack					Stack;
+		TUniquePtr<IWindow>	   Window;
+		TUniquePtr<ImGuiLayer> GUILayer;
+		bool				   bRunning = true;
+		bool				   bMinimised = false;
+		LayerStack			   Stack;
 
 		float LastFrameTime = 0.f;
 

@@ -1,7 +1,7 @@
 workspace "Acrylic"
 	architecture "x64"
 
-	startproject "Sandbox"
+	startproject "AcrylicEditor"
 
 	configurations
 	{
@@ -41,25 +41,22 @@ project "Acrylic"
 
 	files
 	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.hpp",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	removefiles
-	{
-		"%{prj.name}/src/Acrylic/ThirdParty/**.h",
-		"%{prj.name}/src/Acrylic/ThirdParty/**.hpp",
-		"%{prj.name}/src/Acrylic/ThirdParty/**.cpp",
-		"%{prj.name}/src/Acrylic/ThirdParty/**.cppm",
+		"Acrylic/src/acpch.h",
+		"Acrylic/src/acpch.cpp",
+		"Acrylic/src/Acrylic.h",
+		"Acrylic/src/Acrylic/Runtime/*.h",
+		"Acrylic/src/Acrylic/Runtime/*.hpp",
+		"Acrylic/src/Acrylic/Runtime/*.cpp",
+		"Acrylic/src/Acrylic/Runtime/**.h",
+		"Acrylic/src/Acrylic/Runtime/**.hpp",
+		"Acrylic/src/Acrylic/Runtime/**.cpp"
 	}
 
 	includedirs
 	{
-		"%{prj.name}/src",
-		"%{prj.name}/src/%{prj.name}/Editor",
-		"%{prj.name}/src/%{prj.name}/Runtime",
-		"%{prj.name}/src/%{prj.name}/ThirdParty",
+		"Acrylic/src",
+		"Acrylic/src/Acrylic/Runtime",
+		"Acrylic/src/Acrylic/ThirdParty",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.IMGUI}",
@@ -101,8 +98,8 @@ project "Acrylic"
 		optimize "on"
 		runtime "Release"
 
-project "Sandbox"
-	location "Sandbox"
+project "AcrylicEditor"
+	location "Acrylic"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
@@ -113,9 +110,12 @@ project "Sandbox"
 
 	files
 	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.hpp",
-		"%{prj.name}/src/**.cpp"
+		"Acrylic/src/Acrylic/Editor/*.h",
+		"Acrylic/src/Acrylic/Editor/*.hpp",
+		"Acrylic/src/Acrylic/Editor/*.cpp",
+		"Acrylic/src/Acrylic/Editor/**.h",
+		"Acrylic/src/Acrylic/Editor/**.hpp",
+		"Acrylic/src/Acrylic/Editor/**.cpp"
 	}
 
 	includedirs 
@@ -128,7 +128,7 @@ project "Sandbox"
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.IMGUI}",
 		"%{IncludeDir.GLM}",
-		"%{IncludeDir.STB}",
+		"%{IncludeDir.STB}"
 	}
 
 	links
