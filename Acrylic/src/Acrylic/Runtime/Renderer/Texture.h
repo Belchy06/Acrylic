@@ -12,6 +12,8 @@ namespace Acrylic
 	class ACRYLIC_API IBulkData
 	{
 	public:
+		virtual ~IBulkData() = default;
+
 		virtual const void* GetData() const = 0;
 		virtual uint32_t	GetSize() const = 0;
 		virtual void		Discard() = 0;

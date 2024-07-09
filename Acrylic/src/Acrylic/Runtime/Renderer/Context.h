@@ -10,6 +10,8 @@ namespace Acrylic
 	class ACRYLIC_API ICommandContext
 	{
 	public:
+		virtual ~ICommandContext() = default;
+
 		virtual void Init() = 0;
 		virtual void SwapBuffers() = 0;
 	};
