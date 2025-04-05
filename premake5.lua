@@ -9,10 +9,7 @@ workspace "Acrylic"
 	{
 		"Debug",
 		"Release",
-		"Dist",
-		"DebugEditor",
-		"ReleaseEditor",
-		"DistEditor"
+		"Dist"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -54,7 +51,9 @@ project "Acrylic"
 	includedirs
 	{
 		"Engine/Source/Runtime",
+		"Engine/Source/Runtime/**",
 		"Engine/Source/ThirdParty",
+		"Engine/Source/ThirdParty/**",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.IMGUI}",
@@ -119,8 +118,11 @@ project "AcrylicEditor"
 	includedirs 
 	{
 		"Engine/Source/Editor",
+		"Engine/Source/Editor/**",
 		"Engine/Source/Runtime",
+		"Engine/Source/Runtime/**",
 		"Engine/Source/ThirdParty",
+		"Engine/Source/ThirdParty/**",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.IMGUI}",
@@ -146,17 +148,17 @@ project "AcrylicEditor"
 			"AC_PLATFORM_WINDOWS",
 		}
 
-	filter "configurations:DebugEditor"
+	filter "configurations:Debug"
 		defines "AC_DEBUG"
 		symbols "on"
 		runtime "Debug"
 
-	filter "configurations:ReleaseEditor"
+	filter "configurations:Release"
 		defines "AC_RELEASE"
 		optimize "on"
 		runtime "Release"
 
-	filter "configurations:DistEditor"
+	filter "configurations:Dist"
 		defines "AC_DIST"
 		optimize "on"
 		runtime "Release"
