@@ -1,0 +1,17 @@
+# VS folders
+.vs/
+.vscode/
+# VS files
+*.vcxproj
+*.filters
+*.user
+*.json
+*.sln
+*.code-workspace
+
+Acrylic/
+AcrylicEditor/
+Engine/Bin
+Engine/Intermediates
+bin/
+intermediates/
