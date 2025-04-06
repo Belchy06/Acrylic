@@ -1,6 +1,7 @@
 #include "ApplicationCore/Application.h"
 #include "Logging/Logging.h"
 
+#if WITH_EDITOR
 class AcrylicEditor : public Application
 {
 public:
@@ -17,3 +18,4 @@ Application* CreateApplication()
 {
 	return new AcrylicEditor();
 }
+#endif

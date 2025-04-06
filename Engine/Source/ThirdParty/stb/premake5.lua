@@ -1,4 +1,4 @@
-project "STB"
+project "stb"
 	kind "StaticLib"
 	language "C"
 	staticruntime "on"

@@ -14,21 +14,16 @@ workspace "Acrylic"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-IncludeDir = {}
-IncludeDir["GLFW"] = "Engine/Source/ThirdParty/glfw/include"
-IncludeDir["GLAD"] = "Engine/Source/ThirdParty/glad/include"
-IncludeDir["IMGUI"] = "Engine/Source/ThirdParty/imgui"
-IncludeDir["GLM"] = "Engine/Source/ThirdParty/GLM"
-IncludeDir["STB"] = "Engine/Source/ThirdParty/stb"
-
 group "Dependencies"
-	include "Engine/Source/ThirdParty/glfw"
 	include "Engine/Source/ThirdParty/glad"
+	include "Engine/Source/ThirdParty/glfw"
+	include "Engine/Source/ThirdParty/glm"
 	include "Engine/Source/ThirdParty/imgui"
 	include "Engine/Source/ThirdParty/stb"
 group ""
 
 project "Acrylic"
+	print ("Adding project: Acrylic")
 	location "Acrylic"
 	kind "StaticLib"
 	language "C++"
@@ -53,22 +48,16 @@ project "Acrylic"
 		"Engine/Source/Runtime",
 		"Engine/Source/Runtime/**",
 		"Engine/Source/ThirdParty",
-		"Engine/Source/ThirdParty/**",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.IMGUI}",
-		"%{IncludeDir.GLM}",
-		"%{IncludeDir.STB}"
+		"Engine/Source/ThirdParty/**"
 	}
 
-	links
-	{
-		"GLFW",
-		"GLAD",
-		"opengl32.lib",
-		"ImGui",
-		"STB"
-	}
+	directories = os.matchdirs("Engine/Source/ThirdParty/*")
+	libs = {}
+	for dirCount = 1, #directories do
+		local dir = directories[dirCount]
+		table.insert(libs, path.getname(dir))
+	end
+	links { "opengl32.lib", libs }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -96,6 +85,7 @@ project "Acrylic"
 		runtime "Release"
 
 project "AcrylicEditor"
+	print ("Adding project: AcrylicEditor")
 	location "AcrylicEditor"
 	kind "ConsoleApp"
 	language "C++"
@@ -122,23 +112,16 @@ project "AcrylicEditor"
 		"Engine/Source/Runtime",
 		"Engine/Source/Runtime/**",
 		"Engine/Source/ThirdParty",
-		"Engine/Source/ThirdParty/**",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.IMGUI}",
-		"%{IncludeDir.GLM}",
-		"%{IncludeDir.STB}"
+		"Engine/Source/ThirdParty/**"
 	}
 
-	links
-	{
-		"Acrylic",
-		"GLFW",
-		"GLAD",
-		"opengl32.lib",
-		"ImGui",
-		"STB"
-	}
+	directories = os.matchdirs("Engine/Source/ThirdParty/*")
+	libs = {}
+	for dirCount = 1, #directories do
+		local dir = directories[dirCount]
+		table.insert(libs, path.getname(dir))
+	end
+	links { "Acrylic", "opengl32.lib", libs }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -149,16 +132,16 @@ project "AcrylicEditor"
 		}
 
 	filter "configurations:Debug"
-		defines "AC_DEBUG"
+		defines { "AC_DEBUG", "WITH_EDITOR" }
 		symbols "on"
 		runtime "Debug"
 
 	filter "configurations:Release"
-		defines "AC_RELEASE"
+		defines { "AC_RELEASE", "WITH_EDITOR" }
 		optimize "on"
 		runtime "Release"
 
 	filter "configurations:Dist"
-		defines "AC_DIST"
+		defines { "AC_DIST", "WITH_EDITOR" }
 		optimize "on"
 		runtime "Release"
