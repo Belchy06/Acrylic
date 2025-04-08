@@ -73,6 +73,13 @@ private:
 			return;
 		}
 
+		using BaseCharType = std::remove_const_t<std::remove_pointer_t<std::decay_t<CharType>>>;
+		using BasePtrType = std::remove_const_t<std::remove_pointer_t<std::decay_t<T>>>;
+		if constexpr (!std::is_same_v<BaseCharType, BasePtrType>)
+		{
+			static_assert(false, "TODO (william.belcher: Conversion between character formats)");
+		}
+
 		NumChars = Num;
 		Data = Ptr;
 	}
@@ -83,6 +90,13 @@ private:
 		if (!Ptr || Num == 0 || !*Ptr)
 		{
 			return;
+		}
+
+		using BaseCharType = std::remove_const_t<std::remove_pointer_t<std::decay_t<CharType>>>;
+		using BasePtrType = std::remove_const_t<std::remove_pointer_t<std::decay_t<T>>>;
+		if constexpr (!std::is_same_v<BaseCharType, BasePtrType>)
+		{
+			static_assert(false, "TODO (william.belcher: Conversion between character formats)");
 		}
 
 		NumChars = Num;

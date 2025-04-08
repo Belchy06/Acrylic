@@ -18,6 +18,8 @@ public:
 
 		TString<WIDECHAR> OtherString = *TestString;
 		std::wcout << *OtherString << std::endl;
+
+		TString<WIDECHAR> ConvertedString = "Testing";
 	}
 };
 
