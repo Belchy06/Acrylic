@@ -10,5 +10,6 @@
 		Format += #Category;                                                   \
 		Format += "] ";                                                        \
 		Format += Fmt;                                                         \
+		Format += "\n";                                                        \
 		std::cout << std::vformat(Format, std::make_format_args(__VA_ARGS__)); \
 	}

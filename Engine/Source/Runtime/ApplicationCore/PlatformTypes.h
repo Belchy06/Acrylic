@@ -1,9 +1,9 @@
 #pragma once
 
-#if AC_WINDOWS
-	#include "Windows/WindowsPlatform.h"
+#if AC_PLATFORM_WINDOWS
+	#include "Windows/WindowsPlatformTypes.h"
 #else
-	#include "Generic/GenericPlatform.h"
+	#include "Generic/GenericPlatformTypes.h"
 typedef GenericPlatformTypes PlatformTypes;
 #endif
 

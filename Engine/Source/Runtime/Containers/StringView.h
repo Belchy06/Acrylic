@@ -1,6 +1,8 @@
 #pragma once
 
-#include "AcrylicString.h"
+#include "PlatformTypes.h"
+
+#include <type_traits>
 
 template <typename CharType>
 class TStringView : private TString<CharType>

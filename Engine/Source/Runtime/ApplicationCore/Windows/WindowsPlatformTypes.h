@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Generic/GenericPlatform.h"
+#include "Generic/GenericPlatformTypes.h"
 
 #if AC_PLATFORM_WINDOWS
 /**
